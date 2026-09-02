@@ -1,0 +1,37 @@
+# CI for the n8n-nodes-bird release mirror. Proof that the exported package
+# installs, typechecks, builds, tests, and passes n8n's own community-node
+# scanner with NO Bird monorepo context — it runs on a GitHub-hosted runner
+# against the checked-in mirror content only.
+#
+# The scan is the step that matters more here than in the monorepo: n8n's
+# verification lints the attested GitHub source, which is this repository.
+#
+# Source of truth: integrations/n8n/.mirror/ in the Bird monorepo. Do not edit
+# on the mirror; changes are synced from the monorepo.
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+permissions:
+  contents: read
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v6
+      - uses: pnpm/action-setup@v6
+        with:
+          version: 11.11.0
+      - uses: actions/setup-node@v6
+        with:
+          node-version: 22.19.0
+      - run: pnpm install --frozen-lockfile
+      - run: pnpm run typecheck
+      - run: pnpm run lint
+      - run: pnpm run test
+      - run: pnpm run build

@@ -1,0 +1,64 @@
+{
+  "name": "n8n-nodes-bird",
+  "version": "0.0.0",
+  "description": "The official Bird node for n8n: email, SMS, WhatsApp, and verification, plus a webhook trigger for Bird events.",
+  "license": "MIT",
+  "author": {
+    "name": "Bird",
+    "email": "connectors@bird.com"
+  },
+  "keywords": [
+    "n8n-community-node-package",
+    "bird",
+    "messagebird",
+    "email",
+    "transactional email",
+    "sms",
+    "whatsapp",
+    "voice",
+    "verify",
+    "otp",
+    "lookup",
+    "webhooks"
+  ],
+  "homepage": "https://bird.com",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/messagebird/n8n-nodes-bird.git"
+  },
+  "engines": {
+    "node": ">=20"
+  },
+  "main": "dist/index.js",
+  "files": [
+    "dist"
+  ],
+  "n8n": {
+    "n8nNodesApiVersion": 1,
+    "credentials": [
+      "dist/credentials/BirdApi.credentials.js"
+    ],
+    "nodes": [
+      "dist/nodes/Bird/Bird.node.js",
+      "dist/nodes/Bird/BirdTrigger.node.js"
+    ]
+  },
+  "scripts": {
+    "build": "rimraf dist && tsc6 && cp nodes/Bird/bird.svg nodes/Bird/bird-dark.svg nodes/Bird/Bird.node.json nodes/Bird/BirdTrigger.node.json dist/nodes/Bird/ && cp credentials/bird.svg credentials/bird-dark.svg dist/credentials/",
+    "test": "vitest run",
+    "typecheck": "tsc6 --noEmit",
+    "lint": "node scan.mjs",
+    "prepack": "npm run build"
+  },
+  "peerDependencies": {
+    "n8n-workflow": "*"
+  },
+  "devDependencies": {
+    "@n8n/scan-community-package": "0.33.0",
+    "@types/node": "22.19.18",
+    "n8n-workflow": "2.16.0",
+    "rimraf": "6.1.3",
+    "typescript": "npm:@typescript/typescript6@^6.0.2",
+    "vitest": "4.1.10"
+  }
+}

@@ -1,0 +1,4 @@
+nodes/Bird/generated/
+dist/
+# Matches both the monorepo path and the mirror root it is promoted to.
+pnpm-lock.yaml

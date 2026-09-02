@@ -1,0 +1,24 @@
+# Promoted to the export root on release (.mirror/ -> root). The mirror is a
+# single package, so this file carries settings only: the parts of the
+# monorepo's own pnpm-workspace.yaml that this package's dependency tree needs
+# and that do not travel with the export.
+overrides:
+  # @n8n/scan-community-package pins typescript 7 while every @typescript-eslint
+  # 8.x it also depends on caps the peer below 6.1, so its parser dies on import
+  # (`ts.Extension` is gone in 7). Scoped to that dependency path, so the pin
+  # reaches nothing else.
+  "@n8n/scan-community-package>typescript": 6.0.3
+
+# Supply-chain gate: reject dependencies published less than 24h ago. The
+# TypeScript 6 previews publish faster than this mirror syncs, so they opt out.
+minimumReleaseAge: 1440
+minimumReleaseAgeExclude:
+  - "@typescript/*"
+  - "typescript"
+
+allowBuilds:
+  # Ships prebuilt; its only install script is the only-allow-pnpm guard.
+  eslint-plugin-n8n-nodes-base: false
+  # n8n-workflow's task-runner sandbox; nothing here executes it, so its
+  # native build stays off rather than approving a gyp run.
+  isolated-vm: false

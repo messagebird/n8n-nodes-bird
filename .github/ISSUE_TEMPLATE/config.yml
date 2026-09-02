@@ -1,0 +1,8 @@
+blank_issues_enabled: false
+contact_links:
+  - name: Bird documentation
+    url: https://bird.com/docs
+    about: Guides and API reference for the Bird platform.
+  - name: n8n community forum
+    url: https://community.n8n.io
+    about: Questions about n8n itself, workflows, and other community nodes.

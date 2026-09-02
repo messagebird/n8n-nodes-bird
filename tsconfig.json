@@ -1,0 +1,15 @@
+{
+  "compilerOptions": {
+    "target": "es2022",
+    "module": "node16",
+    "moduleResolution": "node16",
+    "strict": true,
+    "esModuleInterop": true,
+    "skipLibCheck": true,
+    "declaration": false,
+    "outDir": "dist",
+    "resolveJsonModule": true
+  },
+  "include": ["index.ts", "credentials/**/*.ts", "nodes/**/*.ts"],
+  "exclude": ["**/*.test.ts", "dist"]
+}

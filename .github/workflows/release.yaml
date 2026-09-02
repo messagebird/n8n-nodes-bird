@@ -1,0 +1,139 @@
+# Publishes n8n-nodes-bird to npm when a vX.Y.Z tag is pushed to this mirror.
+#
+# Source of truth: integrations/n8n/.mirror/ in the Bird monorepo — do NOT edit
+# on the mirror; changes are synced from the monorepo by
+# scripts/dev/sdk-release.sh.
+#
+# Auth is npm trusted publishing (OIDC) — there is no NPM_TOKEN. It needs a
+# trusted publisher on npmjs.com for n8n-nodes-bird pointing at this repository
+# and this workflow FILE NAME (release.yaml); renaming either breaks publishing
+# with an E404 until someone re-points it there. A first publish gets that same
+# E404 — the setting lives on a package page npm will not create until a version
+# exists — so version one goes up by hand from a token.
+#
+# The provenance statement is what n8n's verification reads: it fetches the
+# GitHub source the attestation names and lints {nodes,credentials}/** THERE,
+# not in the tarball.
+#
+# workflow_dispatch runs a dry-run (build + pack validation, no publish) so the
+# pipeline can be exercised without cutting a release.
+name: Release
+
+on:
+  # One package, so the tag is the bare v<version> its consumers read. The
+  # namespaced <surface>/v<version> form exists only on mirrors carrying several
+  # independently-versioned packages, which would otherwise compete for one name.
+  push:
+    tags: ["v*"]
+  workflow_dispatch:
+    inputs:
+      dry_run:
+        description: "Build and pack-validate only; do not publish"
+        type: boolean
+        default: true
+
+permissions:
+  contents: write # create the GitHub Release
+  id-token: write # OIDC for npm trusted publishing + provenance
+
+concurrency:
+  group: release-${{ github.ref }}
+  cancel-in-progress: false
+
+jobs:
+  publish:
+    name: Publish to npm
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v6
+      - uses: pnpm/action-setup@v6
+        with:
+          version: 11.11.0
+      - uses: actions/setup-node@v6
+        with:
+          node-version: 22.19.0
+          registry-url: https://registry.npmjs.org
+      - run: pnpm install --frozen-lockfile
+      - run: pnpm run build
+      # npm trusted publishing (OIDC) needs npm >= 11.5.1. Pin npm 11: npm 12.0.0's
+      # provenance is broken (its libnpmpublish requires the 'sigstore' module, which
+      # that release does not bundle), so `npm publish --provenance` fails.
+      - run: npm install -g npm@11
+
+      # Idempotent: a version already on npm is skipped, so re-running after a
+      # later step failed never errors on a re-publish.
+      - name: Publish
+        env:
+          DRY_RUN: ${{ github.event_name == 'workflow_dispatch' && inputs.dry_run }}
+        run: |
+          name="$(node -p "require('./package.json').name")"
+          ver="$(node -p "require('./package.json').version")"
+          if [ "$DRY_RUN" = "true" ]; then
+            npm publish --provenance --access public --dry-run
+            echo "- dry-run ok \`$name@$ver\`" >> "$GITHUB_STEP_SUMMARY"
+          elif npm view "$name@$ver" version >/dev/null 2>&1; then
+            echo "npm already has $name@$ver — skipping (idempotent)"
+            echo "- already on npm \`$name@$ver\`" >> "$GITHUB_STEP_SUMMARY"
+          else
+            npm publish --provenance --access public
+            echo "- published \`$name@$ver\`" >> "$GITHUB_STEP_SUMMARY"
+          fi
+
+      # Ordered before smoke so a propagation flake there cannot drop the notes
+      # for a version already on npm. --notes-from-tag reuses the annotated tag's
+      # message (this version's CHANGELOG section, set by sdk-release.sh).
+      - name: GitHub Release
+        if: github.event_name == 'push'
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          gh release view "$GITHUB_REF_NAME" >/dev/null 2>&1 \
+            || gh release create "$GITHUB_REF_NAME" --notes-from-tag --verify-tag
+
+  # Smoke is its own job so the Publish job's colour is a true publish signal:
+  # sharing one job made every release red on npm propagation lag, which taught
+  # everyone to ignore a red Release run. It asserts the tarball carries the files
+  # the `n8n` manifest names — the `files`/`build` gap a green publish does not
+  # catch, which n8n shows a user as a node that installs and never loads.
+  smoke:
+    name: Smoke test (install from npm)
+    needs: publish
+    if: github.event_name == 'push'
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v6
+      - uses: actions/setup-node@v6
+        with:
+          node-version: 22.19.0
+      - name: Install the published version and load what n8n loads
+        run: |
+          ver="$(node -p "require('./package.json').version")"
+          # A peer dep is not in the tarball and the nodes cannot load without one;
+          # pin the version the package is built against.
+          peer="n8n-workflow@$(node -p "require('./package.json').devDependencies['n8n-workflow']")"
+          work="$(mktemp -d)"
+          cd "$work"
+          npm init -y >/dev/null
+          # npm's registry read is eventually consistent behind a publish; retry
+          # for ~5 minutes rather than failing the release on propagation lag.
+          for attempt in $(seq 1 30); do
+            npm install "n8n-nodes-bird@$ver" "$peer" >/dev/null 2>&1 && break
+            echo "attempt $attempt: n8n-nodes-bird@$ver not installable yet"
+            sleep 10
+          done
+          node -e '
+            const root = "./node_modules/n8n-nodes-bird/";
+            const manifest = require(root + "package.json").n8n;
+            const files = [...manifest.nodes, ...manifest.credentials];
+            const missing = files.filter((f) => !require("node:fs").existsSync(root + f));
+            if (missing.length) {
+              console.error("missing from the published tarball: " + missing.join(", "));
+              process.exit(1);
+            }
+            for (const f of files) require(root + f);
+            console.log("loaded " + files.length + " node/credential files");
+          '

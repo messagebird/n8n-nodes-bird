@@ -1,0 +1,23 @@
+{
+  "node": "n8n-nodes-bird.bird",
+  "nodeVersion": "1.0",
+  "codexVersion": "1.0",
+  "categories": ["Communication"],
+  "resources": {
+    "primaryDocumentation": [
+      {
+        "url": "https://bird.com/docs"
+      }
+    ]
+  },
+  "alias": [
+    "bird",
+    "messagebird",
+    "email",
+    "transactional email",
+    "sms",
+    "whatsapp",
+    "verify",
+    "otp"
+  ]
+}
