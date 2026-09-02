@@ -1,9 +1,13 @@
 # Changelog
 
+## 0.2.1
+
+- Document the undo window for lower mailbox retention and retention-based attachment availability.
+- Add example workflows under `examples/` — a contact form sending a welcome email, an order-shipped SMS from a stored template, and a bounce and complaint handler that suppresses the address — and link them from the README.
+
 ## 0.2.0
 
 - **Breaking:** the SMS and email `send_batch` operations take their sends in a `Messages` field (a JSON array) instead of the whole-body `Items` field; a saved workflow using `Items` must move its value to `Messages`.
-- Maintenance release. No functional change.
 
 ## 0.1.1
 

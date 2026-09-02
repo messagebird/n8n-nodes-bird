@@ -1,0 +1,118 @@
+{
+  "name": "Bounce & Complaint Handler (Bird)",
+  "nodes": [
+    {
+      "parameters": {
+        "content": "## Bounce & Complaint Handler\n\nBird Trigger fires on `email.bounced` and `email.complained`. The address is suppressed so nothing sends to it again, and the team gets a note.\n\n**Bird operations:** `email › send`, `suppression › add`",
+        "height": 280,
+        "width": 440,
+        "color": 7
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [-460, -80],
+      "name": "Overview"
+    },
+    {
+      "parameters": {
+        "content": "### Setup\n\n1. Add your **Bird API** credential. The key needs the `webhooks`, `email` and `suppressions` scopes.\n2. Activate the workflow — the trigger registers its own Bird webhook and verifies every delivery before the workflow runs.\n3. Point the alert address at a mailbox your team reads.\n\n**Note:** each event carries `type`, `timestamp` and `data`; the address is at `data.recipient`.",
+        "height": 340,
+        "width": 440,
+        "color": 5
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [-460, 220],
+      "name": "Setup Instructions"
+    },
+    {
+      "parameters": {
+        "events": ["email.bounced", "email.complained"]
+      },
+      "type": "@messagebird/n8n-nodes-bird.birdTrigger",
+      "typeVersion": 1,
+      "position": [0, 0],
+      "name": "Bird Delivery Events",
+      "credentials": {
+        "birdApi": {
+          "id": "1",
+          "name": "Bird account"
+        }
+      },
+      "webhookId": ""
+    },
+    {
+      "parameters": {
+        "resource": "suppression",
+        "operation": "add",
+        "email": "={{ $json[\"data\"][\"recipient\"] }}"
+      },
+      "type": "@messagebird/n8n-nodes-bird.bird",
+      "typeVersion": 1,
+      "position": [240, 0],
+      "name": "Suppress the Address",
+      "credentials": {
+        "birdApi": {
+          "id": "1",
+          "name": "Bird account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "resource": "email",
+        "operation": "send",
+        "from": "Goldcrest Alerts <alerts@goldcrest.example>",
+        "to": "deliverability@goldcrest.example",
+        "additionalFields": {
+          "subject": "=Suppressed {{ $(\"Bird Delivery Events\").item.json[\"data\"][\"recipient\"] }} after {{ $(\"Bird Delivery Events\").item.json[\"type\"] }}",
+          "text": "=Event: {{ $(\"Bird Delivery Events\").item.json[\"type\"] }}\nRecipient: {{ $(\"Bird Delivery Events\").item.json[\"data\"][\"recipient\"] }}\nEmail ID: {{ $(\"Bird Delivery Events\").item.json[\"data\"][\"email_id\"] }}\nRecorded: {{ $(\"Bird Delivery Events\").item.json[\"timestamp\"] }}\n\nThe address is now suppressed and will not be sent to again."
+        }
+      },
+      "type": "@messagebird/n8n-nodes-bird.bird",
+      "typeVersion": 1,
+      "position": [480, 0],
+      "name": "Alert the Team",
+      "credentials": {
+        "birdApi": {
+          "id": "1",
+          "name": "Bird account"
+        }
+      }
+    }
+  ],
+  "connections": {
+    "Bird Delivery Events": {
+      "main": [
+        [
+          {
+            "node": "Suppress the Address",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Suppress the Address": {
+      "main": [
+        [
+          {
+            "node": "Alert the Team",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": false,
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "versionId": "",
+  "meta": {
+    "templateCredsSetupCompleted": false
+  },
+  "id": "",
+  "tags": []
+}

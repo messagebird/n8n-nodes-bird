@@ -1,0 +1,97 @@
+{
+  "name": "Contact Form → Welcome Email (Bird)",
+  "nodes": [
+    {
+      "parameters": {
+        "content": "## Contact Form → Welcome Email\n\nAn n8n form captures a sign-up and Bird sends the welcome email straight away.\n\n**Bird operations:** `email › send`",
+        "height": 260,
+        "width": 440,
+        "color": 7
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [-460, -80],
+      "name": "Overview"
+    },
+    {
+      "parameters": {
+        "content": "### Setup\n\n1. Add your **Bird API** credential. The key's region prefix (`bk_eu1_…`) selects the API host — there is nothing else to configure.\n2. Replace the **From** address with a sender on a domain you have verified in Bird.\n3. The key needs the `email` scope.",
+        "height": 300,
+        "width": 440,
+        "color": 5
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [-460, 200],
+      "name": "Setup Instructions"
+    },
+    {
+      "parameters": {
+        "formTitle": "Join the mailing list",
+        "formFields": {
+          "values": [
+            {
+              "fieldLabel": "Email",
+              "fieldType": "email",
+              "requiredField": true
+            },
+            {
+              "fieldLabel": "First Name",
+              "requiredField": true
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.formTrigger",
+      "typeVersion": 2.2,
+      "position": [0, 0],
+      "name": "New Subscriber",
+      "webhookId": ""
+    },
+    {
+      "parameters": {
+        "resource": "email",
+        "operation": "send",
+        "from": "Goldcrest <hello@goldcrest.example>",
+        "to": "={{ $json[\"Email\"] }}",
+        "additionalFields": {
+          "subject": "=Welcome aboard, {{ $json[\"First Name\"] }}",
+          "text": "=Hi {{ $json[\"First Name\"] }},\n\nThanks for signing up. We send one short email a month, and you can unsubscribe from any of them.\n\n— The Goldcrest team"
+        }
+      },
+      "type": "@messagebird/n8n-nodes-bird.bird",
+      "typeVersion": 1,
+      "position": [240, 0],
+      "name": "Send Welcome Email",
+      "credentials": {
+        "birdApi": {
+          "id": "1",
+          "name": "Bird account"
+        }
+      }
+    }
+  ],
+  "connections": {
+    "New Subscriber": {
+      "main": [
+        [
+          {
+            "node": "Send Welcome Email",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": false,
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "versionId": "",
+  "meta": {
+    "templateCredsSetupCompleted": false
+  },
+  "id": "",
+  "tags": []
+}

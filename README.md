@@ -46,6 +46,16 @@ The **Bird** node covers the public Bird API: email and SMS sends, delivery stat
 
 The **Bird Trigger** node starts a workflow when Bird delivers a subscribed event (an email delivered, a bounce, an inbound SMS, and 50 more). It registers the webhook automatically with your API key, verifies every delivery as a [Standard Webhook](https://www.standardwebhooks.com) before the workflow runs, and deduplicates redelivered events. One Bird webhook is created per workflow; workspace webhook quotas apply.
 
+## Examples
+
+[`examples/`](examples/) carries ready-to-import workflows, each with its setup notes on the canvas:
+
+- **[Contact form → welcome email](examples/01-contact-form-welcome-email.json)** — an n8n form captures a sign-up and Bird sends the welcome email.
+- **[Order shipped → SMS from a stored template](examples/02-order-shipped-sms-template.json)** — a webhook triggers an SMS whose copy and translations live in Bird, not the workflow.
+- **[Bounce & complaint handler](examples/03-bounce-complaint-handler.json)** — Bird Trigger suppresses the address and notifies the team.
+
+Import one with **Workflows → New Workflow → More options (⋮) → Import from File**. [`examples/README.md`](examples/README.md) lists the operations and the API-key scopes each needs.
+
 ## Credentials
 
 Create an API key in the Bird dashboard under **API keys**, near the bottom of the sidebar, and paste it into the **Bird API** credential. The key is all the node needs — nothing else to configure. The credential's help text lists the scopes the key needs; the credential test verifies the key against your workspace.

@@ -1,0 +1,98 @@
+{
+  "name": "Order Shipped → SMS from a Stored Template (Bird)",
+  "nodes": [
+    {
+      "parameters": {
+        "content": "## Order Shipped → SMS from a Stored Template\n\nYour system posts an order to the webhook; Bird sends the shipping SMS from a template stored in Bird, so the copy and its translations live outside the workflow.\n\n**Bird operations:** `sms › send`",
+        "height": 280,
+        "width": 440,
+        "color": 7
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [-460, -80],
+      "name": "Overview"
+    },
+    {
+      "parameters": {
+        "content": "### Setup\n\n1. Add your **Bird API** credential; the key needs the `sms` scope.\n2. Create the SMS template in Bird and put its slug in **Template → Slug**.\n3. Add one **Parameters** row per template variable.\n\n**Note:** a template supplies the sender and the copy, so `Text`, `From` and `Category` must be left empty when you use one.",
+        "height": 320,
+        "width": 440,
+        "color": 5
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [-460, 220],
+      "name": "Setup Instructions"
+    },
+    {
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "order-shipped",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2,
+      "position": [0, 0],
+      "name": "Order Shipped",
+      "webhookId": ""
+    },
+    {
+      "parameters": {
+        "resource": "sms",
+        "operation": "send",
+        "to": "={{ $json[\"body\"][\"phone\"] }}",
+        "additionalFields": {
+          "template": {
+            "slug": "order-shipped",
+            "parameters": {
+              "pairs": [
+                {
+                  "key": "order_id",
+                  "value": "={{ $json[\"body\"][\"order_id\"] }}"
+                },
+                {
+                  "key": "tracking_url",
+                  "value": "={{ $json[\"body\"][\"tracking_url\"] }}"
+                }
+              ]
+            }
+          }
+        }
+      },
+      "type": "@messagebird/n8n-nodes-bird.bird",
+      "typeVersion": 1,
+      "position": [240, 0],
+      "name": "Send Shipping SMS",
+      "credentials": {
+        "birdApi": {
+          "id": "1",
+          "name": "Bird account"
+        }
+      }
+    }
+  ],
+  "connections": {
+    "Order Shipped": {
+      "main": [
+        [
+          {
+            "node": "Send Shipping SMS",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": false,
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "versionId": "",
+  "meta": {
+    "templateCredsSetupCompleted": false
+  },
+  "id": "",
+  "tags": []
+}
