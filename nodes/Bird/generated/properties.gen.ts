@@ -784,13 +784,13 @@ export const birdProperties: INodeProperties[] = [
     ],
   },
   {
-    displayName: "Items",
-    name: "items",
+    displayName: "Messages",
+    name: "messages",
     type: "json",
     required: true,
     displayOptions: { show: { resource: ["email"], operation: ["send_batch"] } },
     default: "",
-    description: "The request body as a JSON array, exactly as the API reference documents it",
+    description: "Email message send requests, up to 100. All items are validated before any are queued. Attachments are allowed on individual messages. Each message must stay within the 20 MB estimated generated message-size cap. The serialized JSON request body for the batch has a hard 20 MB cap.",
   },
   {
     displayName: "Message",
@@ -2633,13 +2633,13 @@ export const birdProperties: INodeProperties[] = [
     ],
   },
   {
-    displayName: "Items",
-    name: "items",
+    displayName: "Messages",
+    name: "messages",
     type: "json",
     required: true,
     displayOptions: { show: { resource: ["sms"], operation: ["send_batch"] } },
     default: "",
-    description: "The request body as a JSON array, exactly as the API reference documents it",
+    description: "SMS message send requests, up to 100. Each is an independent send; all are validated before any is queued.",
   },
   {
     displayName: "Message",

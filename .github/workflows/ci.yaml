@@ -1,4 +1,4 @@
-# CI for the n8n-nodes-bird release mirror. Proof that the exported package
+# CI for the @messagebird/n8n-nodes-bird release mirror. Proof that the exported package
 # installs, typechecks, builds, tests, and passes n8n's own community-node
 # scanner with NO Bird monorepo context — it runs on a GitHub-hosted runner
 # against the checked-in mirror content only.

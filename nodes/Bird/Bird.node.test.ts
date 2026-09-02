@@ -355,22 +355,22 @@ describe("Bird node execute", () => {
     expect(requests[0].body?.from).toBe("noreply@example.com");
   });
 
-  it("sends an array-root body through the generated items field", async () => {
+  it("parses the batch messages field into the envelope body", async () => {
     const requests: Array<{ body?: unknown }> = [];
     await new Bird().execute.call(
       execCtx(
         {
           resource: "email",
           operation: "send_batch",
-          items: '[{"to": ["a@example.com"], "subject": "hi"}]',
+          messages: '[{"to": ["a@example.com"], "subject": "hi"}]',
           additionalFields: {},
         },
         requests,
       ) as unknown as IExecuteFunctions,
     );
-    expect(requests[0].body).toEqual([
-      { to: ["a@example.com"], subject: "hi" },
-    ]);
+    expect(requests[0].body).toEqual({
+      messages: [{ to: ["a@example.com"], subject: "hi" }],
+    });
   });
 
   it("parses a json-typed member nested inside a struct", async () => {

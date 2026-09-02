@@ -1,15 +1,17 @@
-# Publishes n8n-nodes-bird to npm when a vX.Y.Z tag is pushed to this mirror.
+# Publishes @messagebird/n8n-nodes-bird to npm when a vX.Y.Z tag is pushed to this mirror.
 #
 # Source of truth: integrations/n8n/.mirror/ in the Bird monorepo — do NOT edit
 # on the mirror; changes are synced from the monorepo by
 # scripts/dev/sdk-release.sh.
 #
-# Auth is npm trusted publishing (OIDC) — there is no NPM_TOKEN. It needs a
-# trusted publisher on npmjs.com for n8n-nodes-bird pointing at this repository
-# and this workflow FILE NAME (release.yaml); renaming either breaks publishing
-# with an E404 until someone re-points it there. A first publish gets that same
-# E404 — the setting lives on a package page npm will not create until a version
-# exists — so version one goes up by hand from a token.
+# Auth is npm trusted publishing (OIDC), needing a trusted publisher on npmjs.com
+# for @messagebird/n8n-nodes-bird pointing at this repository and this workflow FILE
+# NAME (release.yaml); renaming either breaks publishing with an E404 until
+# someone re-points it there. A first publish gets that same E404, because the
+# setting lives on a package page npm will not create until a version exists —
+# so NPM_TOKEN is read as a fallback and is only ever set for that bootstrap.
+# Provenance does not depend on which of the two authenticated: npm signs it from
+# the Actions OIDC identity, so the first release is attested either way.
 #
 # The provenance statement is what n8n's verification reads: it fetches the
 # GitHub source the attestation names and lints {nodes,credentials}/** THERE,
@@ -66,6 +68,9 @@ jobs:
       - name: Publish
         env:
           DRY_RUN: ${{ github.event_name == 'workflow_dispatch' && inputs.dry_run }}
+          # Empty once the trusted publisher is configured, which is the steady
+          # state: an unset token leaves the .npmrc line inert and OIDC answers.
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
         run: |
           name="$(node -p "require('./package.json').name")"
           ver="$(node -p "require('./package.json').version")"
@@ -111,6 +116,7 @@ jobs:
           node-version: 22.19.0
       - name: Install the published version and load what n8n loads
         run: |
+          export PKG="$(node -p "require('./package.json').name")"
           ver="$(node -p "require('./package.json').version")"
           # A peer dep is not in the tarball and the nodes cannot load without one;
           # pin the version the package is built against.
@@ -121,12 +127,12 @@ jobs:
           # npm's registry read is eventually consistent behind a publish; retry
           # for ~5 minutes rather than failing the release on propagation lag.
           for attempt in $(seq 1 30); do
-            npm install "n8n-nodes-bird@$ver" "$peer" >/dev/null 2>&1 && break
-            echo "attempt $attempt: n8n-nodes-bird@$ver not installable yet"
+            npm install "$PKG@$ver" "$peer" >/dev/null 2>&1 && break
+            echo "attempt $attempt: $PKG@$ver not installable yet"
             sleep 10
           done
           node -e '
-            const root = "./node_modules/n8n-nodes-bird/";
+            const root = "./node_modules/" + process.env.PKG + "/";
             const manifest = require(root + "package.json").n8n;
             const files = [...manifest.nodes, ...manifest.credentials];
             const missing = files.filter((f) => !require("node:fs").existsSync(root + f));

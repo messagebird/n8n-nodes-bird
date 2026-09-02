@@ -12,7 +12,7 @@ labels: bug
 
 **Environment**
 
-- `n8n-nodes-bird` version:
+- `@messagebird/n8n-nodes-bird` version:
 - n8n version, and self-hosted or Cloud:
 - Node.js version:
 
