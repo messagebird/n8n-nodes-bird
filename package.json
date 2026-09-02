@@ -1,6 +1,6 @@
 {
   "name": "@messagebird/n8n-nodes-bird",
-  "version": "0.1.1",
+  "version": "0.2.0",
   "description": "The official Bird node for n8n: email, SMS, WhatsApp, and verification, plus a webhook trigger for Bird events.",
   "license": "MIT",
   "author": {
