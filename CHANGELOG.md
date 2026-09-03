@@ -1,5 +1,9 @@
 # Changelog
 
+## 0.3.0
+
+- Verify verifications accept `options.language`, which selects the built-in translation the one-time-passcode message is sent in. SMS is translated; every other channel still sends English.
+
 ## 0.2.1
 
 - Document the undo window for lower mailbox retention and retention-based attachment availability.
