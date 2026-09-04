@@ -1,5 +1,16 @@
 # Changelog
 
+## 0.4.0
+
+- **Breaking:** an alphanumeric SMS sender ID must now be 3 to 11 characters. Claiming a shorter one returns a `422`; a shorter sender your workspace already owns keeps sending.
+- Verification channels gain `voice`, which delivers a passcode as an automated call reading the code aloud. A country's channel settings and channel order accept it, and a verification's `last_channel` can report it. Availability is per region and per country, so a country that has not enabled voice keeps the channels it already had.
+- **Breaking:** with no `options.language` set, the passcode language is now read from the recipient phone number country instead of always being English; set `options.language` to pin one.
+- Verify: a WhatsApp passcode requested in Norwegian (`no`) is now sent in Norwegian rather than English.
+- Verify: an SMS attempt now reports `template_language`, so a caller can see which translation a passcode actually rendered in.
+- Verify: options.language now selects the WhatsApp OTP translation too, not only the SMS one.
+- Verify: the languages `options.language` accepts are now listed on the field itself.
+- Verify: the one-time-passcode email is now sent in the language `options.language` selects, not English.
+
 ## 0.3.0
 
 - Verify verifications accept `options.language`, which selects the built-in translation the one-time-passcode message is sent in. SMS is translated; every other channel still sends English.
