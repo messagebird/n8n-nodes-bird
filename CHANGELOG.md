@@ -1,5 +1,9 @@
 # Changelog
 
+## 0.4.1
+
+- `retention_tier` descriptions now distinguish retained text and attachments from the 30-day limit on original bodies and inbound raw MIME.
+
 ## 0.4.0
 
 - **Breaking:** an alphanumeric SMS sender ID must now be 3 to 11 characters. Claiming a shorter one returns a `422`; a shorter sender your workspace already owns keeps sending.
