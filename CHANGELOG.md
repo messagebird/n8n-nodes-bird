@@ -1,5 +1,9 @@
 # Changelog
 
+## 0.5.0
+
+- Add List Templates on the Email resource.
+
 ## 0.4.1
 
 - `retention_tier` descriptions now distinguish retained text and attachments from the 30-day limit on original bodies and inbound raw MIME.
