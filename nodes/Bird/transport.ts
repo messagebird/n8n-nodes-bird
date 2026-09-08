@@ -117,7 +117,6 @@ export function compact(
 import type {
   IBinaryData,
   IDataObject,
-  IExecuteFunctions,
   IHttpRequestMethods,
   INode,
   JsonObject,

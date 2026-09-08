@@ -1,5 +1,9 @@
 # Changelog
 
+## 0.5.1
+
+- Address n8n community-node review feedback.
+
 ## 0.5.0
 
 - Add List Templates on the Email resource.
