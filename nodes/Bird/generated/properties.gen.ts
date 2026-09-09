@@ -316,7 +316,7 @@ export const birdProperties: INodeProperties[] = [
       { name: "Delete", value: "delete", action: "Delete a webhook endpoint", description: "Delete a webhook endpoint" },
       { name: "Get", value: "get", action: "Get a webhook endpoint", description: "Get a webhook endpoint" },
       { name: "List", value: "list", action: "List webhook endpoints", description: "List webhook endpoints" },
-      { name: "Replay", value: "replay", action: "Create a missed event replay", description: "Create a missed-event replay" },
+      { name: "Replay", value: "replay", action: "Create a missed event replay", description: "Replay failed deliveries" },
       { name: "Rotate Secret", value: "rotate_secret", action: "Rotate webhook signing secret", description: "Rotate webhook signing secret" },
       { name: "Test", value: "test", action: "Test a webhook with a sample event", description: "Test a webhook with a sample event" },
       { name: "Update", value: "update", action: "Update a webhook endpoint", description: "Update a webhook endpoint" },
@@ -4582,7 +4582,7 @@ export const birdProperties: INodeProperties[] = [
             name: "language",
             type: "string",
             default: "",
-            description: "Which of the template's languages to send, as a BCP-47 tag (for example `en` or `pt-BR`); Meta's underscore form (`pt_BR`) is accepted and normalized. Omit it to send the template's default language, unless the template sets `language_source_required`, in which case a send naming no language is rejected. When the template does not carry the language you ask for, its own `on_missing_language` setting decides whether the closest available language is sent instead or the send is rejected. The accepted message echoes the canonical BCP-47 form of the language it resolved to.",
+            description: "Which of the template's languages to send, as a BCP-47 tag (for example `en` or `pt-BR`); Meta's underscore form (`pt_BR`) is accepted and normalized. Omit it to send the template's default language, unless the template sets `language_source_required`, in which case a send naming no language is rejected. When the template does not carry the language you ask for, its own `on_missing_language` setting decides whether the closest available language is sent instead or the send is rejected. The accepted message echoes the canonical BCP-47 form of the language it resolved to, which is the language it is priced at: Meta categorizes each language separately, so a send served by a different language than the one you asked for is priced at that language's category.",
           },
           {
             displayName: "Components",
