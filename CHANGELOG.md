@@ -1,5 +1,9 @@
 # Changelog
 
+## 0.8.1
+
+- Example workflows now name the `emails` API-key scope required to send email.
+
 ## 0.8.0
 
 - Add the whatsapp.reacted webhook event, raised when a contact places, changes or takes back a reaction on a message.

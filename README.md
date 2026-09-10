@@ -1,12 +1,18 @@
 # @messagebird/n8n-nodes-bird
 
-The official [Bird](https://bird.com) node for [n8n](https://n8n.io). Send transactional email and SMS, look up delivery status, browse SMS templates, and wire Bird into your workflows.
+The official [Bird](https://bird.com) node, verified by [n8n](https://n8n.io). Send email, SMS, and WhatsApp messages, manage contacts, run verification steps, and look up delivery status in your workflows.
 
 📚 **Bird API documentation:** https://bird.com/docs
 
 ## Installation
 
-Open the nodes panel in any workflow, search for **Bird**, and select **Install**.
+Install from the nodes panel on n8n Cloud or a self-hosted instance with verified community nodes enabled.
+
+1. Create a new workflow.
+2. Open the **nodes panel** by selecting **+** or pressing **Tab**.
+3. Search for **Bird**.
+4. Select **Install** to install the node for your instance.
+5. The Bird node is now available in your workflows.
 
 On a self-hosted instance that has not enabled community nodes in the panel, use **Settings → Community Nodes → Install** and enter `@messagebird/n8n-nodes-bird`. Requires n8n 2.x on Node.js 20 or later.
 

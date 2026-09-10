@@ -15,7 +15,7 @@
     },
     {
       "parameters": {
-        "content": "### Setup\n\n1. Add your **Bird API** credential. The key needs the `webhooks`, `email` and `suppressions` scopes.\n2. Activate the workflow — the trigger registers its own Bird webhook and verifies every delivery before the workflow runs.\n3. Point the alert address at a mailbox your team reads.\n\n**Note:** each event carries `type`, `timestamp` and `data`; the address is at `data.recipient`.",
+        "content": "### Setup\n\n1. Add your **Bird API** credential. The key needs the `webhooks`, `emails` and `suppressions` scopes.\n2. Activate the workflow. The trigger registers its own Bird webhook and verifies every delivery before the workflow runs.\n3. Point the alert address at a mailbox your team reads.\n\n**Note:** each event carries `type`, `timestamp` and `data`; the address is at `data.recipient`.",
         "height": 340,
         "width": 440,
         "color": 5

@@ -25,7 +25,7 @@ An n8n form captures a mailing-list sign-up and Bird sends the welcome email str
 
 **Bird operations:** `email › send`
 
-**Scopes:** `email`
+**Scopes:** `emails`
 
 ---
 
@@ -55,6 +55,6 @@ Bird Trigger fires on `email.bounced` and `email.complained`. The address is add
 
 **Bird operations:** `email › send`, `suppression › add`
 
-**Scopes:** `webhooks`, `email`, `suppressions`
+**Scopes:** `webhooks`, `emails`, `suppressions`
 
 Activating the workflow registers the Bird webhook for you, and every delivery is verified before the workflow runs. Each event carries `type`, `timestamp` and `data`; the address is at `data.recipient`.

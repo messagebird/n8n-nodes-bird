@@ -15,7 +15,7 @@
     },
     {
       "parameters": {
-        "content": "### Setup\n\n1. Add your **Bird API** credential. The key's region prefix (`bk_eu1_…`) selects the API host — there is nothing else to configure.\n2. Replace the **From** address with a sender on a domain you have verified in Bird.\n3. The key needs the `email` scope.",
+        "content": "### Setup\n\n1. Add your **Bird API** credential. The key's region prefix (`bk_eu1_…`) selects the API host.\n2. Replace the **From** address with a sender on a domain you have verified in Bird.\n3. The key needs the `emails` scope.",
         "height": 300,
         "width": 440,
         "color": 5
