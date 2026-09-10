@@ -48,6 +48,7 @@ export const birdEvents: Array<{ name: string; value: string; description: strin
   { name: "whatsapp.accepted", value: "whatsapp.accepted", description: "The API accepted and charged the send request" },
   { name: "whatsapp.delivered", value: "whatsapp.delivered", description: "The message was delivered to the recipient's device" },
   { name: "whatsapp.failed", value: "whatsapp.failed", description: "Message delivery failed permanently" },
+  { name: "whatsapp.reacted", value: "whatsapp.reacted", description: "A contact placed, changed or took back a reaction on a message" },
   { name: "whatsapp.read", value: "whatsapp.read", description: "The recipient read the message" },
   { name: "whatsapp.received", value: "whatsapp.received", description: "A contact sent the business a WhatsApp message" },
   { name: "whatsapp.rejected", value: "whatsapp.rejected", description: "The API rejected the message before sending it to WhatsApp because the recipient is on the workspace suppression list, the wallet has insufficient balance, or the destination is unpriced. The message is not sent or charged." },

@@ -155,6 +155,9 @@ export interface BirdRoute {
   // {values: {...}}, a map as {pairs: [{key, value}]}, and a list as
   // {items: [{...}]}; buildRequest unwraps these into the API shape.
   structured: Record<string, "struct" | "map" | "list">;
+  // Structured fields whose selected empty object has wire meaning. The field
+  // is absent when the user never selected it, so omission remains distinct.
+  preserveEmptyFields?: string[];
   // Property name -> wire name for a field the node itself owns the name of
   // (a wire `limit` against n8n's pagination Limit). buildRequest restores the
   // wire name before the request goes out.
@@ -288,7 +291,8 @@ function unwrapStructured(
       raw !== null &&
       Object.keys(raw as object).length === 0
     ) {
-      delete v[name];
+      if (route.preserveEmptyFields?.includes(name)) v[name] = raw;
+      else delete v[name];
       continue;
     }
     v[name] = raw;

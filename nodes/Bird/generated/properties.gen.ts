@@ -627,7 +627,7 @@ export const birdProperties: INodeProperties[] = [
         typeOptions: { multipleValues: true },
         placeholder: "Add Pair",
         default: {},
-        description: "Parameter values used to personalize inline content. A parameter is a single word, and a token in the subject or body (for example `{{ animal }}`) is replaced with the value of that name at send time. Shared across all recipients of this send. A token with no matching key renders empty. Cap: 16 KB serialized. When sending a stored `template`, put the values in `template.parameters` instead.",
+        description: "Parameter values used to personalize inline content, shared across all recipients of this send. Tokens such as `{{ animal }}` are replaced with matching values; missing values render empty. Include this object, even as `{}`, to use Liquid, or omit it to leave tokens unchanged. Use single-word names other than `bird`. Cap: 16 KB serialized. For a stored template, use `template.parameters` instead. See [inline personalization](https://bird.com/docs/guides/email/sending-email#content) for validation and URL encoding examples.",
         options: [
           {
             displayName: "Pair",
@@ -6327,6 +6327,7 @@ export const birdProperties: INodeProperties[] = [
       { name: "Whatsapp Accepted", value: "whatsapp.accepted" },
       { name: "Whatsapp Delivered", value: "whatsapp.delivered" },
       { name: "Whatsapp Failed", value: "whatsapp.failed" },
+      { name: "Whatsapp Reacted", value: "whatsapp.reacted" },
       { name: "Whatsapp Read", value: "whatsapp.read" },
       { name: "Whatsapp Received", value: "whatsapp.received" },
       { name: "Whatsapp Rejected", value: "whatsapp.rejected" },
@@ -6591,6 +6592,7 @@ export const birdProperties: INodeProperties[] = [
           { name: "Whatsapp Accepted", value: "whatsapp.accepted" },
           { name: "Whatsapp Delivered", value: "whatsapp.delivered" },
           { name: "Whatsapp Failed", value: "whatsapp.failed" },
+          { name: "Whatsapp Reacted", value: "whatsapp.reacted" },
           { name: "Whatsapp Read", value: "whatsapp.read" },
           { name: "Whatsapp Received", value: "whatsapp.received" },
           { name: "Whatsapp Rejected", value: "whatsapp.rejected" },

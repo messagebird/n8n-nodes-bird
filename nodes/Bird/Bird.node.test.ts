@@ -355,6 +355,45 @@ describe("Bird node execute", () => {
     expect(requests[0].body?.from).toBe("noreply@example.com");
   });
 
+  it("preserves the three inline personalization states", async () => {
+    const send = async (parameters?: unknown) => {
+      const requests: Array<{ body?: Record<string, unknown> }> = [];
+      await new Bird().execute.call(
+        execCtx(
+          {
+            resource: "email",
+            operation: "send",
+            from: "noreply@example.com",
+            to: "a@example.com",
+            additionalFields: {
+              subject: "Receipt {{ receipt_url }}",
+              metadata: { pairs: [] },
+              ...(parameters === undefined ? {} : { parameters }),
+            },
+          },
+          requests,
+        ) as unknown as IExecuteFunctions,
+      );
+      return requests[0].body;
+    };
+    const literal = {
+      from: "noreply@example.com",
+      to: ["a@example.com"],
+      subject: "Receipt {{ receipt_url }}",
+    };
+    expect(await send()).toEqual(literal);
+    expect(await send({ pairs: [] })).toEqual({ ...literal, parameters: {} });
+    expect(await send("{}")).toEqual({ ...literal, parameters: {} });
+    expect(
+      await send({
+        pairs: [{ key: "receipt_url", value: "https://example.com/r/42" }],
+      }),
+    ).toEqual({
+      ...literal,
+      parameters: { receipt_url: "https://example.com/r/42" },
+    });
+  });
+
   it("parses the batch messages field into the envelope body", async () => {
     const requests: Array<{ body?: unknown }> = [];
     await new Bird().execute.call(
