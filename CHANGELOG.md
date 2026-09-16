@@ -1,5 +1,10 @@
 # Changelog
 
+## 0.9.0
+
+- **Breaking:** the `SMS Template` resource's `Get` and `List` operations now return summaries without `body` or `variables`; read content through the SMS template version and language API endpoints.
+- Add pagination, search, sorting, and status filters to `SMS Template` → `List`.
+
 ## 0.8.1
 
 - Example workflows now name the `emails` API-key scope required to send email.

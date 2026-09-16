@@ -1,6 +1,6 @@
 {
   "name": "@messagebird/n8n-nodes-bird",
-  "version": "0.8.1",
+  "version": "0.9.0",
   "description": "The official Bird node for n8n: email, SMS, WhatsApp, and verification, plus a webhook trigger for Bird events.",
   "license": "MIT",
   "author": {
@@ -55,10 +55,10 @@
   },
   "devDependencies": {
     "@n8n/scan-community-package": "0.33.0",
-    "@types/node": "22.19.18",
+    "@types/node": "22.20.2",
     "n8n-workflow": "2.16.0",
     "rimraf": "6.1.3",
     "typescript": "npm:@typescript/typescript6@^6.0.2",
-    "vitest": "4.1.10"
+    "vitest": "5.0.0"
   }
 }

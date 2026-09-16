@@ -18,7 +18,7 @@ On a self-hosted instance that has not enabled community nodes in the panel, use
 
 ## Operations
 
-The **Bird** node covers the public Bird API: email and SMS sends, delivery status and event timelines, WhatsApp, verification, templates, sending domains, suppressions, inbound routes, webhooks, statistics, lookup, and more. Resources and operations mirror the API reference at https://bird.com/docs/api. Three areas are deliberately out: publishing and subscribing on Realtime, which needs an app key and secret this credential cannot hold (managing Realtime apps and keys is included); the attachment and media downloads, which return bytes rather than the JSON a workflow item carries; and redirect-based media fetches.
+The **Bird** node covers the public Bird API: email and SMS sends, delivery status and event timelines, WhatsApp, verification, templates, sending domains, suppressions, inbound routes, webhooks, statistics, lookup, and more. Resources and operations mirror the API reference at https://bird.com/docs/api. Four areas are deliberately out: publishing and subscribing on Realtime, which needs an app key and secret this credential cannot hold (managing Realtime apps and keys is included); the attachment and media downloads, which return bytes rather than the JSON a workflow item carries; redirect-based media fetches; and authoring reusable email templates (sending an existing email template, and listing the ones a workspace has, are covered).
 
 <details>
 <summary><strong>178 operations across 22 resources</strong></summary>
