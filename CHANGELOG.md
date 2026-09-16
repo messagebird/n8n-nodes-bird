@@ -1,5 +1,9 @@
 # Changelog
 
+## 0.9.1
+
+- Clarify email suppression filters and removal guidance while preserving the existing workflow resource names.
+
 ## 0.9.0
 
 - **Breaking:** the `SMS Template` resource's `Get` and `List` operations now return summaries without `body` or `variables`; read content through the SMS template version and language API endpoints.
