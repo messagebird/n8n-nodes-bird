@@ -814,7 +814,7 @@ export const birdProperties: INodeProperties[] = [
         type: "string",
       },
     ],
-    description: "ID of the message to fetch, as returned by the send response",
+    description: "ID of the message to fetch. A broadcast records one message per recipient, and [List email messages](/docs/api/reference/list-email-messages) returns those copies alongside ordinary sends. For a single send, this is the message's own ID, as returned by the send response.",
   },
   {
     displayName: "Return All",
@@ -9394,7 +9394,7 @@ export const birdProperties: INodeProperties[] = [
         type: "string",
       },
     ],
-    description: "ID of the message whose stored content to fetch, as returned by the send response",
+    description: "ID of the message whose stored content to fetch. A broadcast records one message per recipient, and [List email messages](/docs/api/reference/list-email-messages) returns those copies alongside ordinary sends. For a single send, this is the message's own ID, as returned by the send response.",
   },
   {
     displayName: "Message",
@@ -9417,7 +9417,7 @@ export const birdProperties: INodeProperties[] = [
         type: "string",
       },
     ],
-    description: "ID of the message whose recipients to list, as returned by the send response",
+    description: "ID of the message whose recipients to list. A broadcast records one message per recipient, and [List email messages](/docs/api/reference/list-email-messages) returns those copies alongside ordinary sends. For a single send, this is the message's own ID, as returned by the send response.",
   },
   {
     displayName: "Return All",
@@ -9877,7 +9877,7 @@ export const birdProperties: INodeProperties[] = [
         type: "string",
       },
     ],
-    description: "ID of the message whose timeline to read, as returned by the send response",
+    description: "ID of the message whose timeline to read. A broadcast records one message per recipient, and [List email messages](/docs/api/reference/list-email-messages) returns those copies alongside ordinary sends. For a single send, this is the message's own ID, as returned by the send response.",
   },
   {
     displayName: "Return All",

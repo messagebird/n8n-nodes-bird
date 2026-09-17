@@ -1,5 +1,9 @@
 # Changelog
 
+## 0.9.2
+
+- Email message lookup help now explains which message ID to use for each broadcast recipient.
+
 ## 0.9.1
 
 - Clarify email suppression filters and removal guidance while preserving the existing workflow resource names.
