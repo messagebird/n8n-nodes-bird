@@ -41,7 +41,7 @@ The **Bird** node covers the public Bird API: email and SMS sends, delivery stat
 - **SMS Template** (2) — Get, List
 - **Suppression** (4) — Add, Get, List, Remove
 - **Verify** (3) — Create Next Channel Attempt, Create Verification, Create Verification Check
-- **Voice** (2) — Get, List
+- **Voice** (2) — Get Leg, List Legs
 - **Webhook** (9) — Attempts, Create, Delete, Get, List, Replay, Rotate Secret, Test, Update
 - **WhatsApp** (4) — Get, List, List Events, Send
 - **Workspace** (1) — Get

@@ -22,7 +22,7 @@ export const birdPickers: Record<string, BirdPicker> = {
   smsSuppressionsList: { route: "sms_suppressions:list", fields: ["destination"], search: "", pathFrom: [] },
   suppressionList: { route: "suppression:list", fields: ["email"], search: "email", pathFrom: [] },
   emailThreadsList: { route: "email:threads_list", fields: ["subject"], search: "subject", pathFrom: [] },
-  voiceList: { route: "voice:list", fields: ["to"], search: "", pathFrom: [] },
+  voiceLegsList: { route: "voice:legs_list", fields: ["to"], search: "", pathFrom: [] },
   webhooksList: { route: "webhooks:list", fields: ["url"], search: "", pathFrom: [] },
   whatsappList: { route: "whatsapp:list", fields: ["to.phone_number", "to.bsuid", "created_at"], search: "", pathFrom: [] },
 };

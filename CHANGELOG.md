@@ -1,5 +1,9 @@
 # Changelog
 
+## 0.10.0
+
+- **Breaking:** voice connection records now use `/v1/voice/legs` and `call_id` replaces their `session_id` field. Use the `voice.legs` resource in SDKs, `bird voice legs` in the CLI, or the list/get voice leg operations in integrations; existing `vcl_` record IDs stay valid.
+
 ## 0.9.2
 
 - Email message lookup help now explains which message ID to use for each broadcast recipient.
