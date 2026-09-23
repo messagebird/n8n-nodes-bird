@@ -48,6 +48,8 @@ export const birdEvents: Array<{ name: string; value: string; description: strin
   { name: "whatsapp.accepted", value: "whatsapp.accepted", description: "The API accepted and charged the send request" },
   { name: "whatsapp.delivered", value: "whatsapp.delivered", description: "The message was delivered to the recipient's device" },
   { name: "whatsapp.failed", value: "whatsapp.failed", description: "Message delivery failed permanently" },
+  { name: "whatsapp.group.join_request_created", value: "whatsapp.group.join_request_created", description: "Someone asked to join a group that requires approval" },
+  { name: "whatsapp.group.join_request_revoked", value: "whatsapp.group.join_request_revoked", description: "Someone withdrew their request to join a group before it was decided" },
   { name: "whatsapp.reacted", value: "whatsapp.reacted", description: "A contact placed, changed or took back a reaction on a message" },
   { name: "whatsapp.read", value: "whatsapp.read", description: "The recipient read the message" },
   { name: "whatsapp.received", value: "whatsapp.received", description: "A contact sent the business a WhatsApp message" },

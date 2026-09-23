@@ -1,5 +1,9 @@
 # Changelog
 
+## 0.12.0
+
+- The webhook trigger's event list now offers `whatsapp.group.join_request_created` and `whatsapp.group.join_request_revoked`, fired when someone asks to join a WhatsApp group that requires approval and when they withdraw the request.
+
 ## 0.11.0
 
 - Add batch email lookup for up to 1,000 addresses, with ordered assessments and per-address billing.
