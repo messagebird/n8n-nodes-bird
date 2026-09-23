@@ -1,5 +1,10 @@
 # Changelog
 
+## 0.11.0
+
+- Add batch email lookup for up to 1,000 addresses, with ordered assessments and per-address billing.
+- Webhook endpoint and replay descriptions now match delivery behavior: a replayed delivery takes one attempt rather than following the retry schedule, `since` and `until` bound the time a delivery was attempted rather than when the event occurred, and a replay does not recover events that were never attempted, such as those that arrived while the endpoint was paused.
+
 ## 0.10.0
 
 - **Breaking:** voice connection records now use `/v1/voice/legs` and `call_id` replaces their `session_id` field. Use the `voice.legs` resource in SDKs, `bird voice legs` in the CLI, or the list/get voice leg operations in integrations; existing `vcl_` record IDs stay valid.

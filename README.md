@@ -21,7 +21,7 @@ On a self-hosted instance that has not enabled community nodes in the panel, use
 The **Bird** node covers the public Bird API: email and SMS sends, delivery status and event timelines, WhatsApp, verification, templates, sending domains, suppressions, inbound routes, webhooks, statistics, lookup, and more. Resources and operations mirror the API reference at https://bird.com/docs/api. Four areas are deliberately out: publishing and subscribing on Realtime, which needs an app key and secret this credential cannot hold (managing Realtime apps and keys is included); the attachment and media downloads, which return bytes rather than the JSON a workflow item carries; redirect-based media fetches; and authoring reusable email templates (sending an existing email template, and listing the ones a workspace has, are covered).
 
 <details>
-<summary><strong>178 operations across 22 resources</strong></summary>
+<summary><strong>179 operations across 22 resources</strong></summary>
 
 - **Audience** (9) — Add Contacts, Create, Delete, Get, List, List Contacts, Remove Contact, Remove Contacts, Update
 - **Contact** (7) — Batch, Create, Delete, Get, List, List Preferences, Update
@@ -31,7 +31,7 @@ The **Bird** node covers the public Bird API: email and SMS sends, delivery stat
 - **Email** (58) — Cancel, Content, Create Inbound Route, Create Mailbox, Create Mailbox Message, Create Mailbox Receive Rule, Delete Inbound Route, Delete Mailbox, Delete Mailbox Receive Rule, Delete Thread, Delete Thread Message, Get, Get Inbound Route, Get Mailbox, Get Mailbox Statistics, Get SMTP Config, Get Thread, Get Thread Message, Get Thread Message Body, List, List Events, List Inbound Routes, List Mailbox Labels, List Mailbox Messages, List Mailbox Receive Rules, List Mailboxes, List SMTP Configs, List Templates, List Thread Message Attachments, List Thread Messages, List Threads, Recipients, Reply to Thread Message, Restore Mailbox, Resume Mailbox, Send, Send Batch, Stats By Bounce Code, Stats By Broadcast, Stats By Category, Stats By Client, Stats By Complaint Type, Stats By Location, Stats By Mailbox Provider, Stats By Mailbox Provider Region, Stats By Recipient Domain, Stats By Sending Domain, Stats By Sending IP, Stats By Tag, Stats By Template, Stats Daily, Stats Hourly, Stats Summary, Update Inbound Route, Update Mailbox, Update SMTP Config, Update Thread, Update Thread Message
 - **Inbound Address** (5) — Create, Delete, Get, List, Update
 - **Inbound Message** (4) — Attachments, Body, Get, List
-- **Lookup** (2) — Email, Phone Number
+- **Lookup** (3) — Email, Email Batch, Phone Number
 - **Number** (8) — Create Order, Get, Get Available Number, Get Order, List, List Available Numbers, List Orders, Release
 - **Preference** (4) — Create, Delete, Get, List
 - **Realtime** (9) — Create App, Create App Key, Delete App, Get App, List App Keys, List Apps, List Regions, Revoke App Key, Update App
