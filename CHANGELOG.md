@@ -1,5 +1,9 @@
 # Changelog
 
+## 0.13.1
+
+- Email send requests support `template` with `scheduled_at`. The request pins the published version, language and parameter values, and a template deleted before the due time rejects the message with `generation_failure`.
+
 ## 0.13.0
 
 - Add cursor pagination and campaign tag-name filtering to email statistics breakdowns.

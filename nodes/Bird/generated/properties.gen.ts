@@ -662,7 +662,7 @@ export const birdProperties: INodeProperties[] = [
         name: "scheduled_at",
         type: "dateTime",
         default: "",
-        description: "Schedule the message to send at a future time instead of immediately. Must be at least 30 seconds and at most 30 days ahead. Outside that range the request is rejected with `422`. The message returns with status `accepted` and shows as `scheduled` on reads until it sends. Cancel it before then with the message cancel endpoint. Scheduled sends count against your plan's monthly scheduled-email allowance. Exceeding it is rejected with a `422`. A scheduled message has inline content: `scheduled_at` and `template` are mutually exclusive, and combining them is rejected with a `422`. Batch items take this field too, so one batch can mix scheduled and immediate messages.",
+        description: "Schedule the message to send at a future time instead of immediately. Must be at least 30 seconds and at most 30 days ahead. Outside that range the request is rejected with `422`. The message returns with status `accepted` and shows as `scheduled` on reads until it sends. Cancel it before then with the message cancel endpoint. Scheduled sends count against your plan's monthly scheduled-email allowance. Exceeding it is rejected with a `422`. For a stored template, the published version, language and parameter values are pinned when we accept the request, so a later publication does not change what sends. If the template is deleted before the message is due, the message is rejected with `generation_failure`. We also check sender eligibility and send-volume allowance when the message is due. Batch items take this field too, so one batch can mix scheduled and immediate messages.",
       },
       {
         displayName: "Subject",
@@ -708,7 +708,7 @@ export const birdProperties: INodeProperties[] = [
         type: "collection",
         placeholder: "Add Field",
         default: {},
-        description: "Send a stored template instead of inline content. When set, omit `subject`, `html` and `text`, because the template supplies them. Personalize with `template.parameters`. A template send goes out immediately: `template` and `scheduled_at` are mutually exclusive, and combining them is rejected with a `422`.",
+        description: "Send a stored template instead of inline content. When set, omit `subject`, `html` and `text`, because the template supplies them. Personalize with `template.parameters`. Add `scheduled_at` to send it later.",
         options: [
           {
             displayName: "ID",
