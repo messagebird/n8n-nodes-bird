@@ -1,5 +1,9 @@
 # Changelog
 
+## 0.13.0
+
+- Add cursor pagination and campaign tag-name filtering to email statistics breakdowns.
+
 ## 0.12.0
 
 - The webhook trigger's event list now offers `whatsapp.group.join_request_created` and `whatsapp.group.join_request_revoked`, fired when someone asks to join a WhatsApp group that requires approval and when they withdraw the request.
