@@ -1,5 +1,12 @@
 # Changelog
 
+## 0.14.0
+
+- Add Apple Messages triggers for messages, conversations, and suppressions with `business_account_id`, plus invitation consent fields in n8n preference operations.
+- Add `search`, `provider`, and `route` filters to the n8n Voice Numbers list operation for number or name, number source, and incoming call routing.
+- The `status` descriptions for Apple Messages for Business records now clarify that configured businesses can exchange messages regardless of onboarding status and Apple decides whether to accept outgoing requests.
+- Email template create and update actions now accept an empty subject for drafts. Publishing still requires a subject in every language.
+
 ## 0.13.1
 
 - Email send requests support `template` with `scheduled_at`. The request pins the published version, language and parameter values, and a template deleted before the due time rejects the message with `generation_failure`.
