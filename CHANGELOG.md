@@ -1,5 +1,10 @@
 # Changelog
 
+## 0.16.0
+
+- Contact batch entries now accept invalid field values so each contact can return its own validation result while valid contacts are saved.
+- Apple Messages accepted-event descriptions now account for monthly active contact billing.
+
 ## 0.15.0
 
 - Add **Timezone** under **Additional Fields** to the Bird node's **Email** > **Stats By Broadcast** operation for customer-local date windows, with UTC as the default.
