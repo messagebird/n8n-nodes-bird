@@ -1,5 +1,9 @@
 # Changelog
 
+## 0.15.0
+
+- Add **Timezone** under **Additional Fields** to the Bird node's **Email** > **Stats By Broadcast** operation for customer-local date windows, with UTC as the default.
+
 ## 0.14.0
 
 - Add Apple Messages triggers for messages, conversations, and suppressions with `business_account_id`, plus invitation consent fields in n8n preference operations.
