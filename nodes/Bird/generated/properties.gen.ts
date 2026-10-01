@@ -738,7 +738,7 @@ export const birdProperties: INodeProperties[] = [
             typeOptions: { multipleValues: true },
             placeholder: "Add Pair",
             default: {},
-            description: "Values for the template's variables, keyed by the variable name. A variable name is a single word. Every variable in the template's `variables` list needs a value. A send that omits one is rejected. Languages can use different variables, and a value unused by the selected language is ignored. The API supplies values under the reserved `bird` key, so a send that sets it is rejected. `parameters` is capped at 16 KB once serialized.",
+            description: "Values for caller parameters, keyed by name. A parameter name is a single word. Caller parameters have `system` set to false or absent in the template's `variables` list. Supply each required caller parameter used by the resolved send language; omitting one returns `422`. A version's list covers all its languages, and values unused by the resolved language are ignored. The `bird` namespace is reserved for values filled by Bird, so a send that sets it is rejected. `parameters` is capped at 16 KB once serialized.",
             options: [
               {
                 displayName: "Pair",

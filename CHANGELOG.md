@@ -1,5 +1,9 @@
 # Changelog
 
+## 0.16.2
+
+- Email template `parameters` help now identifies values supplied by the caller.
+
 ## 0.16.1
 
 - Fix test events.
