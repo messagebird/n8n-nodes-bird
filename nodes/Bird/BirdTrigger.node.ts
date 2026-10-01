@@ -84,6 +84,9 @@ export class BirdTrigger implements INodeType {
             method: "GET",
             path: `/v1/webhooks/${entry.id}`,
           });
+          if (this.getMode() === "manual") {
+            this.getWorkflowStaticData("node").testWebhookUrl = url;
+          }
           return true;
         } catch (error) {
           if (isNotFound(error)) {
@@ -111,6 +114,9 @@ export class BirdTrigger implements INodeType {
           );
         }
         endpoints(this)[url] = { id, secret };
+        if (this.getMode() === "manual") {
+          this.getWorkflowStaticData("node").testWebhookUrl = url;
+        }
         return true;
       },
       async delete(this: IHookFunctions): Promise<boolean> {
@@ -129,14 +135,21 @@ export class BirdTrigger implements INodeType {
           }
         }
         delete store[url];
+        const data = this.getWorkflowStaticData("node");
+        if (data.testWebhookUrl === url) delete data.testWebhookUrl;
         return true;
       },
     },
   };
 
   async webhook(this: IWebhookFunctions): Promise<IWebhookResponseData> {
-    const url = this.getNodeWebhookUrl("default") as string;
-    const entry = endpoints(this)[url];
+    const data = this.getWorkflowStaticData("node");
+    // n8n's webhook context returns the production URL even for test deliveries.
+    const url =
+      this.getMode() === "manual"
+        ? data.testWebhookUrl
+        : this.getNodeWebhookUrl("default");
+    const entry = typeof url === "string" ? endpoints(this)[url] : undefined;
     const headers = this.getHeaderData() as Record<string, string | undefined>;
     const request = this.getRequestObject();
     const rawBody = (request as { rawBody?: unknown }).rawBody;
@@ -165,10 +178,7 @@ export class BirdTrigger implements INodeType {
       return { noWebhookResponse: true };
     }
 
-    // Bird delivers at-least-once; the signed webhook-id deduplicates. The
-    // redelivery is ACKED — an unanswered request would hang until timeout
-    // and Bird would retry the same id forever.
-    const data = this.getWorkflowStaticData("node");
+    // TODO: Persist seenIds across live-webhook executions; n8n 2.22.6 drops these updates.
     const seen = Array.isArray(data.seenIds) ? (data.seenIds as string[]) : [];
     if (seen.includes(id)) {
       this.getResponseObject().status(200).json({ received: true });

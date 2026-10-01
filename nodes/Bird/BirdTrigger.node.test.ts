@@ -14,6 +14,7 @@ function hookCtx(
 ) {
   const requests: Array<{ method: string; url: string; body?: unknown }> = [];
   const ctx = {
+    getMode: () => "trigger",
     getNodeWebhookUrl: () => URL,
     getNodeParameter: (name: string) =>
       name === "events" ? ["email.delivered"] : undefined,
@@ -96,6 +97,7 @@ describe("BirdTrigger webhook", () => {
         .digest("base64");
     const statuses: number[] = [];
     const ctx = {
+      getMode: () => "webhook",
       getNodeWebhookUrl: () => URL,
       getWorkflowStaticData: () => staticData,
       getBodyData: () => body,
@@ -116,7 +118,9 @@ describe("BirdTrigger webhook", () => {
     return { ctx: ctx as unknown as IWebhookFunctions, statuses, sig, ts };
   }
 
-  const stored = () => ({
+  const stored = (): {
+    endpoints: Record<string, { id: string; secret: string }>;
+  } => ({
     endpoints: { [URL]: { id: "wh_1", secret: SECRET } },
   });
 
@@ -125,6 +129,48 @@ describe("BirdTrigger webhook", () => {
     const { ctx } = webhookCtx(stored(), body);
     const out = await new BirdTrigger().webhook.call(ctx);
     expect(out.workflowData?.[0]).toEqual([body]);
+  });
+
+  it.each(["create", "checkExists"] as const)(
+    "verifies test deliveries after %s when the webhook context returns the production URL",
+    async (method) => {
+      const testUrl = "https://n8n.example/custom-test/abc";
+      const data = stored();
+      data.endpoints[URL].secret =
+        "whsec_" + Buffer.from("production-key").toString("base64");
+      if (method === "checkExists") {
+        data.endpoints[testUrl] = { id: "wh_test", secret: SECRET };
+      }
+      const { ctx: hook } = hookCtx(data, () => ({
+        statusCode: 201,
+        body: { id: "wh_test", secret: SECRET },
+      }));
+      hook.getMode = () => "manual";
+      hook.getNodeWebhookUrl = () => testUrl;
+      const trigger = new BirdTrigger();
+      await trigger.webhookMethods.default[method].call(hook);
+
+      const body = { type: "email.delivered" };
+      const { ctx, statuses } = webhookCtx(data, body);
+      ctx.getMode = () => "manual";
+      const out = await trigger.webhook.call(ctx);
+      expect(statuses).toEqual([]);
+      expect(out.workflowData?.[0]).toEqual([body]);
+
+      const production = webhookCtx(data, body);
+      expect(await trigger.webhook.call(production.ctx)).toEqual({
+        noWebhookResponse: true,
+      });
+      expect(production.statuses).toEqual([401]);
+    },
+  );
+
+  it("does not accept the production secret when a test endpoint is missing", async () => {
+    const { ctx, statuses } = webhookCtx(stored(), { type: "email.delivered" });
+    ctx.getMode = () => "manual";
+    const out = await new BirdTrigger().webhook.call(ctx);
+    expect(out).toEqual({ noWebhookResponse: true });
+    expect(statuses).toEqual([401]);
   });
 
   it("rejects a delivery whose signature does not verify", async () => {

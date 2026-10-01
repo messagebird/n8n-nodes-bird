@@ -1,5 +1,9 @@
 # Changelog
 
+## 0.16.1
+
+- Fix test events.
+
 ## 0.16.0
 
 - Contact batch entries now accept invalid field values so each contact can return its own validation result while valid contacts are saved.
