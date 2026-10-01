@@ -1,5 +1,9 @@
 # Changelog
 
+## 0.17.0
+
+- Add names and customer references to allocated numbers, with updates and search. Set an optional reference when buying a number, including orders that complete later.
+
 ## 0.16.2
 
 - Email template `parameters` help now identifies values supplied by the caller.
