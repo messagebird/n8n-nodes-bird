@@ -1,5 +1,10 @@
 # Changelog
 
+## 0.18.0
+
+- Add `blocked_by_fraud_protection` to the `error_code` filter help when listing SMS messages.
+- Listing webhooks can filter by URL. Creating a webhook marks the URL optional, because the API builds it for an endpoint that delivers through a connector; an endpoint created from n8n still needs one.
+
 ## 0.17.0
 
 - Add names and customer references to allocated numbers, with updates and search. Set an optional reference when buying a number, including orders that complete later.

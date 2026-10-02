@@ -3056,7 +3056,7 @@ export const birdProperties: INodeProperties[] = [
         name: "error_code",
         type: "string",
         default: "",
-        description: "Keep only messages whose failure reason (`last_error.code`) matches; separate values with a comma to match any of several. One of `invalid_destination`, `unreachable`, `blocked_by_carrier`, `blocked_by_recipient`, `landline_unreachable`, `content_rejected`, `sender_unregistered`, `recipient_opted_out`, `provider_unavailable`, `insufficient_balance`, or `unknown`.",
+        description: "Keep only messages whose failure reason (`last_error.code`) matches; separate values with a comma to match any of several. One of `invalid_destination`, `unreachable`, `blocked_by_carrier`, `blocked_by_fraud_protection`, `blocked_by_recipient`, `landline_unreachable`, `content_rejected`, `sender_unregistered`, `recipient_opted_out`, `provider_unavailable`, `insufficient_balance`, or `unknown`.",
       },
       {
         displayName: "From",
@@ -5587,7 +5587,7 @@ export const birdProperties: INodeProperties[] = [
         name: "search",
         type: "string",
         default: "",
-        description: "Matches part of the number, name, or reference, ignoring case. Characters such as percent and underscore match literally.",
+        description: "Matches part of the number, name, or reference, ignoring case. Number matching also ignores phone formatting such as spaces, parentheses, and hyphens. Name and reference matching preserves punctuation. Characters such as percent and underscore match literally.",
       },
     ],
   },
@@ -6631,6 +6631,13 @@ export const birdProperties: INodeProperties[] = [
         default: false,
         description: "Whether the response includes a `total` field with the total number of items matching the request's filters across all pages",
       },
+      {
+        displayName: "URL",
+        name: "url",
+        type: "string",
+        default: "",
+        description: "Only endpoints delivering to exactly this URL. Several endpoints can share a URL, so this finds matches for a setup to reuse; it does not prevent a duplicate.",
+      },
     ],
   },
   {
@@ -6688,15 +6695,6 @@ export const birdProperties: INodeProperties[] = [
       },
     ],
     description: "ID of the webhook endpoint (`whk_` prefix), as returned when it was created",
-  },
-  {
-    displayName: "URL",
-    name: "url",
-    type: "string",
-    required: true,
-    displayOptions: { show: { resource: ["webhooks"], operation: ["create"] } },
-    default: "",
-    description: "HTTPS URL to deliver events to, at most 2048 characters. The host must be publicly reachable: URLs on private, loopback, or link-local addresses are rejected with a `422`.",
   },
   {
     displayName: "Events",
@@ -6782,6 +6780,13 @@ export const birdProperties: INodeProperties[] = [
     default: {},
     displayOptions: { show: { resource: ["webhooks"], operation: ["create"] } },
     options: [
+      {
+        displayName: "URL",
+        name: "url",
+        type: "string",
+        default: "",
+        description: "HTTPS URL to deliver events to, at most 2048 characters. The host must be publicly reachable: URLs on private, loopback, or link-local addresses are rejected with a `422`. Required unless `destination` is a connector, whose URL comes from the connector and its `config`; a URL given with one must equal it.",
+      },
       {
         displayName: "Description",
         name: "description",
@@ -7010,11 +7015,33 @@ export const birdProperties: INodeProperties[] = [
     displayOptions: { show: { resource: ["webhooks"], operation: ["update"] } },
     options: [
       {
-        displayName: "URL",
-        name: "url",
-        type: "string",
-        default: "",
-        description: "Replacement delivery URL. Same rules as at creation: HTTPS, at most 2048 characters, and the host must be publicly reachable (private, loopback, and link-local addresses return a `422`). Omit to keep the current URL.",
+        displayName: "Credentials",
+        name: "credentials",
+        type: "fixedCollection",
+        typeOptions: { multipleValues: true },
+        placeholder: "Add Pair",
+        default: {},
+        description: "New values for a `connector` destination's secret fields, merged over the stored ones: a key given replaces that field and an omitted key keeps its value. The merged set is checked as at creation, and the next delivery, retries included, uses it. On an endpoint without a `connector` destination this returns a `422`. Omit to keep the current credentials.",
+        options: [
+          {
+            displayName: "Pair",
+            name: "pairs",
+            values: [
+              {
+                displayName: "Key",
+                name: "key",
+                type: "string",
+                default: "",
+              },
+              {
+                displayName: "Value",
+                name: "value",
+                type: "string",
+                default: "",
+              },
+            ],
+          },
+        ],
       },
       {
         displayName: "Description",
@@ -7108,6 +7135,13 @@ export const birdProperties: INodeProperties[] = [
         ],
         default: "",
         description: "`paused` stops all deliveries; `active` re-enables a paused endpoint. Omit to leave the status unchanged. Events that fire while paused are not delivered and a replay cannot recover them, because they were never attempted; after re-enabling, [Replay failed deliveries](/docs/api/reference/create-webhook-replay) reaches only the deliveries that failed before the pause. A `degraded` endpoint cannot be reset through this field: it returns to `active` automatically once deliveries succeed again.",
+      },
+      {
+        displayName: "URL",
+        name: "url",
+        type: "string",
+        default: "",
+        description: "Replacement delivery URL. Same rules as at creation: HTTPS, at most 2048 characters, and the host must be publicly reachable (private, loopback, and link-local addresses return a `422`). Omit to keep the current URL. A connector endpoint's URL comes from its connector and cannot be replaced: any value returns a `422`.",
       },
     ],
   },
