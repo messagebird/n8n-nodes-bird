@@ -1,5 +1,11 @@
 # Changelog
 
+## 0.20.0
+
+- Limit webhook deliveries to one mailbox with `filter.mailbox_id`, including retries and replay. Scoped endpoints can subscribe only to `email_mailbox.*` events. Create, inspect, replace or clear the scope through the webhook operations.
+- Voice legs gain an optional `sip_call_id`, the SIP Call-ID of the leg's signalling, for matching a leg against a carrier's records or your own PBX logs. It is absent on some legs recorded before this release.
+- `AvailableNumber` now reports `ownership_address_scope`, where the carrier requires the business address on a number's ownership registration to be.
+
 ## 0.19.0
 
 - **Breaking:** available-number search naming a `number_type` now refuses `ending_before` and returns neither `prev_cursor` nor `refresh_cursor` in markets where the suppliers on sale are ranked into more than one priority tier, so page those searches forward with `starting_after` only.

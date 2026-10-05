@@ -6788,6 +6788,23 @@ export const birdProperties: INodeProperties[] = [
         description: "HTTPS URL to deliver events to, at most 2048 characters. The host must be publicly reachable: URLs on private, loopback, or link-local addresses are rejected with a `422`. Required unless `destination` is a connector, whose URL comes from the connector and its `config`; a URL given with one must equal it.",
       },
       {
+        displayName: "Filter",
+        name: "filter",
+        type: "collection",
+        placeholder: "Add Field",
+        default: {},
+        description: "Limit delivery to one mailbox and only email_mailbox events. Omit to include all resources.",
+        options: [
+          {
+            displayName: "Mailbox ID",
+            name: "mailbox_id",
+            type: "string",
+            default: "",
+            description: "Mailbox to receive events for. Must belong to this workspace; a mailbox outside it returns `422`.",
+          },
+        ],
+      },
+      {
         displayName: "Description",
         name: "description",
         type: "string",
@@ -7123,6 +7140,23 @@ export const birdProperties: INodeProperties[] = [
         ],
         default: [],
         description: "Replaces all event subscriptions with this list. Omit to keep the current set. Types outside the event catalog return a `422`.",
+      },
+      {
+        displayName: "Filter",
+        name: "filter",
+        type: "collection",
+        placeholder: "Add Field",
+        default: {},
+        description: "Replace the mailbox scope. Omit to keep it, or send null to include all resources. Scoped endpoints accept only email_mailbox events.",
+        options: [
+          {
+            displayName: "Mailbox ID",
+            name: "mailbox_id",
+            type: "string",
+            default: "",
+            description: "Mailbox to receive events for. Must belong to this workspace; a mailbox outside it returns `422`.",
+          },
+        ],
       },
       {
         displayName: "Status",
