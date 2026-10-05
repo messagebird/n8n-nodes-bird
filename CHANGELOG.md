@@ -1,5 +1,9 @@
 # Changelog
 
+## 0.20.1
+
+- The `status_reason` field on Apple Messages business accounts and submissions is now documented as possibly containing basic Markdown.
+
 ## 0.20.0
 
 - Limit webhook deliveries to one mailbox with `filter.mailbox_id`, including retries and replay. Scoped endpoints can subscribe only to `email_mailbox.*` events. Create, inspect, replace or clear the scope through the webhook operations.
