@@ -21,7 +21,7 @@ On a self-hosted instance that has not enabled community nodes in the panel, use
 The **Bird** node covers the public Bird API: email and SMS sends, delivery status and event timelines, WhatsApp, verification, templates, sending domains, suppressions, inbound routes, webhooks, statistics, lookup, and more. Resources and operations mirror the API reference at https://bird.com/docs/api. Four areas are deliberately out: publishing and subscribing on Realtime, which needs an app key and secret this credential cannot hold (managing Realtime apps and keys is included); the attachment and media downloads, which return bytes rather than the JSON a workflow item carries; redirect-based media fetches; and authoring reusable email templates (sending an existing email template, and listing the ones a workspace has, are covered).
 
 <details>
-<summary><strong>180 operations across 22 resources</strong></summary>
+<summary><strong>181 operations across 22 resources</strong></summary>
 
 - **Audience** (9) — Add Contacts, Create, Delete, Get, List, List Contacts, Remove Contact, Remove Contacts, Update
 - **Contact** (7) — Batch, Create, Delete, Get, List, List Preferences, Update
@@ -32,7 +32,7 @@ The **Bird** node covers the public Bird API: email and SMS sends, delivery stat
 - **Inbound Address** (5) — Create, Delete, Get, List, Update
 - **Inbound Message** (4) — Attachments, Body, Get, List
 - **Lookup** (3) — Email, Email Batch, Phone Number
-- **Number** (9) — Create Order, Get, Get Available Number, Get Order, List, List Available Numbers, List Orders, Release, Update
+- **Number** (10) — Cancel, Create Order, Get, Get Available Number, Get Order, List, List Available Numbers, List Orders, Release, Update
 - **Preference** (4) — Create, Delete, Get, List
 - **Realtime** (9) — Create App, Create App Key, Delete App, Get App, List App Keys, List Apps, List Regions, Revoke App Key, Update App
 - **SMS** (21) — Get, List, List Events, Send, Send Batch, Stats By Carrier, Stats By Category, Stats By Country, Stats By Error Code, Stats By Originator, Stats By Status, Stats By Tag, Stats Daily, Stats Hourly, Stats Inbound By Country, Stats Inbound By Number, Stats Inbound By Operator, Stats Inbound Daily, Stats Inbound Hourly, Stats Inbound Summary, Stats Summary

@@ -1,5 +1,12 @@
 # Changelog
 
+## 0.21.0
+
+- Add `broadcast_id` filtering to the email message list.
+- Add the Number Cancel operation, which stops a dedicated number renewing and releases it when its paid period ends; numbers now carry `releases_at`.
+- **Breaking:** the Number Release operation in earlier versions now cancels the number at the end of its paid period instead of releasing it at once; upgrade to keep Number Release immediate.
+- Clarify eSIM order outcomes, installation, balances, and renewal behavior in API documentation and command help.
+
 ## 0.20.1
 
 - The `status_reason` field on Apple Messages business accounts and submissions is now documented as possibly containing basic Markdown.

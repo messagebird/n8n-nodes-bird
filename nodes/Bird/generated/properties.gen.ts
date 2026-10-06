@@ -232,6 +232,7 @@ export const birdProperties: INodeProperties[] = [
     noDataExpression: true,
     displayOptions: { show: { resource: ["numbers"] } },
     options: [
+      { name: "Cancel", value: "cancel", action: "Cancel a dedicated number", description: "Cancel a dedicated number" },
       { name: "Create Order", value: "orders_create", action: "Create a number order", description: "Create a number order" },
       { name: "Get", value: "get", action: "Get an allocated number", description: "Get an allocated number" },
       { name: "Get Available Number", value: "available_get", action: "Get an available phone number", description: "Get an available phone number" },
@@ -843,6 +844,13 @@ export const birdProperties: INodeProperties[] = [
     default: {},
     displayOptions: { show: { resource: ["email"], operation: ["list"] } },
     options: [
+      {
+        displayName: "Broadcast ID",
+        name: "broadcast_id",
+        type: "string",
+        default: "",
+        description: "Filter messages by broadcast ID",
+      },
       {
         displayName: "Category",
         name: "category",
@@ -5683,6 +5691,29 @@ export const birdProperties: INodeProperties[] = [
       },
     ],
     description: "Identifier of the number to release, as returned in the ID field of GET /v1/numbers",
+  },
+  {
+    displayName: "Number",
+    name: "number_id",
+    type: "resourceLocator",
+    required: true,
+    default: { mode: "list", value: "" },
+    displayOptions: { show: { resource: ["numbers"], operation: ["cancel"] } },
+    modes: [
+      {
+        displayName: "From List",
+        name: "list",
+        type: "list",
+        placeholder: "Select a Number...",
+        typeOptions: { searchListMethod: "numbersList", searchable: true },
+      },
+      {
+        displayName: "By ID",
+        name: "id",
+        type: "string",
+      },
+    ],
+    description: "Identifier of the number to cancel, as returned in the ID field of GET /v1/numbers",
   },
   {
     displayName: "Return All",
