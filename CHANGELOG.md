@@ -1,5 +1,9 @@
 # Changelog
 
+## 0.22.3
+
+- A contact create, update, or batch request with a bad contact property value now lists the property in the error's `details` as `data.<key>`, with a short reason. A failed batch entry's `error` gains the same `param` and `details`.
+
 ## 0.22.2
 
 - Realtime app configuration help now explains that `connection_count_events` applies to public and private channels; presence connection counts are available through channel queries.
