@@ -1,5 +1,9 @@
 # Changelog
 
+## 0.22.0
+
+- Voice settings now include `daily_spend_limit`: today's daily Voice spend limit, what has been used toward it and when it resets. An update can set or clear the workspace's own limit through `daily_spend_limit.workspace_limit`.
+
 ## 0.21.1
 
 - Numbers now always carry `released_at`, `null` while the number is still allocated to your workspace.

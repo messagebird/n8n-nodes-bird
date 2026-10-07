@@ -7570,7 +7570,7 @@ export const birdProperties: INodeProperties[] = [
         typeOptions: { multipleValues: true },
         placeholder: "Add Pair",
         default: {},
-        description: "Custom property values for this contact. Each key must be an active contact property. Each value must match the property's declared type: string, number, boolean, or RFC 3339 datetime. Strings can contain up to `500` characters, and a `null` value is ignored. Unregistered or archived keys return a validation error. The serialized data is limited to 2 KB.",
+        description: "Custom property values for this contact. Each key must be a registered contact property, including an archived one. Each value must match the property's declared type: string, number, boolean, or RFC 3339 datetime. Strings can contain up to `500` characters, and a `null` value is ignored. An unregistered key returns a validation error. The serialized data is limited to 2 KB.",
         options: [
           {
             displayName: "Pair",
@@ -7668,7 +7668,7 @@ export const birdProperties: INodeProperties[] = [
         typeOptions: { multipleValues: true },
         placeholder: "Add Pair",
         default: {},
-        description: "Custom property values to merge into the contact's existing data. Supplied keys are set, keys with a `null` value are removed, and omitted keys remain unchanged. Each key must be an active contact property. Each value must match the property's declared type: string, number, boolean, or RFC 3339 datetime. Strings can contain up to `500` characters. An unregistered or archived key returns a validation error. The serialized result is limited to 2 KB.",
+        description: "Custom property values to merge into the contact's existing data. Supplied keys are set, keys with a `null` value are removed, and omitted keys remain unchanged. Each key must be a registered contact property, including an archived one. Each value must match the property's declared type: string, number, boolean, or RFC 3339 datetime. Strings can contain up to `500` characters. An unregistered key returns a validation error. The serialized result is limited to 2 KB.",
         options: [
           {
             displayName: "Pair",
@@ -7772,7 +7772,7 @@ export const birdProperties: INodeProperties[] = [
             typeOptions: { multipleValues: true },
             placeholder: "Add Pair",
             default: {},
-            description: "Custom contact property values. Keys must be registered and active; values must match their declared type. Strings can contain up to 500 characters and the serialized map is limited to 2 KB. Invalid values fail this contact. Null values remove keys when updating and are ignored when creating.",
+            description: "Custom contact property values. Keys must be registered contact properties, including archived ones. Values must match their declared type. Strings can contain up to 500 characters and the serialized map is limited to 2 KB. Invalid values fail this contact. Null values remove keys when updating and are ignored when creating.",
             options: [
               {
                 displayName: "Pair",
