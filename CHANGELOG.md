@@ -1,5 +1,9 @@
 # Changelog
 
+## 0.21.1
+
+- Numbers now always carry `released_at`, `null` while the number is still allocated to your workspace.
+
 ## 0.21.0
 
 - Add `broadcast_id` filtering to the email message list.
