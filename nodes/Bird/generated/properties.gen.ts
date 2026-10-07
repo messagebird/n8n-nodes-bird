@@ -9988,7 +9988,7 @@ export const birdProperties: INodeProperties[] = [
         name: "connection_count_events",
         type: "boolean",
         default: false,
-        description: "Whether to broadcast a connection-count event to a channel's subscribers whenever its connection count changes. Requires `connection_counting`.",
+        description: "Whether to broadcast connection-count events to public and private channel subscribers. Requires `connection_counting`. Presence channels do not emit these events; use a channel query to read their connection count.",
       },
       {
         displayName: "Connection Counting",
@@ -10154,7 +10154,7 @@ export const birdProperties: INodeProperties[] = [
         name: "connection_count_events",
         type: "boolean",
         default: false,
-        description: "Whether to broadcast a connection-count event to a channel's subscribers whenever its connection count changes. Requires `connection_counting`.",
+        description: "Whether to broadcast connection-count events to public and private channel subscribers. Requires `connection_counting`. Presence channels do not emit these events; use a channel query to read their connection count.",
       },
       {
         displayName: "Connection Counting",

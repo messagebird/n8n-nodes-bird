@@ -1,5 +1,9 @@
 # Changelog
 
+## 0.22.2
+
+- Realtime app configuration help now explains that `connection_count_events` applies to public and private channels; presence connection counts are available through channel queries.
+
 ## 0.22.1
 
 - Contact create, update, and batch requests accept an archived contact property in `data`. The value must match the property's type. Archived properties disappear from pickers, and a new template version that uses one cannot be published. Published templates keep sending. Unarchive the property to restore it with its values.
