@@ -1,5 +1,9 @@
 # Changelog
 
+## 0.22.1
+
+- Contact create, update, and batch requests accept an archived contact property in `data`. The value must match the property's type. Archived properties disappear from pickers, and a new template version that uses one cannot be published. Published templates keep sending. Unarchive the property to restore it with its values.
+
 ## 0.22.0
 
 - Voice settings now include `daily_spend_limit`: today's daily Voice spend limit, what has been used toward it and when it resets. An update can set or clear the workspace's own limit through `daily_spend_limit.workspace_limit`.
