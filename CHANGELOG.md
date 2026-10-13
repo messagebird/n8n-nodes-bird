@@ -1,5 +1,13 @@
 # Changelog
 
+## 0.23.0
+
+- Domain responses now include `receiving.state` and `receiving.managed_elsewhere` so callers can show turn-off progress and identify when receiving is managed from another workspace. After disabling receiving, poll the domain until `capabilities.inbound.status` is `not_configured` before retrying domain or workspace deletion. Receiving without a recorded workspace retains its existing recovery behavior.
+- Voice destinations now carry `daily_spend_limit`: the daily spend limit set for calls to that country and today's usage toward it. Each destination in an update can set its limit by giving `daily_spend_limit.limit` an amount in the wallet currency, or remove it by setting `daily_spend_limit.limit` to null; `enabled` may be omitted to change only the limit.
+- Clarify `content.body` introductions for inline Apple Messages quick replies, including activation and retry limits and the `interactive_data_ref` exclusion. Document the 512-character bubble limit when omitted picker bubbles inherit `interactive_data.data.event.title`.
+- Clarify that Apple Messages list reply sections can include unselected options.
+- Document receiver ownership for `bird email domains update`, `bird email domains delete` and `bird organization workspaces delete`, and MCP tools `email_domains_update`, `email_domains_delete` and `organization_workspaces_delete`. When receiving has an assigned workspace, a sibling receiving-disable request returns 403; deleting the receiving assignment or workspace returns 409 while its claim remains. Disable receiving from its assigned workspace and poll the domain until `capabilities.inbound.status` is `not_configured` before retrying deletion. The same behavior applies to `PATCH /v1/email/domains/{domain_id}`, `DELETE /v1/email/domains/{domain_id}` and `DELETE /v1/organization/workspaces/{workspace_id}`.
+
 ## 0.22.3
 
 - A contact create, update, or batch request with a bad contact property value now lists the property in the error's `details` as `data.<key>`, with a short reason. A failed batch entry's `error` gains the same `param` and `details`.

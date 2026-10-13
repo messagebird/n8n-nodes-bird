@@ -4571,7 +4571,7 @@ export const birdProperties: INodeProperties[] = [
     required: true,
     displayOptions: { show: { resource: ["whatsapp"], operation: ["send"] } },
     default: "",
-    description: "The message recipient: a phone number in E.164 format (for example `+31612345678`), the recipient's business-scoped user ID (for example `US.13491208655302741918`), which addresses a WhatsApp user whose phone number you do not have, or a WhatsApp group ID (for example `wag_01krdgeqcxet5s7t44vh8rt9mg`), which sends to every participant of that group. A value that is none of these returns a `422` `WhatsAppInvalidRecipient`. One-time-passcode templates require a phone number and return a `422` `WhatsAppRecipientNotSupportedForTemplate` when sent to a business-scoped user ID. A group ID naming no group this workspace holds returns a `404` `WhatsAppGroupNotFound`, and one whose group is not active returns a `409` `WhatsAppGroupNotActive`. Content a group cannot take is refused ahead of both, so a group ID paired with interactive content returns the `422` below whether or not the group exists.",
+    description: "The recipient: a phone number in E.164 format (for example `+14155550100`), a business-scoped user ID (for example `US.13491208655302741918`) for a WhatsApp user whose number you do not have, or a WhatsApp group ID (for example `wag_01krdgeqcxet5s7t44vh8rt9mg`). One-time-passcode templates need a phone number. Bird tracks the customer service window per identity and business number, so reply to the identity a contact's message came from, from the number it reached.",
   },
   {
     displayName: "Additional Fields",
@@ -4587,21 +4587,21 @@ export const birdProperties: INodeProperties[] = [
         type: "collection",
         placeholder: "Add Field",
         default: {},
-        description: "Free-form audio to send instead of a template. Deliverable only inside an open 24-hour customer service window, which the contact opens by messaging or calling you and resets each time they do it again. A send into a closed window is refused with a `422` `WhatsAppServiceWindowClosed` before anything is created or charged; one whose window closes between accept and dispatch fails asynchronously, with `service_window_expired` on the message's `last_error`.",
+        description: "Free-form audio. Deliverable only inside an open customer service window.",
         options: [
           {
             displayName: "URL",
             name: "url",
             type: "string",
             default: "",
-            description: "Public `https` URL of the audio file. WhatsApp fetches it at send time, so it must still be reachable then: a signed URL has to outlive the send. We do not store or proxy the file. WhatsApp caches a fetched URL for 10 minutes and re-serves that copy for an identical URL sent again within the window; vary the URL to force a re-fetch. AAC, AMR, MP3, M4A and OGG (OPUS codec, mono) are supported, up to 16 MB.",
+            description: "Public `https` URL of the audio file. WhatsApp fetches it at send time, so it must still be reachable then. AAC, AMR, MP3, M4A or OGG (OPUS codec, mono), up to 16 MB.",
           },
           {
             displayName: "Voice",
             name: "voice",
             type: "boolean",
             default: false,
-            description: "Whether to send this as a voice note rather than a basic audio message. A voice note auto-downloads, shows the sender's profile picture, and can be transcribed for the recipient. It requires an `.ogg` file encoded with the OPUS codec; any other format makes transcription fail. Leave it false for an ordinary audio attachment.",
+            description: "Whether to send this as a voice note rather than an audio file. A voice note needs an `.ogg` file encoded with the OPUS codec.",
           },
         ],
       },
@@ -4610,7 +4610,7 @@ export const birdProperties: INodeProperties[] = [
         name: "contact_cards",
         type: "json",
         default: "",
-        description: "Contact cards to send instead of a template. Up to five: WhatsApp accepts far more, and a message that opens as one name plus a count of the rest is not a card the recipient will read.",
+        description: "Up to five contact cards, each `name` carrying `formatted_name` plus at least one other part. Deliverable only inside an open customer service window.",
       },
       {
         displayName: "Document",
@@ -4618,14 +4618,14 @@ export const birdProperties: INodeProperties[] = [
         type: "collection",
         placeholder: "Add Field",
         default: {},
-        description: "A free-form document to send instead of a template. Deliverable only inside an open 24-hour customer service window, which the contact opens by messaging or calling you and resets each time they do it again. A send into a closed window is refused with a `422` `WhatsAppServiceWindowClosed` before anything is created or charged; one whose window closes between accept and dispatch fails asynchronously, with `service_window_expired` on the message's `last_error`.",
+        description: "A free-form document. Deliverable only inside an open customer service window.",
         options: [
           {
             displayName: "URL",
             name: "url",
             type: "string",
             default: "",
-            description: "Public `https` URL of the document. WhatsApp fetches it at send time, so it must still be reachable then: a signed URL has to outlive the send. We do not store or proxy the file. WhatsApp caches a fetched URL for 10 minutes and re-serves that copy for an identical URL sent again within the window; vary the URL to force a re-fetch. Up to 100 MB. PDF, Word, Excel, PowerPoint and plain text render reliably in the WhatsApp client; other file types are transmitted but WhatsApp does not support them.",
+            description: "Public `https` URL of the document. WhatsApp fetches it at send time, so it must still be reachable then. Up to 100 MB; PDF, Word, Excel, PowerPoint and plain text render reliably in the WhatsApp client.",
           },
           {
             displayName: "Caption",
@@ -4648,7 +4648,7 @@ export const birdProperties: INodeProperties[] = [
         name: "from",
         type: "string",
         default: "",
-        description: "The business phone number to send from, in E.164 format. Omit it for a Bird-managed template, which selects its own number from its category: setting it there returns a `422` `WhatsAppSenderNotAllowed`. Every other send, whether free-form content of any kind or a template your workspace authored, requires it, and the number must be one this workspace owns. Omitting it returns a `422` `WhatsAppSenderRequired`, and naming a number this workspace cannot send from returns a `422` `WhatsAppSenderNotFound`. Naming a number this workspace owns but that sits on a different WhatsApp Business Account than an authored template returns a `422` `WhatsAppSenderWABAMismatch`. A number this workspace holds but has not finished connecting returns a `422` `WhatsAppSenderNotConnected`. Omit it for a group send too: the group sends on its own number, so naming one returns a `422` `WhatsAppSenderNotAllowed`.",
+        description: "The business phone number to send from, in E.164 format: a connected number this workspace owns, on the same WhatsApp Business Account as an authored template. Omit it for a Bird-managed template or a group send, which use their own number; every other send requires it.",
       },
       {
         displayName: "Image",
@@ -4656,14 +4656,14 @@ export const birdProperties: INodeProperties[] = [
         type: "collection",
         placeholder: "Add Field",
         default: {},
-        description: "A free-form image to send instead of a template. Deliverable only inside an open 24-hour customer service window, which the contact opens by messaging or calling you and resets each time they do it again. A send into a closed window is refused with a `422` `WhatsAppServiceWindowClosed` before anything is created or charged; one whose window closes between accept and dispatch fails asynchronously, with `service_window_expired` on the message's `last_error`.",
+        description: "A free-form image. Deliverable only inside an open customer service window.",
         options: [
           {
             displayName: "URL",
             name: "url",
             type: "string",
             default: "",
-            description: "Public `https` URL of the image. WhatsApp fetches it at send time, so it must still be reachable then: a signed URL has to outlive the send. We do not store or proxy the file. WhatsApp caches a fetched URL for 10 minutes and re-serves that copy for an identical URL sent again within the window; vary the URL to force a re-fetch. JPEG and PNG only, up to 5 MB.",
+            description: "Public `https` URL of the image. WhatsApp fetches it at send time, so it must still be reachable then. JPEG or PNG, up to 5 MB.",
           },
           {
             displayName: "Caption",
@@ -4679,7 +4679,7 @@ export const birdProperties: INodeProperties[] = [
         name: "in_reply_to_message_id",
         type: "string",
         default: "",
-        description: "Quote a message the contact will see above this one, the way replying in the WhatsApp client does. Name a message from the same conversation: one this workspace sent to this recipient, or received from them. Any content quotes, template or free-form. The quote is resolved before the send is accepted, so a quote WhatsApp cannot render fails this request rather than the message. An ID naming no message this workspace holds, or one older than the 15 days we keep provider IDs for, answers `404`; a message that never reached WhatsApp, or one from a different conversation than this send's `to` and `from`, answers `422`. Nothing is charged either way.",
+        description: "An earlier message to quote above this one: one from the same conversation, between this `to` and `from`, in the last 15 days",
       },
       {
         displayName: "Interactive",
@@ -4687,28 +4687,28 @@ export const birdProperties: INodeProperties[] = [
         type: "collection",
         placeholder: "Add Field",
         default: {},
-        description: "Free-form interactive content to send instead of a template: body text plus reply buttons, a menu, a link button, media cards, or a single button asking the recipient to share their location or their phone number. Deliverable only inside an open 24-hour customer service window, which the contact opens by messaging or calling you and resets each time they do it again. A send into a closed window is refused with a `422` `WhatsAppServiceWindowClosed` before anything is created or charged; one whose window closes between accept and dispatch fails asynchronously, with `service_window_expired` on the message's `last_error`. WhatsApp does not deliver interactive content to a group, so a group recipient returns a `422` `WhatsAppGroupContentNotSupported`.",
+        description: "Free-form interactive content: reply buttons, a list menu, a link button, media cards, or a request for the recipient's location or contact details. Deliverable only inside an open customer service window, and never to a group.",
         options: [
           {
             displayName: "Body Text",
             name: "body_text",
             type: "string",
             default: "",
-            description: "The message's main text, required on every kind, and the whole message on `location_request_message` and `request_contact_info`. The WhatsApp client turns any URL it contains into a clickable link. Only a `list` may use the full length; the other kinds cap it at 1024 characters.",
+            description: "The message's main text, required on every kind. Up to 1024 characters, except on a `list`.",
           },
           {
             displayName: "Buttons",
             name: "buttons",
             type: "json",
             default: "",
-            description: "The buttons to show, in the order given. Send this on a `button` message, where every button is a `quick_reply`. Every label must be unique within the message; a repeat returns a `422` `WhatsAppInteractiveDuplicateLabel`.",
+            description: "The `quick_reply` buttons of a `button` message, in order. Labels must be unique within the message.",
           },
           {
             displayName: "Cards",
             name: "cards",
             type: "json",
             default: "",
-            description: "The cards to show, in the order they appear, left to right. Send this on a `carousel` message, with between 2 and 10 cards. The message's own `body_text` introduces them; a carousel carries no header and no footer of its own.",
+            description: "The cards of a `carousel` message, 2 to 10, left to right. A carousel takes no header or footer of its own.",
           },
           {
             displayName: "Cta URL",
@@ -4729,7 +4729,7 @@ export const birdProperties: INodeProperties[] = [
             name: "header",
             type: "json",
             default: "",
-            description: "Optional content above the body. A `list` accepts a `text` header only; `button` and `cta_url` also accept an image, video or document. A `carousel` accepts none: its cards carry their own media. Neither request kind accepts one.",
+            description: "Optional content above the body: text on a `list`; text, image, video or document on `button` and `cta_url`. A `carousel` and the two request kinds take none.",
           },
           {
             displayName: "List",
@@ -4762,7 +4762,7 @@ export const birdProperties: INodeProperties[] = [
         type: "collection",
         placeholder: "Add Field",
         default: {},
-        description: "A free-form location to send instead of a template. Deliverable only inside an open 24-hour customer service window, which the contact opens by messaging or calling you and resets each time they do it again. A send into a closed window is refused with a `422` `WhatsAppServiceWindowClosed` before anything is created or charged; one whose window closes between accept and dispatch fails asynchronously, with `service_window_expired` on the message's `last_error`.",
+        description: "A free-form location. Deliverable only inside an open customer service window.",
         options: [
           {
             displayName: "Latitude",
@@ -4829,14 +4829,14 @@ export const birdProperties: INodeProperties[] = [
         type: "collection",
         placeholder: "Add Field",
         default: {},
-        description: "A free-form sticker to send instead of a template. Deliverable only inside an open 24-hour customer service window, which the contact opens by messaging or calling you and resets each time they do it again. A send into a closed window is refused with a `422` `WhatsAppServiceWindowClosed` before anything is created or charged; one whose window closes between accept and dispatch fails asynchronously, with `service_window_expired` on the message's `last_error`.",
+        description: "A free-form sticker. Deliverable only inside an open customer service window.",
         options: [
           {
             displayName: "URL",
             name: "url",
             type: "string",
             default: "",
-            description: "Public `https` URL of the sticker. WhatsApp fetches it at send time, so it must still be reachable then: a signed URL has to outlive the send. We do not store or proxy the file. WhatsApp caches a fetched URL for 10 minutes and re-serves that copy for an identical URL sent again within the window; vary the URL to force a re-fetch. WebP only: up to 100 KB for a static sticker and 500 KB for an animated one. A sticker carries no caption.",
+            description: "Public `https` URL of the sticker. WhatsApp fetches it at send time, so it must still be reachable then. WebP only, up to 100 KB static or 500 KB animated.",
           },
         ],
       },
@@ -4877,7 +4877,7 @@ export const birdProperties: INodeProperties[] = [
         type: "collection",
         placeholder: "Add Field",
         default: {},
-        description: "The template to send. A Bird-managed template selects the sender number from the template's category, so `from` must be omitted. A template is the only content deliverable outside a customer service window. A group send takes a template your workspace authored in any category but authentication: WhatsApp does not deliver an authentication template to a group, which returns a `422` `WhatsAppGroupContentNotSupported`. A Bird-managed template sends from a Bird-owned number that no group is scoped to, so addressing one to a group returns a `422` `WhatsAppInvalidRecipient`.",
+        description: "The template to send, the only content deliverable outside the customer service window. A group takes only templates your workspace authored, outside the authentication category.",
         options: [
           {
             displayName: "ID",
@@ -4898,14 +4898,14 @@ export const birdProperties: INodeProperties[] = [
             name: "language",
             type: "string",
             default: "",
-            description: "Which of the template's languages to send, as a BCP-47 tag (for example `en` or `pt-BR`); Meta's underscore form (`pt_BR`) is accepted and normalized. Omit it to send the template's default language, unless the template sets `language_source_required`, in which case a send naming no language is rejected. When the template does not carry the language you ask for, its own `on_missing_language` setting decides whether the closest available language is sent instead or the send is rejected. The accepted message echoes the canonical BCP-47 form of the language it resolved to, which is the language it is priced at: Meta categorizes each language separately, so a send served by a different language than the one you asked for is priced at that language's category.",
+            description: "Which of the template's languages to send, as a BCP-47 tag (for example `en-US`; Meta's `en_US` is accepted too). Omit it for the template's default language, unless the template sets `language_source_required`. A language the template lacks is handled by its `on_missing_language` setting. The message is priced at the language it resolves to, which the accepted message echoes.",
           },
           {
             displayName: "Components",
             name: "components",
             type: "json",
             default: "",
-            description: "The values that fill the template's placeholders: one entry per content block that has placeholders, each carrying its `parameters`. A positional template takes its parameters in `{{n}}` order; a template with named parameters requires each parameter's `name` to match one the template declares. Either way, sending parameters that do not match what the template declares returns a `422` `WhatsAppTemplateParameterMismatch`.",
+            description: "Values for the template's placeholders. Build it from the template language's `components`: each block's `example_parameters`, with real values, becomes that part's `parameters`. A template's `buttons` block becomes one `button` part per button that has `example_parameters`, in order; a `carousel` becomes one `cards` entry per card, built the same way. A `location` header always needs a part with a `location` parameter. Leave out other blocks without any.",
           },
         ],
       },
@@ -4915,7 +4915,7 @@ export const birdProperties: INodeProperties[] = [
         type: "collection",
         placeholder: "Add Field",
         default: {},
-        description: "Free-form text to send instead of a template. Deliverable only inside an open 24-hour customer service window, which the contact opens by messaging or calling you and resets each time they do it again. A send into a closed window is refused with a `422` `WhatsAppServiceWindowClosed` before anything is created or charged; one whose window closes between accept and dispatch fails asynchronously, with `service_window_expired` on the message's `last_error`.",
+        description: "Free-form text. Deliverable only inside an open customer service window.",
         options: [
           {
             displayName: "Body",
@@ -4929,7 +4929,7 @@ export const birdProperties: INodeProperties[] = [
             name: "preview_url",
             type: "boolean",
             default: false,
-            description: "Whether the WhatsApp client renders a preview of the first URL in `body`. A URL must begin with `http://` or `https://`, only the first one is previewed, and the client falls back to a plain link when it cannot fetch a preview. Not returned when the message is read back, because WhatsApp does not report whether a preview rendered.",
+            description: "Whether the WhatsApp client previews the first link in `body`. Not returned when the message is read back.",
           },
         ],
       },
@@ -4939,14 +4939,14 @@ export const birdProperties: INodeProperties[] = [
         type: "collection",
         placeholder: "Add Field",
         default: {},
-        description: "A free-form video to send instead of a template. Deliverable only inside an open 24-hour customer service window, which the contact opens by messaging or calling you and resets each time they do it again. A send into a closed window is refused with a `422` `WhatsAppServiceWindowClosed` before anything is created or charged; one whose window closes between accept and dispatch fails asynchronously, with `service_window_expired` on the message's `last_error`.",
+        description: "A free-form video. Deliverable only inside an open customer service window.",
         options: [
           {
             displayName: "URL",
             name: "url",
             type: "string",
             default: "",
-            description: "Public `https` URL of the video. WhatsApp fetches it at send time, so it must still be reachable then: a signed URL has to outlive the send. We do not store or proxy the file. WhatsApp caches a fetched URL for 10 minutes and re-serves that copy for an identical URL sent again within the window; vary the URL to force a re-fetch. MP4 with H.264 video and AAC audio, up to 16 MB.",
+            description: "Public `https` URL of the video. WhatsApp fetches it at send time, so it must still be reachable then. MP4 with H.264 video and AAC audio, up to 16 MB.",
           },
           {
             displayName: "Caption",
@@ -8509,7 +8509,7 @@ export const birdProperties: INodeProperties[] = [
         name: "domain",
         type: "string",
         default: "",
-        description: "The domain the address lives under. Defaults to `inbox.ai`, our shared mailbox domain. Creating a mailbox claims the shared address for your organization on a first-come, first-served basis. The address remains reserved to your organization after the mailbox is deleted. You can instead use one of your own domains enabled for receiving email.",
+        description: "The domain the address lives under. Defaults to `inbox.ai`, our shared mailbox domain. Creating a mailbox claims the shared address for your organization on a first-come, first-served basis. The address remains reserved to your organization after the mailbox is deleted. You can instead use one of your own domains. On a domain enabled for receiving, mail arrives directly. On a domain this workspace has verified (its `status` is `verified`) that is not set up for receiving, the mailbox gets a `forwarding_address`: forward mail for the address there from your current email provider, with no MX change. If another workspace receives the domain's mail, creation fails with `E17009`.",
       },
       {
         displayName: "Local Part",
