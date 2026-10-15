@@ -1,5 +1,9 @@
 # Changelog
 
+## 0.24.0
+
+- **Breaking:** Apple Messages native rich link content gains a `rich_link_construct` option that asks Apple to build the link preview when the message is sent, instead of a prior construct-payload call; a strict `oneOf` reader of rich link content needs to handle this third shape alongside `rich_link_data` and `rich_link_data_ref`.
+
 ## 0.23.0
 
 - Domain responses now include `receiving.state` and `receiving.managed_elsewhere` so callers can show turn-off progress and identify when receiving is managed from another workspace. After disabling receiving, poll the domain until `capabilities.inbound.status` is `not_configured` before retrying domain or workspace deletion. Receiving without a recorded workspace retains its existing recovery behavior.

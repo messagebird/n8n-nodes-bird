@@ -61,8 +61,8 @@ export const birdEvents: Array<{ name: string; value: string; description: strin
   { name: "whatsapp.group.join_request_revoked", value: "whatsapp.group.join_request_revoked", description: "Someone withdrew their request to join a group before it was decided" },
   { name: "whatsapp.reacted", value: "whatsapp.reacted", description: "A contact placed, changed or took back a reaction on a message" },
   { name: "whatsapp.read", value: "whatsapp.read", description: "The recipient read the message" },
-  { name: "whatsapp.received", value: "whatsapp.received", description: "A contact sent the business a WhatsApp message" },
+  { name: "whatsapp.received", value: "whatsapp.received", description: "A contact sent the business a WhatsApp message. Not raised while the Meta Business Agent holds the conversation; the message is still stored and returned by the message reads." },
   { name: "whatsapp.rejected", value: "whatsapp.rejected", description: "The API rejected the message before sending it to WhatsApp because the recipient is on the workspace suppression list, the wallet has insufficient balance, or the destination is unpriced. The message is not sent or charged." },
-  { name: "whatsapp.sent", value: "whatsapp.sent", description: "The API handed the message to Meta for delivery" },
+  { name: "whatsapp.sent", value: "whatsapp.sent", description: "The message was handed to Meta for delivery. Raised for a message your workspace sent through Bird, for one sent from the WhatsApp Business app on a number shared with it (`origin: business_app_echo`), and for one the Meta Business Agent sent on your number (`origin: business_agent_echo`)." },
   { name: "whatsapp_suppression.created", value: "whatsapp_suppression.created", description: "An address was added to the workspace's WhatsApp suppression ledger" },
 ];
