@@ -1,5 +1,11 @@
 # Changelog
 
+## 0.27.0
+
+- Add `mailbox_id` to received emails and a `mailbox_id` filter to the received email list; `thread_id` now carries the mailbox conversation.
+- **Breaking:** updating a webhook takes a connector endpoint's changes under `destination.connector`, as on create: top-level `credentials` and `config` are not accepted; put `credentials` there and use `config` to change nonsecret fields such as a Claude agent's vault ID. Getting a webhook returns its `config`.
+- The email stats query description is shorter and keeps the same filter, grouping and pagination rules.
+
 ## 0.26.0
 
 - Add template `parameters` and per-language `parameter_overrides` to the broadcast create and update request types.
