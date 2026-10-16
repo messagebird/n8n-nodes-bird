@@ -6425,6 +6425,13 @@ export const birdProperties: INodeProperties[] = [
         description: "Filter to messages received on a specific inbound address",
       },
       {
+        displayName: "Mailbox ID",
+        name: "mailbox_id",
+        type: "string",
+        default: "",
+        description: "Filter to messages received by a specific mailbox",
+      },
+      {
         displayName: "Received After",
         name: "received_after",
         type: "dateTime",
@@ -7063,40 +7070,39 @@ export const birdProperties: INodeProperties[] = [
     displayOptions: { show: { resource: ["webhooks"], operation: ["update"] } },
     options: [
       {
-        displayName: "Credentials",
-        name: "credentials",
-        type: "fixedCollection",
-        typeOptions: { multipleValues: true },
-        placeholder: "Add Pair",
-        default: {},
-        description: "New values for a `connector` destination's secret fields, merged over the stored ones: a key given replaces that field and an omitted key keeps its value. The merged set is checked as at creation, and the next delivery, retries included, uses it. On an endpoint without a `connector` destination this returns a `422`. Omit to keep the current credentials.",
-        options: [
-          {
-            displayName: "Pair",
-            name: "pairs",
-            values: [
-              {
-                displayName: "Key",
-                name: "key",
-                type: "string",
-                default: "",
-              },
-              {
-                displayName: "Value",
-                name: "value",
-                type: "string",
-                default: "",
-              },
-            ],
-          },
-        ],
-      },
-      {
         displayName: "Description",
         name: "description",
         type: "string",
         default: "",
         description: "Human-readable label for this endpoint, up to 256 characters",
+      },
+      {
+        displayName: "Destination",
+        name: "destination",
+        type: "collection",
+        placeholder: "Add Field",
+        default: {},
+        description: "Changes to how deliveries are built, shaped as at creation. Only a `connector` destination takes `connector`; on any other endpoint it returns a `422`. Omit to keep the destination.",
+        options: [
+          {
+            displayName: "Type",
+            name: "type",
+            type: "options",
+            options: [
+              { name: "Not Set", value: "" },
+              { name: "Webhook", value: "webhook" },
+              { name: "Connector", value: "connector" },
+            ],
+            default: "",
+            description: "How deliveries to the webhook endpoint are built: `webhook` posts the signed event unchanged to the endpoint URL; `connector` builds the delivery using the configured connector action. An existing endpoint's type cannot change; a different value returns a `422`.",
+          },
+          {
+            displayName: "Connector",
+            name: "connector",
+            type: "json",
+            default: "",
+          },
+        ],
       },
       {
         displayName: "Events",
