@@ -1,5 +1,11 @@
 # Changelog
 
+## 0.28.0
+
+- Available numbers now carry a `pricing` object with `setup_price`, `recurring_price`, `recurring_period` and `intervals_per_charge`: the price for your organization and how many periods one charge bills. Numbers now carry a nullable `pricing` object (`null` for a shared number or one without a live subscription when the price read succeeds; when it fails, a dedicated number carries `pricing` with `error` set) with `recurring_price`, `recurring_period`, `intervals_per_charge` and `error`.
+- Reading these prices needs only the `numbers` scope. When a number carries `pricing.error`, retry the number GET with backoff; do not repeat a completed change to refresh its price.
+- Sending an Apple Messages for Business typing indicator now fails with a `422` instead of a `503` when Apple refuses it for that customer. `AMBRecipientUnreachable` (`E28063`) means none of the customer's devices can receive it right now, and `AMBConversationClosed`, already returned when the conversation is closed, is now also returned when Apple reports that the customer left it. Neither is retryable; a `503` still means the service is temporarily unavailable.
+
 ## 0.27.0
 
 - Add `mailbox_id` to received emails and a `mailbox_id` filter to the received email list; `thread_id` now carries the mailbox conversation.
