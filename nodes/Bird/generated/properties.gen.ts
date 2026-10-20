@@ -5825,6 +5825,30 @@ export const birdProperties: INodeProperties[] = [
         default: "",
         description: "Your own reference to set on the number when this purchase completes. Leading and trailing whitespace is removed. A pending order keeps the reference until the number is allocated.",
       },
+      {
+        displayName: "Compliance",
+        name: "compliance",
+        type: "collection",
+        placeholder: "Add Field",
+        default: {},
+        description: "Ownership paperwork for a number being ordered, where its country requires any. Optional always: the order completes and the number is yours either way, and supplying this only decides whether it can carry traffic sooner. Read `GET /v1/compliance/requirements` for the number to learn what is asked for, or file it after the order with `POST /v1/compliance/submissions`. Filing this cannot fail your order: if it is refused, the number is still yours and you can file again. The answers are a legal representation filed under the name of the business they describe. Sending this block uses the order's existing `numbers` scope at write level.",
+        options: [
+          {
+            displayName: "Answers",
+            name: "answers",
+            type: "json",
+            default: "",
+            description: "Every answer at once, in the same shape `POST /v1/compliance/submissions` takes. There is no draft to fill in over several calls, so send a complete set.",
+          },
+          {
+            displayName: "Identity ID",
+            name: "identity_id",
+            type: "string",
+            default: "",
+            description: "An existing party this number is held for. It fills in the business details you left out from what that party already holds, and each single-value answer you file about the party is written back onto it for next time, whatever the verdict. Documents and multi-value answers are asked fresh each time. An ID belonging to another organization is rejected.",
+          },
+        ],
+      },
     ],
   },
   {
@@ -7278,6 +7302,19 @@ export const birdProperties: INodeProperties[] = [
     default: {},
     displayOptions: { show: { resource: ["docs"], operation: ["read"] } },
     options: [
+      {
+        displayName: "View",
+        name: "view",
+        type: "options",
+        options: [
+          { name: "Not Set", value: "" },
+          { name: "Full", value: "full" },
+          { name: "Request", value: "request" },
+          { name: "Response", value: "response" },
+        ],
+        default: "",
+        description: "Sections to read from an API reference. Other documentation pages return full content for every view. Defaults to `full`.",
+      },
       {
         displayName: "Locale",
         name: "locale",

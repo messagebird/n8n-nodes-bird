@@ -1,5 +1,11 @@
 # Changelog
 
+## 0.29.0
+
+- Add the `View` field to the Bird node's `Doc` → `Read` operation to select `Request` or `Response` sections of an API reference.
+- The Numbers **Create Order** operation gains a **Compliance** field under **Additional Fields**, which files the number's ownership paperwork for review alongside the purchase. It uses the order's existing `numbers:write` authorization.
+- Document that `carrier` and `mcc_mnc` on the `verify.attempt.delivered` event are always null for voice.
+
 ## 0.28.0
 
 - Available numbers now carry a `pricing` object with `setup_price`, `recurring_price`, `recurring_period` and `intervals_per_charge`: the price for your organization and how many periods one charge bills. Numbers now carry a nullable `pricing` object (`null` for a shared number or one without a live subscription when the price read succeeds; when it fails, a dedicated number carries `pricing` with `error` set) with `recurring_price`, `recurring_period`, `intervals_per_charge` and `error`.
