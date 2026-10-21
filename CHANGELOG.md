@@ -1,5 +1,9 @@
 # Changelog
 
+## 0.30.1
+
+- The `applies_to` description on SMS suppressions now says responses always use `all`, and that a STOP exemption Bird agrees for your workspace lets authentication messages through.
+
 ## 0.30.0
 
 - Add `--scheduled-at` and `--cancel-on-reply` to mailbox compose and thread reply, with matching MCP parameters. Scheduled sends are separate, listable records until dispatch. Use `bird email mailboxes scheduled-messages list|get|cancel` to inspect or cancel them. Scheduled sends do not support attachments yet.
