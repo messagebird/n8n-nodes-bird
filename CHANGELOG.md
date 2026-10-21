@@ -1,5 +1,9 @@
 # Changelog
 
+## 0.30.0
+
+- Add `--scheduled-at` and `--cancel-on-reply` to mailbox compose and thread reply, with matching MCP parameters. Scheduled sends are separate, listable records until dispatch. Use `bird email mailboxes scheduled-messages list|get|cancel` to inspect or cancel them. Scheduled sends do not support attachments yet.
+
 ## 0.29.0
 
 - Add the `View` field to the Bird node's `Doc` → `Read` operation to select `Request` or `Response` sections of an API reference.

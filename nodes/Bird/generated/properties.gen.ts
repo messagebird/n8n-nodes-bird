@@ -5291,6 +5291,7 @@ export const birdProperties: INodeProperties[] = [
         type: "string",
       },
     ],
+    description: "ID of the call leg to retrieve, as returned by the leg list or webhook events",
   },
   {
     displayName: "To",
@@ -6720,6 +6721,7 @@ export const birdProperties: INodeProperties[] = [
           { name: "URL", value: "url" },
         ],
         default: "",
+        description: "Field to sort webhook endpoints by: `created_at` (the default; newest first with the default `order`) or the endpoint URL",
       },
       {
         displayName: "Order",
@@ -9009,6 +9011,13 @@ export const birdProperties: INodeProperties[] = [
         description: "BCC recipients. Each entry is a plain email string, an RFC 5322 mailbox string (`Jane &lt;jane@acme.com&gt;`), or an object with an optional display name. Separate multiple values with a comma.",
       },
       {
+        displayName: "Cancel On Reply",
+        name: "cancel_on_reply",
+        type: "boolean",
+        default: false,
+        description: "Whether to when scheduled_at is set, cancel if an inbound message arrives in the conversation before dispatch is claimed. Defaults to false: the frozen parent, recipients and content are sent unchanged even if new mail arrives.",
+      },
+      {
         displayName: "Category",
         name: "category",
         type: "options",
@@ -9069,6 +9078,13 @@ export const birdProperties: INodeProperties[] = [
         type: "string",
         default: "",
         description: "Reply-To addresses. When omitted, the mailbox's `default_reply_to` applies (replies then come back to the mailbox itself). Separate multiple values with a comma.",
+      },
+      {
+        displayName: "Scheduled At",
+        name: "scheduled_at",
+        type: "dateTime",
+        default: "",
+        description: "Send between 30 seconds and 30 days ahead, sharing the scheduled-email allowance. The scheduled send is listed separately and enters the conversation only at dispatch. Sender, mailbox and send-volume eligibility are rechecked then; refusal fails the schedule record without adding a conversation message. Retention starts at dispatch. Attachments are not supported on scheduled messages; send now or schedule without attachments.",
       },
       {
         displayName: "Tags",
@@ -9785,6 +9801,13 @@ export const birdProperties: INodeProperties[] = [
         ],
       },
       {
+        displayName: "Cancel On Reply",
+        name: "cancel_on_reply",
+        type: "boolean",
+        default: false,
+        description: "Whether to when scheduled_at is set, cancel if an inbound message arrives in the conversation before dispatch is claimed. Defaults to false: the frozen parent, recipients and content are sent unchanged even if new mail arrives.",
+      },
+      {
         displayName: "Category",
         name: "category",
         type: "options",
@@ -9838,6 +9861,13 @@ export const birdProperties: INodeProperties[] = [
         type: "boolean",
         default: false,
         description: "Whether to also send the reply to the original To and Cc recipients, minus the mailbox's own address",
+      },
+      {
+        displayName: "Scheduled At",
+        name: "scheduled_at",
+        type: "dateTime",
+        default: "",
+        description: "Send between 30 seconds and 30 days ahead, sharing the scheduled-email allowance. The scheduled send is listed separately and enters the conversation only at dispatch. Sender, mailbox and send-volume eligibility are rechecked then; refusal fails the schedule record without adding a conversation message. Retention starts at dispatch. Attachments are not supported on scheduled messages; send now or schedule without attachments.",
       },
       {
         displayName: "Tags",
