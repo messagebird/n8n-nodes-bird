@@ -1,6 +1,6 @@
 {
   "name": "@messagebird/n8n-nodes-bird",
-  "version": "0.30.1",
+  "version": "0.31.0",
   "description": "The official Bird node for n8n: email, SMS, WhatsApp, and verification, plus a webhook trigger for Bird events.",
   "license": "MIT",
   "author": {
@@ -44,9 +44,9 @@
     ]
   },
   "scripts": {
-    "build": "rimraf dist && tsc6 && cp nodes/Bird/bird.svg nodes/Bird/bird-dark.svg nodes/Bird/Bird.node.json nodes/Bird/BirdTrigger.node.json dist/nodes/Bird/ && cp credentials/bird.svg credentials/bird-dark.svg dist/credentials/",
+    "build": "rimraf dist && tsc && cp nodes/Bird/bird.svg nodes/Bird/bird-dark.svg nodes/Bird/Bird.node.json nodes/Bird/BirdTrigger.node.json dist/nodes/Bird/ && cp credentials/bird.svg credentials/bird-dark.svg dist/credentials/",
     "test": "vitest run",
-    "typecheck": "tsc6 --noEmit",
+    "typecheck": "tsc --noEmit",
     "lint": "npm run typecheck && node scan.mjs",
     "prepack": "npm run build"
   },
@@ -55,10 +55,10 @@
   },
   "devDependencies": {
     "@n8n/scan-community-package": "0.33.0",
-    "@types/node": "22.20.2",
+    "@types/node": "22.20.5",
     "n8n-workflow": "2.16.0",
     "rimraf": "6.1.3",
-    "typescript": "npm:@typescript/typescript6@^6.0.2",
-    "vitest": "5.0.0"
+    "typescript": "npm:typescript@7.1.0-beta",
+    "vitest": "5.0.5"
   }
 }

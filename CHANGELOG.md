@@ -1,5 +1,14 @@
 # Changelog
 
+## 0.31.0
+
+- Accept mailbox email addresses wherever mailbox identifiers are supplied.
+- Add `default_ip_pool_id` to sending domains to configure a default sending pool per workspace; set it to null to clear the default.
+- Message reads and webhooks now include `attachment_id` for stored Apple Messages for Business attachments, so you can reference a file by ID.
+- Listing SMS messages gains a `country` filter: an ISO 3166-1 alpha-2 code that keeps messages sent to that destination country, or received on a Bird number in it.
+- SMS messages and SMS webhook events now include `messaging_profile_id`, the messaging profile the message was sent or received under, when one applied.
+- Add nullable `permanent` to SMS failure detail; its value is currently `null`. Preview binary sends use `BINARY` in `segments.encoding`. SMS messages expose preview `cost_center`, `binary` and recorded `options.ignore_delivery_window`, `options.ignore_suppression` and `options.callback_url`; SMS events expose `cost_center` when provided. The suppression and callback options are recorded only: opt-outs still apply and status events still use webhook subscriptions.
+
 ## 0.30.1
 
 - The `applies_to` description on SMS suppressions now says responses always use `all`, and that a STOP exemption Bird agrees for your workspace lets authentication messages through.
