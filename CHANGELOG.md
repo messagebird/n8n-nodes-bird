@@ -1,5 +1,9 @@
 # Changelog
 
+## 0.35.0
+
+- Creating a verification accepts `options.autofill_origin`, the website the passcode is entered on, so the SMS ends with an `@host #code` line browsers can autofill and the email carries an OTP-Token header. For a code entered in a cross-origin iframe, also set `options.autofill_top_level_origin` to the embedding page, which must differ from `autofill_origin`; such verifications send no email header.
+
 ## 0.34.1
 
 - WhatsApp message inputs use shorter field descriptions while retaining sending requirements and field guidance.
