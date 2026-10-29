@@ -1,5 +1,9 @@
 # Changelog
 
+## 0.36.0
+
+- Add the Email resource's **Create Mailbox Forwarding Address** operation to set up a stable forwarding address for an existing own-domain mailbox. To create an address, the domain must be verified in the current workspace and must not receive mail through another workspace. Configure forwarding at your email provider after creating the address.
+
 ## 0.35.0
 
 - Creating a verification accepts `options.autofill_origin`, the website the passcode is entered on, so the SMS ends with an `@host #code` line browsers can autofill and the email carries an OTP-Token header. For a code entered in a cross-origin iframe, also set `options.autofill_top_level_origin` to the embedding page, which must differ from `autofill_origin`; such verifications send no email header.

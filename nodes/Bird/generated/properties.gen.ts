@@ -44,6 +44,7 @@ export const birdProperties: INodeProperties[] = [
       { name: "Content", value: "content", action: "Get stored message content", description: "Get stored message content" },
       { name: "Create Inbound Route", value: "inbound_routes_create", action: "Create an inbound route", description: "Create an inbound route" },
       { name: "Create Mailbox", value: "mailboxes_create", action: "Create a mailbox", description: "Create a mailbox" },
+      { name: "Create Mailbox Forwarding Address", value: "mailboxes_forwarding_address_create", action: "Create a mailbox forwarding address", description: "Create a mailbox forwarding address" },
       { name: "Create Mailbox Message", value: "mailboxes_messages_create", action: "Create a message from a mailbox", description: "Create a message from a mailbox" },
       { name: "Create Mailbox Receive Rule", value: "mailboxes_receive_rules_create", action: "Create a receive rule", description: "Create a receive rule" },
       { name: "Delete Inbound Route", value: "inbound_routes_delete", action: "Delete an inbound route", description: "Delete an inbound route" },
@@ -9047,6 +9048,22 @@ export const birdProperties: INodeProperties[] = [
     required: true,
     default: { mode: "id", value: "" },
     displayOptions: { show: { resource: ["email"], operation: ["mailboxes_resume"] } },
+    modes: [
+      {
+        displayName: "By ID",
+        name: "id",
+        type: "string",
+      },
+    ],
+    description: "Mailbox ID or email address in this workspace",
+  },
+  {
+    displayName: "Mailbox",
+    name: "mailbox_id",
+    type: "resourceLocator",
+    required: true,
+    default: { mode: "id", value: "" },
+    displayOptions: { show: { resource: ["email"], operation: ["mailboxes_forwarding_address_create"] } },
     modes: [
       {
         displayName: "By ID",
