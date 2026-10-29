@@ -1,5 +1,9 @@
 # Changelog
 
+## 0.34.1
+
+- WhatsApp message inputs use shorter field descriptions while retaining sending requirements and field guidance.
+
 ## 0.34.0
 
 - Apple Messages events carry the message's content under `text`, `rich_link` and `interactive`, and a customer's answer to an interactive message under `interactive_reply`. The older content field keeps arriving until a later release removes it, so point workflow expressions at the new keys now.
