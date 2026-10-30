@@ -1,5 +1,9 @@
 # Changelog
 
+## 0.37.0
+
+- When your workspace presents an mTLS client certificate, webhook test results now report whether the endpoint accepted it: `presented`, `not_requested` or `rejected`. The result is absent when no certificate is presented or the test fails before the endpoint answers.
+
 ## 0.36.0
 
 - Add the Email resource's **Create Mailbox Forwarding Address** operation to set up a stable forwarding address for an existing own-domain mailbox. To create an address, the domain must be verified in the current workspace and must not receive mail through another workspace. Configure forwarding at your email provider after creating the address.
