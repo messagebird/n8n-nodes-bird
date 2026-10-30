@@ -5567,11 +5567,18 @@ export const birdProperties: INodeProperties[] = [
         description: "Per-request overrides applied to this verification only",
         options: [
           {
+            displayName: "Android App Hash",
+            name: "android_app_hash",
+            type: "string",
+            default: "",
+            description: "The Android app that reads this verification's SMS passcodes through Google's SMS Retriever API, replacing the configured hash for this verification only. Send the 11-character app hash computed from the app's package name and signing certificate, such as `FA+9qCX9VSu`; any other form is rejected with `422`. Each SMS passcode is then a short message ending with the hash on its own line, within the API's 140-byte limit, and names no website. Email passcodes don't change: they carry the `OTP-Token` header exactly as they would without a hash. A retry of a verification still in progress keeps the hash it started with.",
+          },
+          {
             displayName: "Autofill Origin",
             name: "autofill_origin",
             type: "string",
             default: "",
-            description: "The website this verification's passcodes are entered on, such as `https://login.example.com`, replacing the configured origin for this verification only. Write it as `https://` and a lowercase host, with no port, path or trailing slash; an internationalized host uses its `xn--` form. Any other form is rejected with `422`, naming the form to send when there is one. Each SMS passcode then ends with a line such as `@login.example.com #123456`, which browsers read to offer the code on that site and which can add an SMS segment in languages that need Unicode encoding. Each email passcode carries an `OTP-Token` header with the code and this website, unless `autofill_top_level_origin` is set. A retry of a verification still in progress keeps the origin it started with.",
+            description: "The website this verification's passcodes are entered on, such as `https://login.example.com`, replacing the configured origin for this verification only. Write it as `https://` and a lowercase host, with no port, path or trailing slash; an internationalized host uses its `xn--` form. Any other form is rejected with `422`, naming the form to send when there is one. Each SMS passcode then ends with a line such as `@login.example.com #123456`, which browsers read to offer the code on that site and which can add an SMS segment in languages that need Unicode encoding. Each email passcode carries an `OTP-Token` header with the code and this website, unless `autofill_top_level_origin` is set. An `android_app_hash` replaces the SMS line. A retry of a verification still in progress keeps the origin it started with.",
           },
           {
             displayName: "Autofill Top Level Origin",

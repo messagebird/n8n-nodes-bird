@@ -1,5 +1,9 @@
 # Changelog
 
+## 0.38.0
+
+- Creating a verification accepts `options.android_app_hash`, the 11-character app hash from Google's SMS Retriever API, so an Android app can read the SMS passcode itself. Each SMS passcode is then a short message ending with the hash, and names no website even when `options.autofill_origin` is set. Email passcodes don't change.
+
 ## 0.37.0
 
 - When your workspace presents an mTLS client certificate, webhook test results now report whether the endpoint accepted it: `presented`, `not_requested` or `rejected`. The result is absent when no certificate is presented or the test fails before the endpoint answers.
