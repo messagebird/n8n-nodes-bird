@@ -1,5 +1,9 @@
 # Changelog
 
+## 0.38.1
+
+- SMS message `text` and reply context `in_reply_to_message.text` documentation describe the retained body and masked authentication codes.
+
 ## 0.38.0
 
 - Creating a verification accepts `options.android_app_hash`, the 11-character app hash from Google's SMS Retriever API, so an Android app can read the SMS passcode itself. Each SMS passcode is then a short message ending with the hash, and names no website even when `options.autofill_origin` is set. Email passcodes don't change.
