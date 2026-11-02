@@ -749,7 +749,7 @@ export const birdProperties: INodeProperties[] = [
             typeOptions: { multipleValues: true },
             placeholder: "Add Pair",
             default: {},
-            description: "Values for caller parameters, keyed by name. A parameter name is a single word. Caller parameters have `system` set to false or absent in the template's `variables` list. Supply each required caller parameter used by the resolved send language; omitting one returns `422`. A version's list covers all its languages, and values unused by the resolved language are ignored. The `bird` namespace is reserved for values filled by Bird, so a send that sets it is rejected. `parameters` is capped at 16 KB once serialized.",
+            description: "Values for caller parameters, keyed by name. A parameter name is a single word. Caller parameters have `system` set to false or absent in the template's `variables` list. Supply each required caller parameter used by the resolved send language; omitting one or supplying null returns `422`. A version's list covers all its languages, and values unused by the resolved language are ignored. The `bird` namespace is reserved for values filled by Bird, so a send that sets it is rejected. `parameters` is capped at 16 KB once serialized. Bird resolves the referenced `bird.contact` attributes from each original To recipient's matching contact in this workspace. Each To receives its own personalized email; Cc and Bcc receive a copy of each To's email and do not need matching contacts. A missing To contact rejects the send with `422` (`E04099`), including when Liquid uses a default or condition. Empty name fields on an existing contact render empty unless Liquid supplies a default; configured contact-property fallbacks still apply. Values are saved at acceptance and reused for delivery and content history. Individual, batch, and scheduled sends support this behavior.",
             options: [
               {
                 displayName: "Pair",
@@ -10185,6 +10185,23 @@ export const birdProperties: INodeProperties[] = [
       },
     ],
     description: "ID of the message whose stored content to fetch. A broadcast records one message per recipient, and [List email messages](/docs/api/reference/list-email-messages) returns those copies alongside ordinary sends. For a single send, this is the message's own ID, as returned by the send response.",
+  },
+  {
+    displayName: "Additional Fields",
+    name: "additionalFields",
+    type: "collection",
+    placeholder: "Add Field",
+    default: {},
+    displayOptions: { show: { resource: ["email"], operation: ["content"] } },
+    options: [
+      {
+        displayName: "Recipient ID",
+        name: "recipient_id",
+        type: "string",
+        default: "",
+        description: "Recipient whose accepted template values to render. Required for a message with multiple recipient snapshots; omission returns 422. A single recipient is selected automatically. An unknown recipient or one belonging to another message returns 404. Get the ID from the message's recipients listing.",
+      },
+    ],
   },
   {
     displayName: "Message",

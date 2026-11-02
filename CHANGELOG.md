@@ -1,5 +1,10 @@
 # Changelog
 
+## 0.39.0
+
+- Add `recipient_id` selection when reading stored email content, and expose resolved recipient subjects and `copy_of_recipient_id` in email responses.
+- **Breaking:** published-template sends reject `null` for a required caller parameter. Supply its value in `template.parameters`; an empty string remains valid for a text parameter.
+
 ## 0.38.1
 
 - SMS message `text` and reply context `in_reply_to_message.text` documentation describe the retained body and masked authentication codes.
