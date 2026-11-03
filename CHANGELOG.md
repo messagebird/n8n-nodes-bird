@@ -1,5 +1,11 @@
 # Changelog
 
+## 0.40.0
+
+- Add optional Cc and Bcc recipients to mailbox replies.
+- **Breaking:** mailbox message `recipients` omits Bcc outcomes on all reads, including previously sent messages; use aggregate `status`, which still counts Bcc failures, rather than deriving it from the visible list.
+- **Breaking:** Thread responses and updates now use `folder` and `read`; `labels` contains custom labels only. Replace system-label updates with `folder` and `read`, and filter thread lists with `folder`, `read_state`, and custom `labels`. `name` is the outgoing sender name; `display_name` is the team-facing label and defaults to `name`.
+
 ## 0.39.0
 
 - Add `recipient_id` selection when reading stored email content, and expose resolved recipient subjects and `copy_of_recipient_id` in email responses.

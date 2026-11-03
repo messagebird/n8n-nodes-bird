@@ -8787,7 +8787,7 @@ export const birdProperties: INodeProperties[] = [
         name: "q",
         type: "string",
         default: "",
-        description: "Case-insensitive search matching the mailbox's address or display name (substring)",
+        description: "Case-insensitive substring match on the mailbox's `address`, `name`, or `display_name`",
       },
       {
         displayName: "State",
@@ -8823,7 +8823,7 @@ export const birdProperties: INodeProperties[] = [
         name: "display_name",
         type: "string",
         default: "",
-        description: "Display name used as the sender name on mail from this mailbox",
+        description: "Name shown to your team in the dashboard and tools. Defaults to `name` when omitted. When `name` is unset, outgoing mail uses this value as the sender name.",
       },
       {
         displayName: "Domain",
@@ -8867,6 +8867,13 @@ export const birdProperties: INodeProperties[] = [
             ],
           },
         ],
+      },
+      {
+        displayName: "Name",
+        name: "name",
+        type: "string",
+        default: "",
+        description: "Sender name shown alongside the address in outgoing mail. Must contain a non-whitespace character and cannot contain carriage returns or line feeds.",
       },
       {
         displayName: "Receive Policy",
@@ -8956,7 +8963,7 @@ export const birdProperties: INodeProperties[] = [
         name: "display_name",
         type: "string",
         default: "",
-        description: "Display name used as the sender name on mail from this mailbox. `null` clears it.",
+        description: "Name shown to your team in the dashboard and tools. `null` clears the override and uses `name`. When `name` is unset, outgoing mail uses this value as the sender name.",
       },
       {
         displayName: "Metadata",
@@ -8986,6 +8993,13 @@ export const birdProperties: INodeProperties[] = [
             ],
           },
         ],
+      },
+      {
+        displayName: "Name",
+        name: "name",
+        type: "string",
+        default: "",
+        description: "Sender name shown alongside the address in outgoing mail. Must contain a non-whitespace character and cannot contain carriage returns or line feeds. `null` clears it.",
       },
       {
         displayName: "Receive Policy",
@@ -9582,18 +9596,27 @@ export const birdProperties: INodeProperties[] = [
         description: "Filter to conversations linked to a specific contact",
       },
       {
-        displayName: "Has Unread",
-        name: "has_unread",
-        type: "boolean",
-        default: false,
-        description: "Whether only conversations with unread messages are returned. This filters on the conversation's unread state, so you can combine it with `label`, for example to get unread conversations in the archive. The `unread` label itself lives on individual messages; this filter uses the conversation's aggregate unread state.",
+        displayName: "Folder",
+        name: "folder",
+        type: "options",
+        options: [
+          { name: "Archive", value: "archive" },
+          { name: "Blocked", value: "blocked" },
+          { name: "Inbox", value: "inbox" },
+          { name: "Not Set", value: "" },
+          { name: "Sent", value: "sent" },
+          { name: "Spam", value: "spam" },
+          { name: "Trash", value: "trash" },
+        ],
+        default: "",
+        description: "Filter to a folder. Defaults to inbox when neither folder nor custom labels are supplied.",
       },
       {
-        displayName: "Label",
-        name: "label",
+        displayName: "Labels",
+        name: "labels",
         type: "string",
         default: "",
-        description: "Filter to conversations that have this label. Separate values with a comma to ask for more than one: only conversations that have every label you list are returned. A placement label picks a folder: `inbox`, `archive`, `spam`, or `blocked`. A custom label matches a conversation in any folder. Leave this out and you get the inbox.",
+        description: "Match every listed custom label. Repeat labels to supply more than one. System label names are refused. Separate multiple values with a comma.",
       },
       {
         displayName: "Mailbox ID",
@@ -9608,6 +9631,18 @@ export const birdProperties: INodeProperties[] = [
         type: "string",
         default: "",
         description: "Conversations involving this address, matching the sender or any recipient. The match is case-insensitive and matches on any part of the address, so a fragment works as well as the whole address.",
+      },
+      {
+        displayName: "Read State",
+        name: "read_state",
+        type: "options",
+        options: [
+          { name: "Not Set", value: "" },
+          { name: "Read", value: "read" },
+          { name: "Unread", value: "unread" },
+        ],
+        default: "",
+        description: "Filter to read or unread conversations. Omit for either state.",
       },
       {
         displayName: "Subject",
@@ -9673,12 +9708,32 @@ export const birdProperties: INodeProperties[] = [
     displayOptions: { show: { resource: ["email"], operation: ["threads_update"] } },
     options: [
       {
+        displayName: "Read",
+        name: "read",
+        type: "boolean",
+        default: false,
+        description: "Whether to mark all retained received messages read or unread. Includes trash, spam and blocked messages; unread_count continues to exclude them.",
+      },
+      {
+        displayName: "Folder",
+        name: "folder",
+        type: "options",
+        options: [
+          { name: "Not Set", value: "" },
+          { name: "Inbox", value: "inbox" },
+          { name: "Archive", value: "archive" },
+          { name: "Spam", value: "spam" },
+        ],
+        default: "",
+        description: "Move a non-trashed conversation to inbox, archive or spam. Use DELETE to trash it and POST restore to recover it. Blocked and sent folders are assigned automatically.",
+      },
+      {
         displayName: "Labels",
         name: "labels",
         type: "collection",
         placeholder: "Add Field",
         default: {},
-        description: "Label changes to apply. Labels in `add` are applied and labels in `remove` are taken off; other labels are left untouched. Adding a label that is already present, or removing one that is not, has no effect. System labels express state changes. On a conversation, adding `spam` files it as spam. Adding `archive` files it away without deleting it. Adding `inbox`, or removing `spam`, `blocked`, or `archive`, returns it to the inbox. Removing `unread` marks all retained received messages as read in one call. On a message, adding or removing `unread` flips read state. Adding or removing `trash` moves it to or out of the trash. The API rejects changes that contradict this model. A request cannot add more than one placement label. It cannot add `blocked`, because blocking a sender is a receive-rule decision. Removing `inbox` requires adding a destination. A conversation cannot add `trash` or `unread`; removing `unread` is the mark-all-read shortcut, and `trash` uses the `DELETE` verb. A message cannot use placement labels; move its conversation instead. A sent message cannot use `unread`. Custom labels are 1-64 characters with no commas, control characters, or leading or trailing whitespace. System label names and a small reserved set (`all`, `archived`, `deleted`, `draft`, `drafts`, `flagged`, `important`, `junk`, `muted`, `none`, `outbox`, `pinned`, `read`, `scheduled`, `snoozed`, `starred`) cannot be used as custom labels, in any casing. A conversation or message has at most 20 labels, system labels included.",
+        description: "Custom labels to add or remove. System and reserved names are refused; use read and folder for thread state. The resulting custom-label set must contain at most 20 labels; larger sets return 422.",
         options: [
           {
             displayName: "Add",
@@ -10016,6 +10071,13 @@ export const birdProperties: INodeProperties[] = [
         ],
       },
       {
+        displayName: "Bcc",
+        name: "bcc",
+        type: "string",
+        default: "",
+        description: "Blind-copy recipients. Addresses already on the derived To or merged Cc line are dropped (case-insensitive). Bcc addresses are omitted from conversation participants, visible recipient headers, and the 202 response. Bcc delivery outcomes are excluded from the message's `recipients` list. Separate multiple values with a comma.",
+      },
+      {
         displayName: "Cancel On Reply",
         name: "cancel_on_reply",
         type: "boolean",
@@ -10033,6 +10095,13 @@ export const birdProperties: INodeProperties[] = [
         ],
         default: "",
         description: "Content classification, which controls suppression policy: - `marketing`: Blocks on all suppression reasons. - `transactional`: Allows delivery through complaint and unsubscribe suppressions, for receipts, password resets, and similar operational mail.",
+      },
+      {
+        displayName: "Cc",
+        name: "cc",
+        type: "string",
+        default: "",
+        description: "Additional Cc recipients, merged with recipients derived by `reply_all`. Addresses already on the derived To line are dropped (case-insensitive). The merged Cc set must contain at most 50 addresses; larger sets return 422. Separate multiple values with a comma.",
       },
       {
         displayName: "Html",
@@ -10743,7 +10812,7 @@ export const birdProperties: INodeProperties[] = [
         type: "collection",
         placeholder: "Add Field",
         default: {},
-        description: "Label changes to apply. Labels in `add` are applied and labels in `remove` are taken off; other labels are left untouched. Adding a label that is already present, or removing one that is not, has no effect. System labels express state changes. On a conversation, adding `spam` files it as spam. Adding `archive` files it away without deleting it. Adding `inbox`, or removing `spam`, `blocked`, or `archive`, returns it to the inbox. Removing `unread` marks all retained received messages as read in one call. On a message, adding or removing `unread` flips read state. Adding or removing `trash` moves it to or out of the trash. The API rejects changes that contradict this model. A request cannot add more than one placement label. It cannot add `blocked`, because blocking a sender is a receive-rule decision. Removing `inbox` requires adding a destination. A conversation cannot add `trash` or `unread`; removing `unread` is the mark-all-read shortcut, and `trash` uses the `DELETE` verb. A message cannot use placement labels; move its conversation instead. A sent message cannot use `unread`. Custom labels are 1-64 characters with no commas, control characters, or leading or trailing whitespace. System label names and a small reserved set (`all`, `archived`, `deleted`, `draft`, `drafts`, `flagged`, `important`, `junk`, `muted`, `none`, `outbox`, `pinned`, `read`, `scheduled`, `snoozed`, `starred`) cannot be used as custom labels, in any casing. A conversation or message has at most 20 labels, system labels included.",
+        description: "Label changes to apply. Labels in `add` are applied and labels in `remove` are taken off; other labels are left untouched. Adding a label that is already present, or removing one that is not, has no effect. On a message, adding or removing `unread` flips read state. Adding or removing `trash` moves it to or out of the trash. Placement labels cannot be applied to a message; use `folder` on [Update a thread](/docs/api/reference/update-email-thread) (`PATCH /v1/email/threads/{thread_id}`) to move its conversation. A sent message cannot use unread. Custom labels are 1-64 characters with no commas, control characters, or leading or trailing whitespace. System label names and a small reserved set (`all`, `archived`, `deleted`, `draft`, `drafts`, `flagged`, `important`, `junk`, `muted`, `none`, `outbox`, `pinned`, `read`, `scheduled`, `snoozed`, `starred`) cannot be used as custom labels, in any casing. A conversation or message has at most 20 labels, system labels included.",
         options: [
           {
             displayName: "Add",
