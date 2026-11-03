@@ -1,5 +1,9 @@
 # Changelog
 
+## 0.41.0
+
+- Numbers get and list responses now expose `ownership.registration_due_at` (the deadline for completing ownership details) and `ownership.unavailable_at` (when the number became unavailable).
+
 ## 0.40.0
 
 - Add optional Cc and Bcc recipients to mailbox replies.
