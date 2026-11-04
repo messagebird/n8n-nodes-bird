@@ -8622,7 +8622,7 @@ export const birdProperties: INodeProperties[] = [
         name: "q",
         type: "string",
         default: "",
-        description: "Case-insensitive substring match against a contact's email address or the digits in its international phone number",
+        description: "Case-insensitive substring match against a contact's email address, first name, last name, or the digits in its international phone number",
       },
     ],
   },
