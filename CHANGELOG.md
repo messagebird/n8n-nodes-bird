@@ -1,5 +1,9 @@
 # Changelog
 
+## 0.42.0
+
+- Testing a webhook now returns `kind`, whether the test sent an event or read a connector's platform, and `field`, the connector field the platform's answer shows is wrong, each when it applies; creating or updating a connector webhook returns `next` with the step to test it when the response includes the connector's `destination`.
+
 ## 0.41.1
 
 - Correct the Apple Messages descriptions for `origin`, `last_message` and the invitation `conversation_id`, and the `remediation` of a `not_found_error` on a send, to reflect that accepting an invitation opens the conversation while the business is connected and the customer has not left the thread; an acceptance received while the business is disconnected, or after the customer left, opens none; it links an existing conversation at once, and otherwise `conversation_id` stays absent until their next message.
