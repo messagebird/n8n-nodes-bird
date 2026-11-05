@@ -1,5 +1,9 @@
 # Changelog
 
+## 0.44.0
+
+- **Breaking:** the contact-property update action now leaves the stored fallback unchanged when `fallback_value` is omitted. Send explicit JSON null to clear it. Contact-property create and update schemas now explicitly accept JSON null alongside string, number, and boolean fallback values.
+
 ## 0.43.0
 
 - Add `live_default_language` to the templates the Email resource's **List Templates** operation returns: the live version's default language, the one a single send falls back to when the template's language settings allow. It is null until the template is first published, and a built-in template reports its `default_language`.
