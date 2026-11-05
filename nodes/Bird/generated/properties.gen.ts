@@ -3160,7 +3160,7 @@ export const birdProperties: INodeProperties[] = [
         name: "error_code",
         type: "string",
         default: "",
-        description: "Keep only messages whose failure reason (`last_error.code`) matches; separate values with a comma to match any of several. One of `invalid_destination`, `unreachable`, `blocked_by_carrier`, `blocked_by_fraud_protection`, `blocked_by_recipient`, `landline_unreachable`, `content_rejected`, `sender_unregistered`, `recipient_opted_out`, `provider_unavailable`, `insufficient_balance`, or `unknown`.",
+        description: "Keep only messages whose failure reason (`last_error.code`) matches; separate values with a comma to match any of several. One of `invalid_destination`, `unreachable`, `blocked_by_carrier`, `blocked_by_fraud_protection`, `blocked_by_recipient`, `landline_unreachable`, `content_rejected`, `sender_unregistered`, `recipient_opted_out`, `provider_unavailable`, `insufficient_balance`, or `unknown`. With a `status` or `error_code` filter a page can hold fewer messages than `limit`, or none; keep paging until `next_cursor` is null.",
       },
       {
         displayName: "From",
@@ -3181,7 +3181,7 @@ export const birdProperties: INodeProperties[] = [
         name: "status",
         type: "string",
         default: "",
-        description: "Keep only messages whose current `status` matches; separate values with a comma to match any of several. One of `scheduled`, `accepted`, `sent`, `delivered`, `undelivered`, `failed`, `rejected`, `canceled`, `expired`, or `received`. `scheduled` and `canceled` are accepted but match nothing until send-later scheduling ships.",
+        description: "Keep only messages whose current `status` matches; separate values with a comma to match any of several. One of `scheduled`, `accepted`, `sent`, `delivered`, `undelivered`, `failed`, `rejected`, `canceled`, `expired`, or `received`. `scheduled` and `canceled` are accepted but match nothing until send-later scheduling ships. With a `status` or `error_code` filter a page can hold fewer messages than `limit`, or none; keep paging until `next_cursor` is null.",
       },
       {
         displayName: "Tag",

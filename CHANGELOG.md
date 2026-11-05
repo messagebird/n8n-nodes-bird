@@ -1,5 +1,9 @@
 # Changelog
 
+## 0.45.0
+
+- Voice leg `rejection_reason` accepts values added later, so treat a value you don't recognize as a new reason. It gains `emergency_number_inactive`, `emergency_cap_exceeded` and `emergency_carrier_unavailable`.
+
 ## 0.44.0
 
 - **Breaking:** the contact-property update action now leaves the stored fallback unchanged when `fallback_value` is omitted. Send explicit JSON null to clear it. Contact-property create and update schemas now explicitly accept JSON null alongside string, number, and boolean fallback values.
