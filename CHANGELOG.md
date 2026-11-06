@@ -1,5 +1,9 @@
 # Changelog
 
+## 0.47.1
+
+- The voice legs `to` filter documents that a `vsq_` ID matches a browser call to that workspace sequence, as a `usr_` or `vrg_` ID does for a user or ring group.
+
 ## 0.47.0
 
 - When a workspace user answers a call Bird rang them for, `answered_by` on the caller's leg identifies them. Its `type` says who answered: `user`, whose `user_id` names the workspace user and `registration_id` the browser-phone registration they answered on. Other types may be added later. A member can still have a separate leg and its associated webhooks while the rowed ringing path is in use.

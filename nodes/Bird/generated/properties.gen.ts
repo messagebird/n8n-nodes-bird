@@ -5533,7 +5533,7 @@ export const birdProperties: INodeProperties[] = [
         name: "to",
         type: "string",
         default: "",
-        description: "Return only legs placed to this called party number, matched as a whole number rather than as a fragment. Give it in international form: `+16505559876`, `16505559876`, and `0016505559876` all select the same legs. A number given without a country code is read as an international one, so give the country code to be sure of what you are matching. A `usr_` or `vrg_` ID matches a browser's call to that workspace user or ring group, exactly as given. Use `number` instead to match part of a number, or either side of the leg.",
+        description: "Return only legs placed to this called party number, matched as a whole number rather than as a fragment. Give it in international form: `+16505559876`, `16505559876`, and `0016505559876` all select the same legs. A number given without a country code is read as an international one, so give the country code to be sure of what you are matching. A `usr_`, `vrg_` or `vsq_` ID matches a browser's call to that workspace user, ring group or sequence, exactly as given. Use `number` instead to match part of a number, or either side of the leg.",
       },
     ],
   },
