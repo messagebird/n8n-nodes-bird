@@ -1,5 +1,9 @@
 # Changelog
 
+## 0.46.0
+
+- The WhatsApp send gains a template `parameters` field to fill a template by name instead of `components`.
+
 ## 0.45.0
 
 - Voice leg `rejection_reason` accepts values added later, so treat a value you don't recognize as a new reason. It gains `emergency_number_inactive`, `emergency_cap_exceeded` and `emergency_carrier_unavailable`.

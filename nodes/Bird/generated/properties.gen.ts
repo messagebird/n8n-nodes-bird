@@ -5125,6 +5125,35 @@ export const birdProperties: INodeProperties[] = [
             description: "BCP-47 tag (`en-US`; `en_US` also accepted). Defaults to the template's default language unless `language_source_required` is set. Missing variants follow `on_missing_language`. The resolved language determines pricing and is echoed in the accepted message.",
           },
           {
+            displayName: "Parameters",
+            name: "parameters",
+            type: "fixedCollection",
+            typeOptions: { multipleValues: true },
+            placeholder: "Add Pair",
+            default: {},
+            description: "The template's inputs as one map, instead of `components`. Each key is a name in the version's `variables`: a placeholder's own name, or its number (`1`, `2`) for a numbered placeholder, `header_url` (or `header_url_1`, `header_url_2` for a carousel card), `header_filename`, `header_location` and `code` for values with no placeholder, `button_url` (or `button_url_1`, `button_url_2` for a carousel card) for a numbered URL suffix, or an input a parameter binding reads. A media header left out, or whose value is empty, sends the template's approved sample; a template without one, such as one imported from WhatsApp, needs its media URL. A value is a string, number or boolean, except `header_location`, an object with `latitude` and `longitude`, and optionally `name` and `address`. Keys the language does not use are ignored, and `bird` is reserved. At most 16 KB. Send `parameters` or `components`, not both. A template with parameter bindings, or with named variables in a card or a button URL, takes only `parameters`.",
+            options: [
+              {
+                displayName: "Pair",
+                name: "pairs",
+                values: [
+                  {
+                    displayName: "Key",
+                    name: "key",
+                    type: "string",
+                    default: "",
+                  },
+                  {
+                    displayName: "Value",
+                    name: "value",
+                    type: "string",
+                    default: "",
+                  },
+                ],
+              },
+            ],
+          },
+          {
             displayName: "Slug",
             name: "slug",
             type: "string",
@@ -5231,6 +5260,13 @@ export const birdProperties: INodeProperties[] = [
     default: {},
     displayOptions: { show: { resource: ["whatsapp"], operation: ["list"] } },
     options: [
+      {
+        displayName: "Broadcast ID",
+        name: "broadcast_id",
+        type: "string",
+        default: "",
+        description: "Filter to the messages one broadcast sent, one per recipient. Messages sent any other way belong to no broadcast and never match.",
+      },
       {
         displayName: "Bsuid",
         name: "bsuid",
