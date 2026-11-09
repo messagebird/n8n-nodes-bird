@@ -5473,7 +5473,7 @@ export const birdProperties: INodeProperties[] = [
         name: "from",
         type: "string",
         default: "",
-        description: "Return only legs placed from this calling party number, matched as a whole number rather than as a fragment. Give it in international form: `+14155551234`, `14155551234`, and `0014155551234` all select the same legs. A number given without a country code is read as an international one, so give the country code to be sure of what you are matching. Use `number` instead to match part of a number, or either side of the leg.",
+        description: "Return only legs placed from this calling party, matched exactly. Give a number in international form: `+14155551234`, `14155551234`, and `0014155551234` all select the same legs. A number given without a country code is read as an international one, so give the country code to be sure of what you are matching. A `usr_` ID matches the recorded calling party exactly as given; it does not establish who placed the call. Use `number` instead to match part of a number, or either side of the leg.",
       },
       {
         displayName: "Number",
@@ -5600,7 +5600,7 @@ export const birdProperties: INodeProperties[] = [
         type: "collection",
         placeholder: "Add Field",
         default: {},
-        description: "Per-request overrides applied to this verification only",
+        description: "Per-request overrides applied to this verification only. `language` picks one of Bird's built-in translations; a custom sender that carries its own template renders the language that template stocks instead. An email template pinned to a custom email sender falls back to its own default language rather than to English (Verify only accepts templates whose language settings fall back). A WhatsApp authentication template follows its own missing-language policy: it falls back to its default or, when set to fail, refuses the send for a language it does not stock. The requested tag stays fixed for the verification.",
         options: [
           {
             displayName: "Android App Hash",
@@ -5649,7 +5649,7 @@ export const birdProperties: INodeProperties[] = [
             name: "language",
             type: "string",
             default: "",
-            description: "Which of the built-in message translations to send. It applies to SMS, email and WhatsApp, and has no effect on a Telegram verification. A tag with no translation of its own falls back to its base language, and then to English. The attempt's `template_language` reports which translation was used. The tag is fixed for the verification, so a resend arrives in the same language as the first message. Omit it and the language is read from the recipient phone number's country, so a French number gets French without you asking. Set it to override that. A verification with no phone number, and one whose country has no translation here, sends English. Supported: en, ar, bg, cs, da, de, el, es, fi, fr, he, hi, hr, hu, ID, it, ja, ko, lt, lv, mk, mn, ms, nb-NO, nl, no, pl, pt, ro, ru, sk, sl, sr, sv, th, tr, uk, vi, zh, zh-TW. Every one of them is available on SMS and email. Mongolian (mn) is the one WhatsApp cannot carry, so a WhatsApp passcode falls back to English for it.",
+            description: "Which of the built-in message translations to send. It applies to SMS, email and WhatsApp, and has no effect on a Telegram verification. A tag with no translation of its own falls back to its base language, and then to English. The attempt's `template_language` reports which translation was used. The tag is fixed for the verification, so a resend arrives in the same language as the first message. Omit it and the language is read from the recipient phone number's country, so a French number gets French without you asking. Set it to override that. A verification with no phone number, and one whose country has no translation here, sends English. Supported: en, ar, bg, cs, da, de, el, es, fi, fr, he, hi, hr, hu, ID, it, ja, ko, lt, lv, mk, mn, ms, nb-NO, nl, no, pl, pt, ro, ru, sk, sl, sr, sv, th, tr, uk, vi, zh, zh-TW. Every one of them is available on SMS and on Bird's built-in email. Mongolian (mn) is the one WhatsApp cannot carry, so a WhatsApp passcode falls back to English for it. A custom sender that carries its own template sends that template's content instead: a custom WhatsApp sender uses its authentication template's approved languages under that template's missing-language policy, and a custom email sender pinned to one of your email templates uses the template's published languages, falling back to the template's default language rather than to English. The requested tag stays fixed for the verification; the dashboard's verification detail shows the language each attempt actually rendered.",
           },
         ],
       },
