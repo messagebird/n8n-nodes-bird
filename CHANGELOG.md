@@ -1,5 +1,9 @@
 # Changelog
 
+## 0.51.0
+
+- Add `suspended_at` to workspaces: when Bird suspended the workspace, or `null` while it is active.
+
 ## 0.50.1
 
 - The `sms.failed` and `sms.undelivered` trigger events now explain that Bird does not retry such a message, but that a carrier report of another outcome that occurred later, such as `sms.delivered`, can follow. `sms.failed` is no longer described as permanent.
