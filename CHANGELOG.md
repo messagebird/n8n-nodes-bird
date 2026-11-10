@@ -1,5 +1,9 @@
 # Changelog
 
+## 0.50.1
+
+- The `sms.failed` and `sms.undelivered` trigger events now explain that Bird does not retry such a message, but that a carrier report of another outcome that occurred later, such as `sms.delivered`, can follow. `sms.failed` is no longer described as permanent.
+
 ## 0.50.0
 
 - **Breaking:** adding a custom label to a mailbox conversation (the "Update Thread" action) now fails with E17058 when the label is new to the workspace and the workspace already uses 100 distinct labels. Applying a label the workspace already has keeps working, so a caller that reaches the cap can reuse one of the workspace's custom labels: listing a mailbox's labels (the "List Mailbox Labels" action) returns them beside built-in labels such as `inbox` and `unread`, which label updates refuse, and getting a conversation (the "Get Thread" action) shows its current labels.
