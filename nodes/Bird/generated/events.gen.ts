@@ -49,7 +49,7 @@ export const birdEvents: Array<{ name: string; value: string; description: strin
   { name: "verify.attempt.sent", value: "verify.attempt.sent", description: "A one-time passcode was dispatched to the recipient on a channel" },
   { name: "verify.attempt.undelivered", value: "verify.attempt.undelivered", description: "A one-time passcode failed to deliver to the recipient" },
   { name: "verify.verification.created", value: "verify.verification.created", description: "A verification session was created and its first one-time passcode is being sent" },
-  { name: "verify.verification.failed", value: "verify.verification.failed", description: "The verification ended without the recipient receiving a passcode: every planned channel reported that its send would not arrive" },
+  { name: "verify.verification.failed", value: "verify.verification.failed", description: "The verification ended without the recipient receiving a passcode: no channel Bird tried sent one, and Bird tries no further channel" },
   { name: "verify.verification.verified", value: "verify.verification.verified", description: "The verification was successfully resolved: the recipient confirmed the correct code" },
   { name: "voice_call.answered", value: "voice_call.answered", description: "The called party answered and media began flowing" },
   { name: "voice_call.ended", value: "voice_call.ended", description: "The call ended after either party hung up or call setup failed" },

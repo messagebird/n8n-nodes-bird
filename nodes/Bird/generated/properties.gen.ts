@@ -3160,7 +3160,7 @@ export const birdProperties: INodeProperties[] = [
         name: "error_code",
         type: "string",
         default: "",
-        description: "Keep only messages whose failure reason (`last_error.code`) matches; separate values with a comma to match any of several. One of `invalid_destination`, `unreachable`, `blocked_by_carrier`, `blocked_by_fraud_protection`, `blocked_by_recipient`, `landline_unreachable`, `content_rejected`, `sender_unregistered`, `recipient_opted_out`, `provider_unavailable`, `insufficient_balance`, or `unknown`. With a `status` or `error_code` filter a page can hold fewer messages than `limit`, or none; keep paging until `next_cursor` is null.",
+        description: "Keep only messages whose failure reason (`last_error.code`) matches; separate values with a comma to match any of several. Accepts any SMS error code, including codes added later, such as `invalid_destination`, `unreachable`, `blocked_by_carrier`, `blocked_by_fraud_protection`, `blocked_by_recipient`, `landline_unreachable`, `content_rejected`, `sender_unregistered`, `recipient_opted_out`, `provider_unavailable`, `insufficient_balance`, `workspace_suspended`, or `unknown`. With a `status` or `error_code` filter a page can hold fewer messages than `limit`, or none; keep paging until `next_cursor` is null.",
       },
       {
         displayName: "From",
@@ -9652,7 +9652,7 @@ export const birdProperties: INodeProperties[] = [
         name: "labels",
         type: "string",
         default: "",
-        description: "Match every listed custom label. Repeat labels to supply more than one. System label names are refused. Separate multiple values with a comma.",
+        description: "Match every listed custom label. Repeat labels to supply more than one. System label names are refused. Names match in any casing. Separate multiple values with a comma.",
       },
       {
         displayName: "Mailbox ID",
@@ -9769,7 +9769,7 @@ export const birdProperties: INodeProperties[] = [
         type: "collection",
         placeholder: "Add Field",
         default: {},
-        description: "Custom labels to add or remove. System and reserved names are refused; use read and folder for thread state. The resulting custom-label set must contain at most 20 labels; larger sets return 422.",
+        description: "Custom labels to add or remove, or the full set to replace them with. Send `set` on its own; combining it with `add` or `remove` returns 422. System names are refused; use read and folder for thread state. Reserved names are refused too, except a label the conversation already carries from before its name was reserved, which can still be removed, and kept in a `set` in any casing. The resulting custom-label set must contain at most 20 labels; larger sets return 422. A custom name added or set that the workspace does not have yet becomes a workspace label that stays after it is removed from every conversation; once the workspace has 100 labels, a write that would create one more is refused with `E17058`. Custom label names match the workspace's labels in any casing, so adding `Urgent` where the workspace has `urgent` applies `urgent`, and responses return the workspace's spelling.",
         options: [
           {
             displayName: "Add",
@@ -9784,6 +9784,13 @@ export const birdProperties: INodeProperties[] = [
             type: "string",
             default: "",
             description: "Labels to take off. Separate multiple values with a comma.",
+          },
+          {
+            displayName: "Set",
+            name: "set",
+            type: "string",
+            default: "",
+            description: "The custom labels the conversation should carry, replacing all of its current ones. Leaving it blank sends nothing; to take every custom label off, list them under Remove. Separate multiple values with a comma.",
           },
         ],
       },
@@ -9901,7 +9908,7 @@ export const birdProperties: INodeProperties[] = [
         name: "label",
         type: "string",
         default: "",
-        description: "Filter to messages that have this label. `trash` lists trashed messages. Any other label, whether that is `archive`, `spam`, `blocked`, `unread` or one of your own, lists the messages that have it and are not in the trash. When omitted, every message that is not trashed is returned, whichever folder the conversation is in.",
+        description: "Filter to messages that have this label. `trash` lists trashed messages. Any other label, whether that is `archive`, `spam`, `blocked`, `unread` or one of your own, lists the messages that have it and are not in the trash. When omitted, every message that is not trashed is returned, whichever folder the conversation is in. A custom label name matches in any casing.",
       },
       {
         displayName: "Include",
@@ -10848,7 +10855,7 @@ export const birdProperties: INodeProperties[] = [
         type: "collection",
         placeholder: "Add Field",
         default: {},
-        description: "Label changes to apply. Labels in `add` are applied and labels in `remove` are taken off; other labels are left untouched. Adding a label that is already present, or removing one that is not, has no effect. On a message, adding or removing `unread` flips read state. Adding or removing `trash` moves it to or out of the trash. Placement labels cannot be applied to a message; use `folder` on [Update a thread](/docs/api/reference/update-email-thread) (`PATCH /v1/email/threads/{thread_id}`) to move its conversation. A sent message cannot use unread. Custom labels are 1-64 characters with no commas, control characters, or leading or trailing whitespace. System label names and a small reserved set (`all`, `archived`, `deleted`, `draft`, `drafts`, `flagged`, `important`, `junk`, `muted`, `none`, `outbox`, `pinned`, `read`, `scheduled`, `snoozed`, `starred`) cannot be used as custom labels, in any casing. A conversation or message has at most 20 labels, system labels included.",
+        description: "Label changes to apply. Labels in `add` are applied and labels in `remove` are taken off; other labels are left untouched. Adding a label that is already present, or removing one that is not, has no effect. `set` instead replaces every custom label and leaves system labels as they are; send it on its own, since combining it with `add` or `remove` returns 422. On a message, adding or removing `unread` flips read state. Adding or removing `trash` moves it to or out of the trash. Placement labels cannot be applied to a message; use `folder` on [Update a thread](/docs/api/reference/update-email-thread) (`PATCH /v1/email/threads/{thread_id}`) to move its conversation. A sent message cannot use unread. Custom labels are 1-64 characters with no commas, control characters, or leading or trailing whitespace. System label names and a small reserved set (`all`, `archived`, `assigned`, `closed`, `deleted`, `draft`, `drafts`, `flagged`, `important`, `junk`, `muted`, `none`, `open`, `outbox`, `pinned`, `read`, `scheduled`, `snoozed`, `starred`) cannot be applied as custom labels, in any casing. A label applied before its name was reserved can still be removed, added again under the same name with no effect, and kept in a `set` in any casing. A conversation or message has at most 20 labels, system labels included. A custom name added or set that the workspace does not have yet becomes a workspace label that stays after it is removed from every conversation; once the workspace has 100 labels, a write that would create one more is refused with `E17058`. A name in both `add` and `remove` is removed and does not count as added. Custom label names match the workspace's labels in any casing: adding `Urgent` where the workspace has `urgent` applies `urgent`, and responses return the workspace's spelling.",
         options: [
           {
             displayName: "Add",
@@ -10863,6 +10870,13 @@ export const birdProperties: INodeProperties[] = [
             type: "string",
             default: "",
             description: "Labels to take off. Separate multiple values with a comma.",
+          },
+          {
+            displayName: "Set",
+            name: "set",
+            type: "string",
+            default: "",
+            description: "The custom labels the message should carry, replacing all of its current ones; system labels such as `unread` and `trash` are unchanged. Leaving it blank sends nothing; to take every custom label off, list them under Remove. Separate multiple values with a comma.",
           },
         ],
       },
@@ -11014,7 +11028,7 @@ export const birdProperties: INodeProperties[] = [
         name: "label",
         type: "string",
         default: "",
-        description: "Filter to messages that have this label. `trash` lists trashed messages. Any other label, whether that is `archive`, `spam`, `blocked`, `unread` or one of your own, lists the messages that have it and are not in the trash. When omitted, received messages in the inbox and all sent messages are returned.",
+        description: "Filter to messages that have this label. `trash` lists trashed messages. Any other label, whether that is `archive`, `spam`, `blocked`, `unread` or one of your own, lists the messages that have it and are not in the trash. When omitted, received messages in the inbox and all sent messages are returned. A custom label name matches in any casing.",
       },
       {
         displayName: "Status",
