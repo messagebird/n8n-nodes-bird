@@ -1,5 +1,10 @@
 # Changelog
 
+## 0.52.1
+
+- Mailbox create and update responses now include a `next` action recommending a sender `name` when it is unset. The sender name remains optional.
+- The Voice Get Leg and List Legs operations return `sequence_paused`, `sequence_archived`, or `sequence_unpublished` in `rejection_reason` when an inbound sequence cannot accept calls, if the credential has `voice_management:read`.
+
 ## 0.52.0
 
 - Mailboxes return `last_message_at`, when the mailbox last sent or received a message, recorded from 26 August 2026. On a mailbox created before that date, `null` means no activity since then, not that it never had any.

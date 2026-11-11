@@ -8859,7 +8859,7 @@ export const birdProperties: INodeProperties[] = [
         name: "display_name",
         type: "string",
         default: "",
-        description: "Name shown to your team in the dashboard and tools. Defaults to `name` when omitted. When `name` is unset, outgoing mail uses this value as the sender name.",
+        description: "Name shown to your team in the dashboard and tools. Defaults to `name` when omitted.",
       },
       {
         displayName: "Domain",
@@ -8909,7 +8909,7 @@ export const birdProperties: INodeProperties[] = [
         name: "name",
         type: "string",
         default: "",
-        description: "Sender name shown alongside the address in outgoing mail. Must contain a non-whitespace character and cannot contain carriage returns or line feeds.",
+        description: "Optional sender name recipients see in the From header of outgoing mail. We recommend setting it so recipients can recognize the sender. Must contain a non-whitespace character and cannot contain carriage returns or line feeds.",
       },
       {
         displayName: "Receive Policy",
@@ -8999,7 +8999,7 @@ export const birdProperties: INodeProperties[] = [
         name: "display_name",
         type: "string",
         default: "",
-        description: "Name shown to your team in the dashboard and tools. `null` clears the override and uses `name`. When `name` is unset, outgoing mail uses this value as the sender name.",
+        description: "Name shown to your team in the dashboard and tools. `null` clears the override and uses `name`.",
       },
       {
         displayName: "Metadata",
@@ -9035,7 +9035,7 @@ export const birdProperties: INodeProperties[] = [
         name: "name",
         type: "string",
         default: "",
-        description: "Sender name shown alongside the address in outgoing mail. Must contain a non-whitespace character and cannot contain carriage returns or line feeds. `null` clears it.",
+        description: "Optional sender name recipients see in the From header of outgoing mail. We recommend setting it so recipients can recognize the sender. Must contain a non-whitespace character and cannot contain carriage returns or line feeds. `null` clears it.",
       },
       {
         displayName: "Receive Policy",
