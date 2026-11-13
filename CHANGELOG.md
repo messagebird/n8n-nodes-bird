@@ -1,5 +1,9 @@
 # Changelog
 
+## 0.53.0
+
+- Add `ownership_address_area_name` to available numbers: for a local number whose `ownership_address_scope` is `number_area`, the name of the area that rule refers to, when the carrier names it. Other numbers omit it.
+
 ## 0.52.1
 
 - Mailbox create and update responses now include a `next` action recommending a sender `name` when it is unset. The sender name remains optional.
