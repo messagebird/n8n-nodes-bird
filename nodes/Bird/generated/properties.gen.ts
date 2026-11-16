@@ -535,6 +535,13 @@ export const birdProperties: INodeProperties[] = [
         description: "BCC recipients. Each entry is a plain email string, an RFC 5322 mailbox string (`Jane &lt;jane@acme.com&gt;`), or an object with an optional display name. Separate multiple values with a comma.",
       },
       {
+        displayName: "Brand ID",
+        name: "brand_id",
+        type: "string",
+        default: "",
+        description: "Preview: selects the business whose email preferences and unsubscribe page apply; explicit input returns `422` when selection is unavailable. When selection is available, omission or null selects the workspace's default Brand. The selection stays fixed for scheduled sends and retries. An explicit ID must belong to this workspace and must not be archived. An unknown, foreign or archived Brand returns `422`. Omitted or null values preserve existing sending behavior while selection is unavailable.",
+      },
+      {
         displayName: "Category",
         name: "category",
         type: "options",

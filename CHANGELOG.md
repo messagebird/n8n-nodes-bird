@@ -1,5 +1,10 @@
 # Changelog
 
+## 0.54.0
+
+- Add optional `brand_id` to individual and batch email requests. Brand selection is in preview. Explicit input returns `422` when selection is unavailable; omitted or null input preserves existing behavior.
+- Expose `brand_id` on email message responses and outbound lifecycle events. Brand attribution is in preview.
+
 ## 0.53.0
 
 - Add `ownership_address_area_name` to available numbers: for a local number whose `ownership_address_scope` is `number_area`, the name of the area that rule refers to, when the carrier names it. Other numbers omit it.
