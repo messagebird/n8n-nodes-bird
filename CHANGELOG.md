@@ -1,5 +1,9 @@
 # Changelog
 
+## 0.54.1
+
+- The Bird node's SMS Suppression › Remove operation now describes itself as ending an SMS suppression rather than deleting it: the record is kept and can still be read by ID.
+
 ## 0.54.0
 
 - Add optional `brand_id` to individual and batch email requests. Brand selection is in preview. Explicit input returns `422` when selection is unavailable; omitted or null input preserves existing behavior.

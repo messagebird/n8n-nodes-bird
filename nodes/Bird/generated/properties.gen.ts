@@ -156,7 +156,7 @@ export const birdProperties: INodeProperties[] = [
       { name: "List", value: "list", action: "List SMS suppressions", description: "List SMS suppressions" },
       { name: "Get", value: "get", action: "Get an SMS suppression", description: "Get an SMS suppression" },
       { name: "Add", value: "add", action: "Create an SMS suppression", description: "Create an SMS suppression" },
-      { name: "Remove", value: "remove", action: "Delete an SMS suppression", description: "Delete an SMS suppression" },
+      { name: "Remove", value: "remove", action: "End an SMS suppression", description: "End an SMS suppression" },
     ],
     default: "list",
   },
