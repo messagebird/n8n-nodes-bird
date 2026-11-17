@@ -2778,6 +2778,21 @@ export const birdProperties: INodeProperties[] = [
         description: "Return only templates authored in this format",
       },
       {
+        displayName: "Status",
+        name: "status",
+        type: "options",
+        options: [
+          { name: "Active", value: "active" },
+          { name: "Draft", value: "draft" },
+          { name: "Inactive", value: "inactive" },
+          { name: "Not Set", value: "" },
+          { name: "Pending", value: "pending" },
+          { name: "Rejected", value: "rejected" },
+        ],
+        default: "",
+        description: "Return templates with this lifecycle status. Use `active` to list only the templates you can send now, which includes every built-in template. Use `draft` for your workspace's templates that have never been published.",
+      },
+      {
         displayName: "Theme",
         name: "theme",
         type: "options",
@@ -2864,6 +2879,13 @@ export const birdProperties: INodeProperties[] = [
         description: "Sender the workspace holds: a number it owns in E.164, such as `+15557654321`, a short code, such as `24680`, or an alphanumeric sender ID it has claimed, such as `MyBrand`. Any other sender returns `422` `SMSSenderNotConfigured`, and an alphanumeric sender must also be permitted, and where required registered, for the destination country. Required on a free-text send and a workspace-template send, unless the profile in `messaging_profile_id` selects a sender for the destination country or has a default sender; omitting it otherwise returns `422`. A built-in template selects its sender itself and rejects `from`.",
       },
       {
+        displayName: "Media Urls",
+        name: "media_urls",
+        type: "string",
+        default: "",
+        description: "Absolute HTTP(S) attachment URLs accessible without authentication. A nonempty list selects MMS. Keep URLs accessible through delivery retries. The carrier checks downloads after acceptance: each file may be at most 600 KiB and the total at most 900 KiB. Unreachable, nonpublic or oversized media fails asynchronously through delivery status. Separate multiple values with a comma.",
+      },
+      {
         displayName: "Messaging Profile ID",
         name: "messaging_profile_id",
         type: "string",
@@ -2938,6 +2960,13 @@ export const birdProperties: INodeProperties[] = [
         description: "An identifier you want to find this message by, such as an order or ticket number, matched exactly by the message list's `reference` filter. Set it only when you need to search on it, and put any other data in `metadata`. Stored on the message, returned on reads and echoed in webhook payloads. Several messages can share one.",
       },
       {
+        displayName: "Subject",
+        name: "subject",
+        type: "string",
+        default: "",
+        description: "MMS subject. A nonempty subject selects MMS and requires text or media. Cannot accompany a template or binary payload.",
+      },
+      {
         displayName: "Tags",
         name: "tags",
         type: "fixedCollection",
@@ -2974,7 +3003,7 @@ export const birdProperties: INodeProperties[] = [
         type: "collection",
         placeholder: "Add Field",
         default: {},
-        description: "Send using a stored template instead of free text. The category is derived from the template, so `category` and `media_urls` are rejected. A workspace template requires `from`; a built-in template selects its sender and rejects `from`.",
+        description: "Send using a stored template instead of free text. The category is derived from the template, so `category`, `subject` and `media_urls` are rejected. A workspace template requires `from`; a built-in template selects its sender and rejects `from`.",
         options: [
           {
             displayName: "ID",
@@ -3040,7 +3069,7 @@ export const birdProperties: INodeProperties[] = [
         name: "text",
         type: "string",
         default: "",
-        description: "Free-text message body, required unless `template` is set; the two are mutually exclusive. From 1 character up to 12 segments, roughly 1836 GSM-7 or 804 UCS-2 characters, since the two encodings fit different numbers of characters in a segment. Bird does not truncate: a longer body returns `422`.",
+        description: "Message body. Required for direct content unless `media_urls` is nonempty. Text-only SMS allows up to 12 segments; longer SMS returns `422`. MMS text is sent without SMS segmentation or smart encoding.",
       },
       {
         displayName: "To Country Code",
@@ -7070,6 +7099,7 @@ export const birdProperties: INodeProperties[] = [
     displayOptions: { show: { resource: ["webhooks"], operation: ["create"] } },
     options: [
       { name: "Amb Accepted", value: "amb.accepted" },
+      { name: "Amb Authentication Updated", value: "amb.authentication.updated" },
       { name: "Amb Conversation Closed", value: "amb.conversation_closed" },
       { name: "Amb Conversation Reopened", value: "amb.conversation_reopened" },
       { name: "Amb Conversation Started", value: "amb.conversation_started" },
@@ -7455,6 +7485,7 @@ export const birdProperties: INodeProperties[] = [
         type: "multiOptions",
         options: [
           { name: "Amb Accepted", value: "amb.accepted" },
+          { name: "Amb Authentication Updated", value: "amb.authentication.updated" },
           { name: "Amb Conversation Closed", value: "amb.conversation_closed" },
           { name: "Amb Conversation Reopened", value: "amb.conversation_reopened" },
           { name: "Amb Conversation Started", value: "amb.conversation_started" },

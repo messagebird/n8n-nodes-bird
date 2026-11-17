@@ -1,5 +1,10 @@
 # Changelog
 
+## 0.56.0
+
+- Add the `amb.authentication.updated` webhook event type for Apple Messages sign-in outcomes. Its data includes workspace and business account identifiers alongside the authentication request.
+- **Breaking:** SMS message and event responses can now report `MMS` in `segments.encoding`, and carry a new `content_type` of `sms` or `mms`. Update exhaustive encoding checks to accept `MMS`, treat an MMS as one billable message, and read `content_type` to tell the two apart. Upgrade before you send or receive MMS: an earlier Python SDK rejects a message or event that reports `MMS`.
+
 ## 0.55.1
 
 - An optional on/off field added in the node now starts at the API's default, so Track Opens and Track Clicks on Send Email start on.
