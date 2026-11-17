@@ -1,5 +1,10 @@
 # Changelog
 
+## 0.55.0
+
+- Add optional Brand selection and filtering for email preferences in the Brands preview. Explicit selection returns 422 where unavailable; omitted or null selection preserves existing behavior.
+- Preference origins can include `complaint`. Clear a Brand complaint through an individual preference grant with newer `consented_at`; bulk writes and imports cannot clear it. The optional `source` note can describe where consent came from. Check `applied` and the returned preference before treating a grant as effective.
+
 ## 0.54.1
 
 - The Bird node's SMS Suppression › Remove operation now describes itself as ending an SMS suppression rather than deleting it: the record is kept and can still be read by ID.
