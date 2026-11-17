@@ -1,5 +1,9 @@
 # Changelog
 
+## 0.55.1
+
+- An optional on/off field added in the node now starts at the API's default, so Track Opens and Track Clicks on Send Email start on.
+
 ## 0.55.0
 
 - Add optional Brand selection and filtering for email preferences in the Brands preview. Explicit selection returns 422 where unavailable; omitted or null selection preserves existing behavior.
