@@ -1,5 +1,10 @@
 # Changelog
 
+## 0.57.0
+
+- Listing email templates gains a `status` filter: `active` returns only the templates you can send now, every built-in template included, and `draft` returns your workspace's templates that have never been published.
+- SMS statistics filter descriptions explain that a late MMS delivery can appear under MMS while its earlier send remains attributed to SMS.
+
 ## 0.56.0
 
 - Add the `amb.authentication.updated` webhook event type for Apple Messages sign-in outcomes. Its data includes workspace and business account identifiers alongside the authentication request.

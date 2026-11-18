@@ -116,6 +116,7 @@ export const birdProperties: INodeProperties[] = [
       { name: "Send Batch", value: "send_batch", action: "Create a batch of SMS messages", description: "Create a batch of SMS messages" },
       { name: "Stats By Carrier", value: "stats_by_carrier", action: "Get outbound SMS statistics by carrier", description: "Get outbound SMS statistics by carrier" },
       { name: "Stats By Category", value: "stats_by_category", action: "Get outbound SMS statistics by category", description: "Get outbound SMS statistics by category" },
+      { name: "Stats By Content Type", value: "stats_by_content_type", action: "Get outbound SMS statistics by message type", description: "Get outbound SMS statistics by message type" },
       { name: "Stats By Cost Center", value: "stats_by_cost_center", action: "Get outbound SMS statistics by cost center", description: "Get outbound SMS statistics by cost center" },
       { name: "Stats By Country", value: "stats_by_country", action: "Get outbound SMS statistics by country", description: "Get outbound SMS statistics by country" },
       { name: "Stats By Error Code", value: "stats_by_error_code", action: "Get outbound SMS statistics by error code", description: "Get outbound SMS statistics by error code" },
@@ -124,6 +125,7 @@ export const birdProperties: INodeProperties[] = [
       { name: "Stats By Tag", value: "stats_by_tag", action: "Get outbound SMS statistics by tag", description: "Get outbound SMS statistics by tag" },
       { name: "Stats Daily", value: "stats_daily", action: "Get daily outbound SMS statistics", description: "Get daily outbound SMS statistics" },
       { name: "Stats Hourly", value: "stats_hourly", action: "Get hourly outbound SMS statistics", description: "Get hourly outbound SMS statistics" },
+      { name: "Stats Inbound By Content Type", value: "stats_inbound_by_content_type", action: "Get inbound SMS statistics by message type", description: "Get inbound SMS statistics by message type" },
       { name: "Stats Inbound By Country", value: "stats_inbound_by_country", action: "Get inbound SMS statistics by country", description: "Get inbound SMS statistics by country" },
       { name: "Stats Inbound By Number", value: "stats_inbound_by_number", action: "Get inbound SMS statistics by number", description: "Get inbound SMS statistics by number" },
       { name: "Stats Inbound By Operator", value: "stats_inbound_by_operator", action: "Get inbound SMS statistics by operator", description: "Get inbound SMS statistics by operator" },
@@ -3159,6 +3161,18 @@ export const birdProperties: INodeProperties[] = [
         description: "Filter by category",
       },
       {
+        displayName: "Content Type",
+        name: "content_type",
+        type: "options",
+        options: [
+          { name: "Not Set", value: "" },
+          { name: "SMS", value: "sms" },
+          { name: "Mms", value: "mms" },
+        ],
+        default: "",
+        description: "Filter by the message's actual type: sms or mms. Omit to include both. Binary messages count as SMS. Message history retains the stored type; previously recorded statistics may attribute the same message to SMS.",
+      },
+      {
         displayName: "Country",
         name: "country",
         type: "string",
@@ -3439,6 +3453,18 @@ export const birdProperties: INodeProperties[] = [
         description: "Set to `previous_period` to also include the same statistics for the immediately preceding window of equal length, plus the change between the two, so you can show \"+X% vs last period\" without a second request",
       },
       {
+        displayName: "Content Type",
+        name: "content_type",
+        type: "options",
+        options: [
+          { name: "Not Set", value: "" },
+          { name: "SMS", value: "sms" },
+          { name: "Mms", value: "mms" },
+        ],
+        default: "",
+        description: "Restrict statistics to SMS or MMS. Omit to include both. This filter can be combined with an existing dimension filter where the operation supports one. Previously recorded statistics remain attributed to SMS. New activity uses the message type, so a late MMS delivery can appear under MMS while its earlier send remains under SMS.",
+      },
+      {
         displayName: "Cost Center",
         name: "cost_center",
         type: "string",
@@ -3503,6 +3529,18 @@ export const birdProperties: INodeProperties[] = [
         type: "string",
         default: "",
         description: "Restrict the statistics to a single category. Mutually exclusive with the other dimension filters; only one may be set per request.",
+      },
+      {
+        displayName: "Content Type",
+        name: "content_type",
+        type: "options",
+        options: [
+          { name: "Not Set", value: "" },
+          { name: "SMS", value: "sms" },
+          { name: "Mms", value: "mms" },
+        ],
+        default: "",
+        description: "Restrict statistics to SMS or MMS. Omit to include both. This filter can be combined with an existing dimension filter where the operation supports one. Previously recorded statistics remain attributed to SMS. New activity uses the message type, so a late MMS delivery can appear under MMS while its earlier send remains under SMS.",
       },
       {
         displayName: "Cost Center",
@@ -3571,6 +3609,18 @@ export const birdProperties: INodeProperties[] = [
         description: "Restrict the statistics to a single category. Mutually exclusive with the other dimension filters; only one may be set per request.",
       },
       {
+        displayName: "Content Type",
+        name: "content_type",
+        type: "options",
+        options: [
+          { name: "Not Set", value: "" },
+          { name: "SMS", value: "sms" },
+          { name: "Mms", value: "mms" },
+        ],
+        default: "",
+        description: "Restrict statistics to SMS or MMS. Omit to include both. This filter can be combined with an existing dimension filter where the operation supports one. Previously recorded statistics remain attributed to SMS. New activity uses the message type, so a late MMS delivery can appear under MMS while its earlier send remains under SMS.",
+      },
+      {
         displayName: "Cost Center",
         name: "cost_center",
         type: "string",
@@ -3622,6 +3672,18 @@ export const birdProperties: INodeProperties[] = [
     default: {},
     displayOptions: { show: { resource: ["sms"], operation: ["stats_by_country"] } },
     options: [
+      {
+        displayName: "Content Type",
+        name: "content_type",
+        type: "options",
+        options: [
+          { name: "Not Set", value: "" },
+          { name: "SMS", value: "sms" },
+          { name: "Mms", value: "mms" },
+        ],
+        default: "",
+        description: "Restrict statistics to SMS or MMS. Omit to include both. This filter can be combined with an existing dimension filter where the operation supports one. Previously recorded statistics remain attributed to SMS. New activity uses the message type, so a late MMS delivery can appear under MMS while its earlier send remains under SMS.",
+      },
       {
         displayName: "From",
         name: "from",
@@ -3709,6 +3771,18 @@ export const birdProperties: INodeProperties[] = [
     displayOptions: { show: { resource: ["sms"], operation: ["stats_by_carrier"] } },
     options: [
       {
+        displayName: "Content Type",
+        name: "content_type",
+        type: "options",
+        options: [
+          { name: "Not Set", value: "" },
+          { name: "SMS", value: "sms" },
+          { name: "Mms", value: "mms" },
+        ],
+        default: "",
+        description: "Restrict statistics to SMS or MMS. Omit to include both. This filter can be combined with an existing dimension filter where the operation supports one. Previously recorded statistics remain attributed to SMS. New activity uses the message type, so a late MMS delivery can appear under MMS while its earlier send remains under SMS.",
+      },
+      {
         displayName: "From",
         name: "from",
         type: "string",
@@ -3795,6 +3869,18 @@ export const birdProperties: INodeProperties[] = [
     displayOptions: { show: { resource: ["sms"], operation: ["stats_by_category"] } },
     options: [
       {
+        displayName: "Content Type",
+        name: "content_type",
+        type: "options",
+        options: [
+          { name: "Not Set", value: "" },
+          { name: "SMS", value: "sms" },
+          { name: "Mms", value: "mms" },
+        ],
+        default: "",
+        description: "Restrict statistics to SMS or MMS. Omit to include both. This filter can be combined with an existing dimension filter where the operation supports one. Previously recorded statistics remain attributed to SMS. New activity uses the message type, so a late MMS delivery can appear under MMS while its earlier send remains under SMS.",
+      },
+      {
         displayName: "From",
         name: "from",
         type: "string",
@@ -3878,8 +3964,118 @@ export const birdProperties: INodeProperties[] = [
     type: "collection",
     placeholder: "Add Field",
     default: {},
+    displayOptions: { show: { resource: ["sms"], operation: ["stats_by_content_type"] } },
+    options: [
+      {
+        displayName: "Content Type",
+        name: "content_type",
+        type: "options",
+        options: [
+          { name: "Not Set", value: "" },
+          { name: "SMS", value: "sms" },
+          { name: "Mms", value: "mms" },
+        ],
+        default: "",
+        description: "Restrict statistics to SMS or MMS. Omit to include both. This filter can be combined with an existing dimension filter where the operation supports one. Previously recorded statistics remain attributed to SMS. New activity uses the message type, so a late MMS delivery can appear under MMS while its earlier send remains under SMS.",
+      },
+      {
+        displayName: "From",
+        name: "from",
+        type: "string",
+        default: "",
+        description: "Start date (inclusive) in YYYY-MM-DD, interpreted as a calendar day in `timezone` (a UTC day when `timezone` is omitted). Defaults to 30 days before `to` when omitted; with `include_trend=true` and `trend_grain=hourly` the default tightens to keep the window within the 720-hour trend cap.",
+      },
+      {
+        displayName: "Include Trend",
+        name: "include_trend",
+        type: "boolean",
+        default: false,
+        description: "Whether each row also carries a `trend` array: a short per-bucket lifecycle-count series for that row over the window. Returned only when `limit` is 50 or fewer and the window is at most 90 days (trend_grain=daily) or 720 hours (trend_grain=hourly); a larger request returns 422.",
+      },
+      {
+        displayName: "Max Results",
+        name: "max_results",
+        type: "number",
+        default: "",
+        description: "Maximum number of message-type rows to return, ranked by the `sort` field descending",
+      },
+      {
+        displayName: "Timezone",
+        name: "timezone",
+        type: "string",
+        default: "",
+        description: "IANA timezone identifier used to group statistics, for example `Asia/Kathmandu`. The default is UTC. Day and hour boundaries, including the default window when `from` and `to` are omitted, follow this timezone. When this parameter is set, pass `from` and `to` as calendar days or `Z` instants instead of timestamps with explicit UTC offsets.",
+      },
+      {
+        displayName: "To",
+        name: "to",
+        type: "string",
+        default: "",
+        description: "End date (inclusive) in YYYY-MM-DD, interpreted as a calendar day in `timezone` (a UTC day when `timezone` is omitted). Defaults to today in that timezone when omitted. Window may not exceed 365 days.",
+      },
+      {
+        displayName: "Trend Grain",
+        name: "trend_grain",
+        type: "options",
+        options: [
+          { name: "Not Set", value: "" },
+          { name: "Daily", value: "daily" },
+          { name: "Hourly", value: "hourly" },
+        ],
+        default: "",
+        description: "Bucket grain for the `trend` series. Has no effect unless `include_trend=true`.",
+      },
+    ],
+  },
+  {
+    displayName: "Sort",
+    name: "sort",
+    type: "collection",
+    placeholder: "Add Sort Option",
+    default: {},
+    displayOptions: { show: { resource: ["sms"], operation: ["stats_by_content_type"] } },
+    options: [
+      {
+        displayName: "Sort By",
+        name: "sort",
+        type: "options",
+        options: [
+          { name: "Accepted", value: "accepted" },
+          { name: "Delivered", value: "delivered" },
+          { name: "Delivery Rate", value: "delivery_rate" },
+          { name: "Expired", value: "expired" },
+          { name: "Failed", value: "failed" },
+          { name: "Failure Rate", value: "failure_rate" },
+          { name: "Not Set", value: "" },
+          { name: "Rejected", value: "rejected" },
+          { name: "Sent", value: "sent" },
+          { name: "Undelivered", value: "undelivered" },
+        ],
+        default: "",
+        description: "Metric to rank rows by, applied descending. Any lifecycle count or derived rate in the response may be used; rows whose rate is undefined (zero denominator) sort last. Defaults to `accepted`.",
+      },
+    ],
+  },
+  {
+    displayName: "Additional Fields",
+    name: "additionalFields",
+    type: "collection",
+    placeholder: "Add Field",
+    default: {},
     displayOptions: { show: { resource: ["sms"], operation: ["stats_by_originator"] } },
     options: [
+      {
+        displayName: "Content Type",
+        name: "content_type",
+        type: "options",
+        options: [
+          { name: "Not Set", value: "" },
+          { name: "SMS", value: "sms" },
+          { name: "Mms", value: "mms" },
+        ],
+        default: "",
+        description: "Restrict statistics to SMS or MMS. Omit to include both. This filter can be combined with an existing dimension filter where the operation supports one. Previously recorded statistics remain attributed to SMS. New activity uses the message type, so a late MMS delivery can appear under MMS while its earlier send remains under SMS.",
+      },
       {
         displayName: "From",
         name: "from",
@@ -3987,6 +4183,18 @@ export const birdProperties: INodeProperties[] = [
         default: "",
         description: "IANA timezone identifier used to group statistics, for example `Asia/Kathmandu`. The default is UTC. Day and hour boundaries, including the default window when `from` and `to` are omitted, follow this timezone. When this parameter is set, pass `from` and `to` as calendar days or `Z` instants instead of timestamps with explicit UTC offsets.",
       },
+      {
+        displayName: "Content Type",
+        name: "content_type",
+        type: "options",
+        options: [
+          { name: "Not Set", value: "" },
+          { name: "SMS", value: "sms" },
+          { name: "Mms", value: "mms" },
+        ],
+        default: "",
+        description: "Restrict statistics to SMS or MMS. Omit to include both. This filter can be combined with an existing dimension filter where the operation supports one. Previously recorded statistics remain attributed to SMS. New activity uses the message type, so a late MMS delivery can appear under MMS while its earlier send remains under SMS.",
+      },
     ],
   },
   {
@@ -3997,6 +4205,18 @@ export const birdProperties: INodeProperties[] = [
     default: {},
     displayOptions: { show: { resource: ["sms"], operation: ["stats_by_error_code"] } },
     options: [
+      {
+        displayName: "Content Type",
+        name: "content_type",
+        type: "options",
+        options: [
+          { name: "Not Set", value: "" },
+          { name: "SMS", value: "sms" },
+          { name: "Mms", value: "mms" },
+        ],
+        default: "",
+        description: "Restrict statistics to SMS or MMS. Omit to include both. This filter can be combined with an existing dimension filter where the operation supports one. Previously recorded statistics remain attributed to SMS. New activity uses the message type, so a late MMS delivery can appear under MMS while its earlier send remains under SMS.",
+      },
       {
         displayName: "From",
         name: "from",
@@ -4081,6 +4301,18 @@ export const birdProperties: INodeProperties[] = [
     default: {},
     displayOptions: { show: { resource: ["sms"], operation: ["stats_by_tag"] } },
     options: [
+      {
+        displayName: "Content Type",
+        name: "content_type",
+        type: "options",
+        options: [
+          { name: "Not Set", value: "" },
+          { name: "SMS", value: "sms" },
+          { name: "Mms", value: "mms" },
+        ],
+        default: "",
+        description: "Restrict statistics to SMS or MMS. Omit to include both. This filter can be combined with an existing dimension filter where the operation supports one. Previously recorded statistics remain attributed to SMS. New activity uses the message type, so a late MMS delivery can appear under MMS while its earlier send remains under SMS.",
+      },
       {
         displayName: "From",
         name: "from",
@@ -4168,6 +4400,18 @@ export const birdProperties: INodeProperties[] = [
     displayOptions: { show: { resource: ["sms"], operation: ["stats_by_cost_center"] } },
     options: [
       {
+        displayName: "Content Type",
+        name: "content_type",
+        type: "options",
+        options: [
+          { name: "Not Set", value: "" },
+          { name: "SMS", value: "sms" },
+          { name: "Mms", value: "mms" },
+        ],
+        default: "",
+        description: "Restrict statistics to SMS or MMS. Omit to include both. This filter can be combined with an existing dimension filter where the operation supports one. Previously recorded statistics remain attributed to SMS. New activity uses the message type, so a late MMS delivery can appear under MMS while its earlier send remains under SMS.",
+      },
+      {
         displayName: "From",
         name: "from",
         type: "string",
@@ -4254,27 +4498,6 @@ export const birdProperties: INodeProperties[] = [
     displayOptions: { show: { resource: ["sms"], operation: ["stats_inbound_summary"] } },
     options: [
       {
-        displayName: "From",
-        name: "from",
-        type: "string",
-        default: "",
-        description: "Inclusive start of the window, either a calendar day (YYYY-MM-DD) or an RFC 3339 instant rounded down to the hour. The form you use selects the grain the total is resolved at. Interpreted in `timezone`, or in UTC when `timezone` is omitted. Must use the same form as `to`. A numeric UTC offset (for example `+05:45`) is rejected when `timezone` is set; pass a calendar day or a `Z` instant instead. Defaults to 30 days before `to` for day windows, or 168 hours before `to` for hour windows.",
-      },
-      {
-        displayName: "To",
-        name: "to",
-        type: "string",
-        default: "",
-        description: "Inclusive end of the window, in the same form as `from`. Defaults to today, or the current hour for an hour window. A day window may not exceed 365 days and an hour window 720 hours.",
-      },
-      {
-        displayName: "Timezone",
-        name: "timezone",
-        type: "string",
-        default: "",
-        description: "IANA timezone identifier used to group statistics, for example `Asia/Kathmandu`. The default is UTC. Day and hour boundaries, including the default window when `from` and `to` are omitted, follow this timezone. When this parameter is set, pass `from` and `to` as calendar days or `Z` instants instead of timestamps with explicit UTC offsets.",
-      },
-      {
         displayName: "Compare",
         name: "compare",
         type: "options",
@@ -4284,6 +4507,39 @@ export const birdProperties: INodeProperties[] = [
         ],
         default: "",
         description: "Set to `previous_period` to include the received-message count for the immediately preceding window of equal length. The response also includes the change between the two, so you can show \"+X% vs last period\" without a second request.",
+      },
+      {
+        displayName: "Content Type",
+        name: "content_type",
+        type: "options",
+        options: [
+          { name: "Not Set", value: "" },
+          { name: "SMS", value: "sms" },
+          { name: "Mms", value: "mms" },
+        ],
+        default: "",
+        description: "Restrict statistics to SMS or MMS. Omit to include both. This filter can be combined with an existing dimension filter where the operation supports one. Previously recorded statistics remain attributed to SMS. New activity uses the message type, so a late MMS delivery can appear under MMS while its earlier send remains under SMS.",
+      },
+      {
+        displayName: "From",
+        name: "from",
+        type: "string",
+        default: "",
+        description: "Inclusive start of the window, either a calendar day (YYYY-MM-DD) or an RFC 3339 instant rounded down to the hour. The form you use selects the grain the total is resolved at. Interpreted in `timezone`, or in UTC when `timezone` is omitted. Must use the same form as `to`. A numeric UTC offset (for example `+05:45`) is rejected when `timezone` is set; pass a calendar day or a `Z` instant instead. Defaults to 30 days before `to` for day windows, or 168 hours before `to` for hour windows.",
+      },
+      {
+        displayName: "Timezone",
+        name: "timezone",
+        type: "string",
+        default: "",
+        description: "IANA timezone identifier used to group statistics, for example `Asia/Kathmandu`. The default is UTC. Day and hour boundaries, including the default window when `from` and `to` are omitted, follow this timezone. When this parameter is set, pass `from` and `to` as calendar days or `Z` instants instead of timestamps with explicit UTC offsets.",
+      },
+      {
+        displayName: "To",
+        name: "to",
+        type: "string",
+        default: "",
+        description: "Inclusive end of the window, in the same form as `from`. Defaults to today, or the current hour for an hour window. A day window may not exceed 365 days and an hour window 720 hours.",
       },
     ],
   },
@@ -4316,6 +4572,18 @@ export const birdProperties: INodeProperties[] = [
         default: "",
         description: "IANA timezone identifier used to group statistics, for example `Asia/Kathmandu`. The default is UTC. Day and hour boundaries, including the default window when `from` and `to` are omitted, follow this timezone. When this parameter is set, pass `from` and `to` as calendar days or `Z` instants instead of timestamps with explicit UTC offsets.",
       },
+      {
+        displayName: "Content Type",
+        name: "content_type",
+        type: "options",
+        options: [
+          { name: "Not Set", value: "" },
+          { name: "SMS", value: "sms" },
+          { name: "Mms", value: "mms" },
+        ],
+        default: "",
+        description: "Restrict statistics to SMS or MMS. Omit to include both. This filter can be combined with an existing dimension filter where the operation supports one. Previously recorded statistics remain attributed to SMS. New activity uses the message type, so a late MMS delivery can appear under MMS while its earlier send remains under SMS.",
+      },
     ],
   },
   {
@@ -4347,6 +4615,18 @@ export const birdProperties: INodeProperties[] = [
         default: "",
         description: "IANA timezone identifier used to group statistics, for example `Asia/Kathmandu`. The default is UTC. Day and hour boundaries, including the default window when `from` and `to` are omitted, follow this timezone. When this parameter is set, pass `from` and `to` as calendar days or `Z` instants instead of timestamps with explicit UTC offsets.",
       },
+      {
+        displayName: "Content Type",
+        name: "content_type",
+        type: "options",
+        options: [
+          { name: "Not Set", value: "" },
+          { name: "SMS", value: "sms" },
+          { name: "Mms", value: "mms" },
+        ],
+        default: "",
+        description: "Restrict statistics to SMS or MMS. Omit to include both. This filter can be combined with an existing dimension filter where the operation supports one. Previously recorded statistics remain attributed to SMS. New activity uses the message type, so a late MMS delivery can appear under MMS while its earlier send remains under SMS.",
+      },
     ],
   },
   {
@@ -4358,6 +4638,18 @@ export const birdProperties: INodeProperties[] = [
     displayOptions: { show: { resource: ["sms"], operation: ["stats_inbound_by_country"] } },
     options: [
       {
+        displayName: "Content Type",
+        name: "content_type",
+        type: "options",
+        options: [
+          { name: "Not Set", value: "" },
+          { name: "SMS", value: "sms" },
+          { name: "Mms", value: "mms" },
+        ],
+        default: "",
+        description: "Restrict statistics to SMS or MMS. Omit to include both. This filter can be combined with an existing dimension filter where the operation supports one. Previously recorded statistics remain attributed to SMS. New activity uses the message type, so a late MMS delivery can appear under MMS while its earlier send remains under SMS.",
+      },
+      {
         displayName: "From",
         name: "from",
         type: "string",
@@ -4365,11 +4657,11 @@ export const birdProperties: INodeProperties[] = [
         description: "Start date (inclusive), YYYY-MM-DD. Interpreted as a calendar day in `timezone` (a UTC day when `timezone` is omitted). Defaults to 30 days before `to` when omitted.",
       },
       {
-        displayName: "To",
-        name: "to",
-        type: "string",
+        displayName: "Max Results",
+        name: "max_results",
+        type: "number",
         default: "",
-        description: "End date (inclusive), YYYY-MM-DD. Interpreted as a calendar day in `timezone` (a UTC day when `timezone` is omitted). Defaults to today in that timezone when omitted. Window may not exceed 365 days.",
+        description: "Maximum rows to return, ranked by volume. Defaults to 50; the maximum is 200, and asking for more returns 422 rather than silently returning fewer.",
       },
       {
         displayName: "Timezone",
@@ -4379,11 +4671,61 @@ export const birdProperties: INodeProperties[] = [
         description: "IANA timezone identifier used to group statistics, for example `Asia/Kathmandu`. The default is UTC. Day and hour boundaries, including the default window when `from` and `to` are omitted, follow this timezone. When this parameter is set, pass `from` and `to` as calendar days or `Z` instants instead of timestamps with explicit UTC offsets.",
       },
       {
+        displayName: "To",
+        name: "to",
+        type: "string",
+        default: "",
+        description: "End date (inclusive), YYYY-MM-DD. Interpreted as a calendar day in `timezone` (a UTC day when `timezone` is omitted). Defaults to today in that timezone when omitted. Window may not exceed 365 days.",
+      },
+    ],
+  },
+  {
+    displayName: "Additional Fields",
+    name: "additionalFields",
+    type: "collection",
+    placeholder: "Add Field",
+    default: {},
+    displayOptions: { show: { resource: ["sms"], operation: ["stats_inbound_by_content_type"] } },
+    options: [
+      {
+        displayName: "Content Type",
+        name: "content_type",
+        type: "options",
+        options: [
+          { name: "Not Set", value: "" },
+          { name: "SMS", value: "sms" },
+          { name: "Mms", value: "mms" },
+        ],
+        default: "",
+        description: "Restrict statistics to SMS or MMS. Omit to include both. This filter can be combined with an existing dimension filter where the operation supports one. Previously recorded statistics remain attributed to SMS. New activity uses the message type, so a late MMS delivery can appear under MMS while its earlier send remains under SMS.",
+      },
+      {
+        displayName: "From",
+        name: "from",
+        type: "string",
+        default: "",
+        description: "Start date (inclusive), YYYY-MM-DD. Interpreted as a calendar day in `timezone` (a UTC day when `timezone` is omitted). Defaults to 30 days before `to` when omitted.",
+      },
+      {
         displayName: "Max Results",
         name: "max_results",
         type: "number",
         default: "",
         description: "Maximum rows to return, ranked by volume. Defaults to 50; the maximum is 200, and asking for more returns 422 rather than silently returning fewer.",
+      },
+      {
+        displayName: "Timezone",
+        name: "timezone",
+        type: "string",
+        default: "",
+        description: "IANA timezone identifier used to group statistics, for example `Asia/Kathmandu`. The default is UTC. Day and hour boundaries, including the default window when `from` and `to` are omitted, follow this timezone. When this parameter is set, pass `from` and `to` as calendar days or `Z` instants instead of timestamps with explicit UTC offsets.",
+      },
+      {
+        displayName: "To",
+        name: "to",
+        type: "string",
+        default: "",
+        description: "End date (inclusive), YYYY-MM-DD. Interpreted as a calendar day in `timezone` (a UTC day when `timezone` is omitted). Defaults to today in that timezone when omitted. Window may not exceed 365 days.",
       },
     ],
   },
@@ -4396,6 +4738,18 @@ export const birdProperties: INodeProperties[] = [
     displayOptions: { show: { resource: ["sms"], operation: ["stats_inbound_by_operator"] } },
     options: [
       {
+        displayName: "Content Type",
+        name: "content_type",
+        type: "options",
+        options: [
+          { name: "Not Set", value: "" },
+          { name: "SMS", value: "sms" },
+          { name: "Mms", value: "mms" },
+        ],
+        default: "",
+        description: "Restrict statistics to SMS or MMS. Omit to include both. This filter can be combined with an existing dimension filter where the operation supports one. Previously recorded statistics remain attributed to SMS. New activity uses the message type, so a late MMS delivery can appear under MMS while its earlier send remains under SMS.",
+      },
+      {
         displayName: "From",
         name: "from",
         type: "string",
@@ -4403,11 +4757,11 @@ export const birdProperties: INodeProperties[] = [
         description: "Start date (inclusive), YYYY-MM-DD. Interpreted as a calendar day in `timezone` (a UTC day when `timezone` is omitted). Defaults to 30 days before `to` when omitted.",
       },
       {
-        displayName: "To",
-        name: "to",
-        type: "string",
+        displayName: "Max Results",
+        name: "max_results",
+        type: "number",
         default: "",
-        description: "End date (inclusive), YYYY-MM-DD. Interpreted as a calendar day in `timezone` (a UTC day when `timezone` is omitted). Defaults to today in that timezone when omitted. Window may not exceed 365 days.",
+        description: "Maximum rows to return, ranked by volume. Defaults to 50; the maximum is 200, and asking for more returns 422 rather than silently returning fewer.",
       },
       {
         displayName: "Timezone",
@@ -4417,11 +4771,11 @@ export const birdProperties: INodeProperties[] = [
         description: "IANA timezone identifier used to group statistics, for example `Asia/Kathmandu`. The default is UTC. Day and hour boundaries, including the default window when `from` and `to` are omitted, follow this timezone. When this parameter is set, pass `from` and `to` as calendar days or `Z` instants instead of timestamps with explicit UTC offsets.",
       },
       {
-        displayName: "Max Results",
-        name: "max_results",
-        type: "number",
+        displayName: "To",
+        name: "to",
+        type: "string",
         default: "",
-        description: "Maximum rows to return, ranked by volume. Defaults to 50; the maximum is 200, and asking for more returns 422 rather than silently returning fewer.",
+        description: "End date (inclusive), YYYY-MM-DD. Interpreted as a calendar day in `timezone` (a UTC day when `timezone` is omitted). Defaults to today in that timezone when omitted. Window may not exceed 365 days.",
       },
     ],
   },
@@ -4434,6 +4788,18 @@ export const birdProperties: INodeProperties[] = [
     displayOptions: { show: { resource: ["sms"], operation: ["stats_inbound_by_number"] } },
     options: [
       {
+        displayName: "Content Type",
+        name: "content_type",
+        type: "options",
+        options: [
+          { name: "Not Set", value: "" },
+          { name: "SMS", value: "sms" },
+          { name: "Mms", value: "mms" },
+        ],
+        default: "",
+        description: "Restrict statistics to SMS or MMS. Omit to include both. This filter can be combined with an existing dimension filter where the operation supports one. Previously recorded statistics remain attributed to SMS. New activity uses the message type, so a late MMS delivery can appear under MMS while its earlier send remains under SMS.",
+      },
+      {
         displayName: "From",
         name: "from",
         type: "string",
@@ -4441,11 +4807,11 @@ export const birdProperties: INodeProperties[] = [
         description: "Start date (inclusive), YYYY-MM-DD. Interpreted as a calendar day in `timezone` (a UTC day when `timezone` is omitted). Defaults to 30 days before `to` when omitted.",
       },
       {
-        displayName: "To",
-        name: "to",
-        type: "string",
+        displayName: "Max Results",
+        name: "max_results",
+        type: "number",
         default: "",
-        description: "End date (inclusive), YYYY-MM-DD. Interpreted as a calendar day in `timezone` (a UTC day when `timezone` is omitted). Defaults to today in that timezone when omitted. Window may not exceed 365 days.",
+        description: "Maximum rows to return, ranked by volume. Defaults to 50; the maximum is 200, and asking for more returns 422 rather than silently returning fewer.",
       },
       {
         displayName: "Timezone",
@@ -4455,11 +4821,11 @@ export const birdProperties: INodeProperties[] = [
         description: "IANA timezone identifier used to group statistics, for example `Asia/Kathmandu`. The default is UTC. Day and hour boundaries, including the default window when `from` and `to` are omitted, follow this timezone. When this parameter is set, pass `from` and `to` as calendar days or `Z` instants instead of timestamps with explicit UTC offsets.",
       },
       {
-        displayName: "Max Results",
-        name: "max_results",
-        type: "number",
+        displayName: "To",
+        name: "to",
+        type: "string",
         default: "",
-        description: "Maximum rows to return, ranked by volume. Defaults to 50; the maximum is 200, and asking for more returns 422 rather than silently returning fewer.",
+        description: "End date (inclusive), YYYY-MM-DD. Interpreted as a calendar day in `timezone` (a UTC day when `timezone` is omitted). Defaults to today in that timezone when omitted. Window may not exceed 365 days.",
       },
     ],
   },
