@@ -556,7 +556,7 @@ export const birdProperties: INodeProperties[] = [
         name: "brand_id",
         type: "string",
         default: "",
-        description: "Preview: selects the business whose email preferences and unsubscribe page apply; explicit input returns `422` when selection is unavailable. When selection is available, omission or null selects the workspace's default Brand. The selection stays fixed for scheduled sends and retries. An explicit ID must belong to this workspace and must not be archived. An unknown, foreign or archived Brand returns `422`. Omitted or null values preserve existing sending behavior while selection is unavailable.",
+        description: "Selects the business whose email preferences and unsubscribe page apply; omission or null selects the workspace's default Brand. The selection stays fixed for scheduled sends and retries. An explicit ID must belong to this workspace and must not be archived. An unknown, foreign or archived Brand returns `422`.",
       },
       {
         displayName: "Category",
@@ -8108,7 +8108,7 @@ export const birdProperties: INodeProperties[] = [
         name: "brand_id",
         type: "string",
         default: "",
-        description: "Preview: return only this Brand's email preferences, including older preferences belonging to the original business. Explicit selection returns 422 where unavailable. Omit to return all matching preferences. Empty, repeated or malformed values return 422. Where the endpoint also accepts a channel filter, it must be email. A Brand not found in this workspace returns 404.",
+        description: "Return only this Brand's email preferences, including older preferences belonging to the original business. Omit to return all matching preferences. Empty, repeated or malformed values return 422. Where the endpoint also accepts a channel filter, it must be email. A Brand not found in this workspace returns 404.",
       },
     ],
   },
@@ -8187,7 +8187,7 @@ export const birdProperties: INodeProperties[] = [
         name: "brand_id",
         type: "string",
         default: "",
-        description: "Brand selection is in preview. Select the business for an email preference. Omitted or null selects the original business. Unsupported on other channels. An additional Brand supports non_transactional coverage only. Explicit selection returns 422 when unavailable. Existing opt-outs can be recorded for archived Brands; grants to archived Brands return 422. Consent grants for active additional Brands return 422 when unavailable. A Brand not found in this workspace returns 404.",
+        description: "Select the business for an email preference. Omitted or null selects the original business. Unsupported on other channels. An additional Brand supports non_transactional coverage only. Existing opt-outs can be recorded for archived Brands; grants to archived Brands return 422. A Brand not found in this workspace returns 404.",
       },
       {
         displayName: "Consented At",
@@ -8719,7 +8719,7 @@ export const birdProperties: INodeProperties[] = [
         name: "brand_id",
         type: "string",
         default: "",
-        description: "Preview: return only this Brand's email preferences, including older preferences belonging to the original business. Explicit selection returns 422 where unavailable. Omit to return all matching preferences. Empty, repeated or malformed values return 422. Where the endpoint also accepts a channel filter, it must be email. A Brand not found in this workspace returns 404.",
+        description: "Return only this Brand's email preferences, including older preferences belonging to the original business. Omit to return all matching preferences. Empty, repeated or malformed values return 422. Where the endpoint also accepts a channel filter, it must be email. A Brand not found in this workspace returns 404.",
       },
     ],
   },
@@ -12096,6 +12096,13 @@ export const birdProperties: INodeProperties[] = [
     default: {},
     displayOptions: { show: { resource: ["email"], operation: ["smtp_configs_update"] } },
     options: [
+      {
+        displayName: "Brand ID",
+        name: "brand_id",
+        type: "string",
+        default: "",
+        description: "Select an active Brand in this workspace for messages submitted with this key. Send `null` to use the workspace default Brand, or omit to keep the current selection. An unavailable selection returns `422`; a Brand whose setup is incomplete returns `503`. When rotating an API key, configure the replacement key's Brand before switching SMTP traffic; the new key does not inherit these settings.",
+      },
       {
         displayName: "Category",
         name: "category",

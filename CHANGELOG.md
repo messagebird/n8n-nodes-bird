@@ -1,5 +1,9 @@
 # Changelog
 
+## 0.59.0
+
+- Add `brand_id` to SMTP configuration operations to select a Brand for an API key.
+
 ## 0.58.0
 
 - Add the Label resource with actions to list, get, create, update and delete the workspace's labels. Listing and getting need `workspace` read access, creating and updating need `mailbox` write access, and deleting needs `mailbox_management` write access.
