@@ -11,6 +11,7 @@ export const birdPickers: Record<string, BirdPicker> = {
   emailInboundRoutesList: { route: "email:inbound_routes_list", fields: ["match_value", "domain"], search: "", pathFrom: [] },
   inboundAddressList: { route: "inbound_address:list", fields: ["address"], search: "", pathFrom: [] },
   inboundMessageList: { route: "inbound_message:list", fields: ["subject", "message_id"], search: "", pathFrom: [] },
+  labelsList: { route: "labels:list", fields: ["name"], search: "", pathFrom: [] },
   numbersOrdersList: { route: "numbers:orders_list", fields: ["number"], search: "", pathFrom: [] },
   preferencesList: { route: "preferences:list", fields: ["handle"], search: "", pathFrom: [] },
   realtimeAppsList: { route: "realtime:apps_list", fields: ["name"], search: "name", pathFrom: [] },
