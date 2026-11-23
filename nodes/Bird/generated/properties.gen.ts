@@ -697,7 +697,7 @@ export const birdProperties: INodeProperties[] = [
         name: "scheduled_at",
         type: "dateTime",
         default: "",
-        description: "Send at this future time instead of immediately, at least 30 seconds and at most 30 days ahead; outside that range returns `422`. The message returns `accepted` and reads as `scheduled` until it sends, and the message cancel endpoint cancels it before then. Scheduled sends count against your plan's monthly scheduled-email allowance, and a send over it returns `422`. A stored template's published version, language and parameter values are pinned at acceptance, so a later publication does not change what sends; deleting the template before the message is due rejects it with `generation_failure`. Sender eligibility and send-volume allowance are checked again when it is due. Batch items take this field too, so one batch can mix scheduled and immediate messages.",
+        description: "Send at this future time instead of immediately, at least 30 seconds and at most 30 days ahead; outside that range returns `422`. The message returns `accepted` and reads as `scheduled` until it sends, and the message cancel endpoint cancels it before then. Scheduled sends count against your plan's monthly scheduled-email allowance, and a send over it returns `422`. A stored template's published version, language and parameter values are pinned at acceptance, so a later publication does not change what sends; deleting the template before the message is due rejects it with `generation_failure`. Sender eligibility and send-volume allowance are checked again when it is due. Bodies and attachment contents count toward the same 20 MB message limit as an immediate send. The rest of the request, such as recipients, `headers`, `metadata`, parameters and attachment file names, shares a separate 31 KB limit, and a send over it returns `422`. Batch items take this field too, so one batch can mix scheduled and immediate messages.",
       },
       {
         displayName: "Subject",
@@ -6582,6 +6582,13 @@ export const birdProperties: INodeProperties[] = [
     default: {},
     displayOptions: { show: { resource: ["numbers"], operation: ["orders_list"] } },
     options: [
+      {
+        displayName: "Number ID",
+        name: "number_id",
+        type: "string",
+        default: "",
+        description: "Return orders associated with this exact workspace allocation, newest first. Multiple attempts can refer to the same allocation; the newest attempt is not necessarily the order that first assigned it.",
+      },
       {
         displayName: "Status",
         name: "status",

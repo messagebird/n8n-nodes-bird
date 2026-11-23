@@ -1,5 +1,12 @@
 # Changelog
 
+## 0.60.0
+
+- Add a `number_id` filter to number order lists to find attempts associated with an allocation. Clarify that completed orders retain that historical association after the number is released.
+- Preferences expose the email ID of the most recent recorded spam complaint as `complaint_message_id`.
+- Email event documentation clarifies that unsubscribe events can have null tags and metadata even when the send included them. Use workspace and message IDs to correlate those events.
+- The send broadcast reference now documents the 409 conflict a reschedule can return while the broadcast is being prepared to send now, in which case its schedule does not change.
+
 ## 0.59.0
 
 - Add `brand_id` to SMTP configuration operations to select a Brand for an API key.
