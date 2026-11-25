@@ -722,3 +722,92 @@ describe("Bird node execute", () => {
     ).rejects.toThrow(/20\.1 MB.*20\.0 MB/);
   });
 });
+
+describe("email stats by brand pagination", () => {
+  it("exposes only the node-owned limit and follows cursors under Return All", async () => {
+    const route = birdRoutes["email:stats_by_brand"];
+    expect(route.paginated).toBe(true);
+    expect(route.renames.max_results).toBeUndefined();
+
+    const additional = birdProperties.find(
+      (p) =>
+        p.name === "additionalFields" &&
+        p.type === "collection" &&
+        (p.displayOptions?.show?.resource as string[] | undefined)?.includes(
+          "email",
+        ) &&
+        (p.displayOptions?.show?.operation as string[] | undefined)?.includes(
+          "stats_by_brand",
+        ),
+    );
+    const optionNames = (additional?.options ?? []).map(
+      (o) => (o as { name: string }).name,
+    );
+    expect(optionNames).not.toContain("max_results");
+    expect(optionNames).not.toContain("limit");
+
+    const limitedRequests: Array<{ qs?: Record<string, unknown> }> = [];
+    const limitedCtx = execCtx(
+      {
+        resource: "email",
+        operation: "stats_by_brand",
+        returnAll: false,
+        limit: 1,
+        additionalFields: {},
+        sort: {},
+      },
+      limitedRequests,
+    );
+    limitedCtx.helpers.httpRequestWithAuthentication = async (_cred, opts) => {
+      limitedRequests.push(opts as { qs?: Record<string, unknown> });
+      return {
+        statusCode: 200,
+        body: {
+          data: [{ brand_id: "bnd_1" }, { brand_id: "bnd_2" }],
+          next_cursor: "cur_2",
+        },
+      };
+    };
+    const [limitedOut] = await new Bird().execute.call(
+      limitedCtx as unknown as IExecuteFunctions,
+    );
+    expect(limitedRequests[0].qs?.limit).toBe(1);
+    expect(limitedOut).toHaveLength(1);
+    expect(limitedOut[0].json).toEqual({ brand_id: "bnd_1" });
+
+    const pagedRequests: Array<{ qs?: Record<string, unknown> }> = [];
+    const pagedCtx = execCtx(
+      {
+        resource: "email",
+        operation: "stats_by_brand",
+        returnAll: true,
+        additionalFields: {},
+        sort: {},
+      },
+      pagedRequests,
+    );
+    pagedCtx.helpers.httpRequestWithAuthentication = async (_cred, opts) => {
+      const req = opts as { qs?: Record<string, unknown> };
+      pagedRequests.push(req);
+      if (pagedRequests.length === 1) {
+        return {
+          statusCode: 200,
+          body: { data: [{ brand_id: "bnd_1" }], next_cursor: "cur_2" },
+        };
+      }
+      return {
+        statusCode: 200,
+        body: { data: [{ brand_id: "bnd_2" }], next_cursor: null },
+      };
+    };
+    const [pagedOut] = await new Bird().execute.call(
+      pagedCtx as unknown as IExecuteFunctions,
+    );
+    expect(pagedRequests).toHaveLength(2);
+    expect(pagedRequests[1].qs?.starting_after).toBe("cur_2");
+    expect(pagedOut.map((item) => item.json)).toEqual([
+      { brand_id: "bnd_1" },
+      { brand_id: "bnd_2" },
+    ]);
+  });
+});

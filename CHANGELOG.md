@@ -1,5 +1,11 @@
 # Changelog
 
+## 0.61.0
+
+- Add the Email Stats `By Brand` operation (`GET /v1/email/stats/brands`).
+- **Breaking:** WhatsApp maximum-price inputs are narrower. A template language's `optimization_spec.bid_amount` accepts at most 50000 per 1,000 deliveries (0.50 per delivery), country overrides and a send's `bid_multiplier` accept 0.1 to 2, and a send is refused when its multiplier takes the recipient country's maximum price above 0.50 per delivery. Requests outside these ranges that were accepted before now return 422; lower the value to stay within them.
+- Clarify recovery guidance for calls blocked by number ownership or activation checks.
+
 ## 0.60.0
 
 - Add a `number_id` filter to number order lists to find attempts associated with an allocation. Clarify that completed orders retain that historical association after the number is released.
