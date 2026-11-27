@@ -1,5 +1,10 @@
 # Changelog
 
+## 0.62.0
+
+- Add `ownership_requirements` to available numbers: the operation and parameters that return the ownership form for the number's country and number type, so you can read it before you buy. Numbers with no form to read omit it.
+- Add `ownership` to number orders: once an order is completed, creating or reading it can report the bought number's ownership status and next steps, the same object the number itself reports. When it is empty, no report is available, which does not mean the number needs no paperwork; when a completed order omits it, read the order again.
+
 ## 0.61.0
 
 - Add the Email Stats `By Brand` operation (`GET /v1/email/stats/brands`).

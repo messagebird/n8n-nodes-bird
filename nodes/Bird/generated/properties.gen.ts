@@ -7648,7 +7648,7 @@ export const birdProperties: INodeProperties[] = [
         name: "event_type",
         type: "string",
         default: "",
-        description: "Event type to simulate. Any type from the event catalog is accepted, whether or not the endpoint subscribes to it; an unknown type returns a `422`. When omitted, the endpoint's first subscribed event type is used.",
+        description: "Event type to simulate. Any type from the event catalog is accepted, whether or not the endpoint subscribes to it; an unknown type returns a `422`. When omitted, the endpoint's first subscribed event type that is still in the catalog is used. An endpoint with no subscribed event types returns a `412`; one whose subscribed types have all left the catalog returns a `422`.",
       },
     ],
   },
@@ -7948,7 +7948,7 @@ export const birdProperties: INodeProperties[] = [
           { name: "Whatsapp Suppression Created", value: "whatsapp_suppression.created" },
         ],
         default: [],
-        description: "Replaces all event subscriptions with this list. Omit to keep the current set. Types outside the event catalog return a `422`.",
+        description: "Replaces all event subscriptions with this list. Omit to keep the current set. Types outside the event catalog return a `422`, except a type the endpoint already subscribes to that has since left the catalog: it can stay in the list.",
       },
       {
         displayName: "Filter",
